@@ -17,7 +17,7 @@ def run(source, extensions=("M", "Zbb"), memory=None):
 
 class TestInstructionSemantics(unittest.TestCase):
     def test_all_encodings_match_pinned_official_opcode_masks(self):
-        masks=json.loads((Path(__file__).with_name('fixtures')/'isa_opcode_masks.json').read_text())
+        masks=json.loads((Path(__file__).with_name('fixtures')/'isa_opcode_masks.json').read_text(encoding="utf-8"))
         self.assertEqual(set(masks),{op for ops in instruction_catalog().values() for op in ops})
         for op,spec in masks.items():
             word=encode(Instruction(op,rd=1,rs1=2,rs2=0 if op=='ZEXT.H' else 3,imm=4))

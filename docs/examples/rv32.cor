@@ -7,9 +7,9 @@
   "kind": "cpu",
   "producer": {
     "name": "Silicon Immortal",
-    "version": "0.1.0-alpha.3",
+    "version": "0.1.0-alpha.4",
     "release_channel": "alpha",
-    "model": "analytic-v0.6+challenges-v1"
+    "model": "analytic-v0.7+x86-studio-v1"
   },
   "config": {
     "source": "ADDI x1,x0,6\nADDI x2,x0,7\nMUL x3,x1,x2\nSW x3,0(x0)\nLW x4,0(x0)\nHALT",

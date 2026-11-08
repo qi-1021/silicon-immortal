@@ -3,11 +3,11 @@
   "version": 1,
   "producer": {
     "name": "Silicon Immortal",
-    "version": "0.1.0-alpha.3",
+    "version": "0.1.0-alpha.4",
     "release_channel": "alpha",
-    "model": "analytic-v0.6+challenges-v1"
+    "model": "analytic-v0.7+x86-studio-v1"
   },
-  "created_at": "2026-11-08T13:24:39.856708+00:00",
+  "created_at": "2026-11-08T15:44:48.134298+00:00",
   "name": "isqi / RV32 compute SoC",
   "scenario": "sandbox",
   "design": {
@@ -180,9 +180,9 @@
         "kind": "cpu",
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "config": {
           "source": "ADDI x1,x0,6\nADDI x2,x0,7\nMUL x3,x1,x2\nSW x3,0(x0)\nLW x4,0(x0)\nHALT",
@@ -223,9 +223,9 @@
         "kind": "gpu",
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "config": {
           "elements": 64,
@@ -259,9 +259,9 @@
         "kind": "npu",
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "config": {
           "m": 8,
@@ -298,9 +298,9 @@
         "kind": "isp",
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "config": {
           "width": 8,
@@ -382,9 +382,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "e435160e5027add068d4014a27c427bedf13464f564aca495c7cc0ddf1da1999"
       },
@@ -406,9 +406,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "b33ec764522ddcc555edd1772bbaa8572034668cb48ff22fe87aa9f7c09000e4"
       },
@@ -435,9 +435,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "cd0a7415bfd0bd58c0ef792411325b3cdf438fa174269f04934126870e50a33f"
       }
@@ -461,7 +461,7 @@
   },
   "engine": {
     "name": "Silicon Professor",
-    "model": "analytic-v0.6+challenges-v1"
+    "model": "analytic-v0.7+x86-studio-v1"
   },
   "provenance": {
     "simulation": true,

@@ -21,8 +21,8 @@ class TestEvidence(unittest.TestCase):
 
     def test_every_legacy_source_has_a_disposition(self):
         root = Path(__file__).resolve().parents[1]
-        legacy = json.loads((root / "docs/research/legacy_sources.json").read_text())
-        audit = json.loads((root / "docs/research/audit.json").read_text())
+        legacy = json.loads((root / "docs/research/legacy_sources.json").read_text(encoding="utf-8"))
+        audit = json.loads((root / "docs/research/audit.json").read_text(encoding="utf-8"))
         self.assertEqual(set(legacy), set(audit["legacy"]))
         for source in audit["legacy"].values():
             self.assertTrue(source["reason"])

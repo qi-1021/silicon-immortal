@@ -16,7 +16,7 @@ class TestRealRTL(unittest.TestCase):
         self.assertEqual(info['license'],'ISC')
         for name,sha in info['sha256'].items():
             self.assertEqual(hashlib.sha256((BUNDLE/name).read_bytes()).hexdigest(),sha)
-        self.assertIn('Permission to use, copy, modify',(BUNDLE/'COPYING').read_text())
+        self.assertIn('Permission to use, copy, modify',(BUNDLE/'COPYING').read_text(encoding="utf-8"))
 
 
 if __name__=='__main__':unittest.main()

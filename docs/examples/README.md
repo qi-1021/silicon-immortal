@@ -1,11 +1,12 @@
 # 可直接导入的教学设计
 
-所有例子由 `tools/export_examples.py` 生成并重新导入，使用0.1.0-alpha.3与当前模型标识。修改硬件后在LAB重新验证发布；名称/硬件决定新设计资产身份，测试输入不参与身份。
+所有例子由 `tools/export_examples.py` 生成并重新导入，使用0.1.0-alpha.4与当前模型标识。修改硬件后在LAB重新验证发布；名称/硬件决定新设计资产身份，测试输入不参与身份。
 
 | 文件 | 内容 | 观察目标 |
 | --- | --- | --- |
 | [studio-compute.sil](studio-compute.sil) | 2个设计台RV32实例、GPU、NPU、ISP，内嵌4个硬件设计与保留的模板选择 | 不传.cor也能恢复，并可编辑内嵌设计 |
 | [template-soc.sil](template-soc.sil) | 全模板沙盒SoC，3种CPU与GPU/NPU/ISP模板 | 完整模板名称、模型与参考制程随文件保存 |
+| [x86-workstation.sil](x86-workstation.sil) | x86工作站，使用可执行双发射顺序教学核心 | 模板含完整硬件，可在LAB编辑，尚无x86-64/OS |
 | [studio-cpu.cor](studio-cpu.cor) | 参数化RV32核心 | 选择ISA/扩展、端口、队列和cache；固定多类验证 |
 | [studio-gpu.cor](studio-gpu.cor) | 参数化SIMT计算核心 | 驻留warp、ALU延迟、发射间隔与lane宽度 |
 | [studio-npu.cor](studio-npu.cor) | 参数化整数MAC阵列 | 阵列、精度、累加与本地容量 |

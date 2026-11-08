@@ -1,5 +1,6 @@
 """核心设计参数：硬件定义与测试台字段分别存放。"""
 from copy import deepcopy
+from .architectures import ISA_OPTIONS
 
 KINDS={'cpu':'CPU 核心','gpu':'GPU 计算核心','npu':'NPU 阵列','isp':'ISP 流水线'}
 
@@ -18,7 +19,7 @@ def switch(key,label,default,group,level=0,hint=''):
 
 FIELDS={
     'cpu':[
-        choice('architecture','指令集','riscv32',[('riscv32','RISC-V RV32'),('x86_32','x86 IA-32'),('aarch64','Arm AArch64')],'contract'),
+        choice('architecture','指令家族','riscv32',ISA_OPTIONS,'contract',hint='先选择常见家族。RV32是32位RISC-V；IA-32是32位x86；AArch64是64位Arm。当前执行器都是列明的整数子集，x86没有64位长模式。'),
         switch('enable_m','实现 M 乘除',True,'contract',hint='仅RV32的可选扩展；x86/A64乘法属于当前原生子集。'),
         switch('enable_zbb','实现 Zbb 位操作',False,'contract',1),
         choice('issue_order','发射次序','out_of_order',[('in_order','顺序发射'),('out_of_order','乱序发射')],'scheduler',hint='两种均顺序提交且无分支推测；乱序使用动态依赖标签。'),

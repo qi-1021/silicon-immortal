@@ -71,7 +71,7 @@ class TestFileCompatibility(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             path=export.export_to(Path(td)/'chip',d,None)
             self.assertEqual(path.suffix,'.sil')
-            record=json.loads(path.read_text())
+            record=json.loads(path.read_text(encoding="utf-8"))
             self.assertIn('alpha',record['producer']['version'])
             self.assertEqual(record['producer']['version'],__version__)
             record['producer']['version']='9.0.0';record['version']=99;record['future_note']='anything'
@@ -85,7 +85,7 @@ class TestFileCompatibility(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             p=write_asset(Path(td)/'core',a)
             self.assertEqual(p.suffix,'.cor')
-            record=json.loads(p.read_text());self.assertEqual(record['producer']['version'],__version__)
+            record=json.loads(p.read_text(encoding="utf-8"));self.assertEqual(record['producer']['version'],__version__)
             record['version']=99;record['producer']['version']='9.0.0';record['optional_description']='future'
             p.write_text(json.dumps(record))
             r=read_asset(p);self.assertEqual(r['name'],'core');self.assertIn('optional_description',r)

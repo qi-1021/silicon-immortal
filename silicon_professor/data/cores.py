@@ -485,3 +485,19 @@ CORES['x86_lab']=_core(id='x86_lab',name='LAB IA-32 示例核',vendor='LAB',arch
     tier='big',license='research',ref_node='n3e',ipc=.9,fmax_ref=3.0,logic_area=5.0,l2_default=1.0,l2_max=8.0,power_ref=2.0,
     leak_frac=.16,license_cost_m=None,eng_weeks=0,decode=4,rob=128,note='x86教学PPA假设；保存实验核后使用独立资产，不是厂商CPU。',
     evidence=[],confidence='assumption',parameter_basis='game_assumption')
+
+# 明确参数化教学设计，PPA从同一硬件映射产生，不冒称Intel/AMD产品。
+def _x86_templates():
+    from .core_designs import default_hardware
+    from ..engine.core_studio import design_model
+    specs=[('x86_scalar','x86 · 单发射顺序核',dict(width=1,execution_ports=1,alu_ports=1,rob_size=16,issue_order='in_order',cache_kb=16)),
+           ('x86_dual','x86 · 双发射顺序核',dict(width=2,execution_ports=2,alu_ports=2,rob_size=32,issue_order='in_order',cache_kb=32)),
+           ('x86_wide','x86 · 四发射乱序核',dict(width=4,execution_ports=4,alu_ports=4,rob_size=128,issue_order='out_of_order',cache_kb=64))]
+    for ident,name,changes in specs:
+        hardware=default_hardware('cpu')|dict(architecture='x86_32',enable_m=False,enable_zbb=False)|changes
+        model=design_model('cpu',name,hardware)
+        model.update(id=ident,license='research',arch='x86 / IA-32 · 32位整数子集',evidence=['intel_ia32'],hardware=hardware,
+            note='可执行参数化x86教学设计；不代表Intel/AMD商业微架构、完整x86或64位长模式。PPA为游戏假设。')
+        model.pop('measured_ipc',None)
+        CORES[ident]=model
+_x86_templates()

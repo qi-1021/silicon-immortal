@@ -6,16 +6,16 @@
 
 | 现象 | 检查和处理 |
 | --- | --- |
-| Windows没有exe | 下载的是源码ZIP。去Releases下载Windows-x64附件，或按源码说明安装Python |
-| Windows双击后立刻退出 | 重新完整解压；保持exe和_internal一起。核对系统架构与下载SHA-256 |
-| Windows提示未知发布者 | 当前无商业签名证书；确认来源和摘要后使用系统的单文件打开选项 |
-| Mac提示无法验证开发者 | 当前未Apple公证，按安装章对这个app使用系统提供的“仍要打开” |
-| Mac提示架构不支持 | Apple Silicon选arm64，Intel选x64；系统需macOS14+ |
-| 找不到Python/py | 这是源码入口。安装Python3.12及Windows启动器，或改用便携包 |
-| 下载依赖失败 | 源码首启需要网络，保留安装错误；检查能否访问PyPI，或下载已构建便携包 |
-| 窗口内容挤在一起 | 保持至少1180×760；检查显示缩放。参数、结构和报告各有独立滚动区 |
+| 找不到exe/app | 当前仅源码发行，安装Python3.12后运行对应脚本 |
+| Windows提示找不到py/python | 安装Python3.12，勾选Launcher和PATH；验证py -3.12 --version |
+| Mac脚本没有执行权限 | 终端bash run.command，或chmod +x run.command后./run.command |
+| Python版本太低 | 使用Python3.12创建项目环境，删除环境前确认不是玩家saves目录 |
+| 首次依赖安装失败 | 检查PyPI网络，保留pip错误；脚本不能绕过无效依赖 |
+| Mac旧系统缺少Qt wheel | 当前PySide6要求macOS14+，不承诺macOS13及以前 |
+| 更新后打不开 | 不复用跨系统.venv，保留saves，重新用当前脚本创建环境 |
+| 窗口过挤 | 保持1180×760，检查显示缩放；独立滚动参数和结构 |
 
-可从终端运行源码看到错误：Windows`.venv\Scripts\python.exe -m silicon_professor`，Mac`.venv/bin/python -m silicon_professor`。不要公开包含本机账号或无关环境信息的完整系统日志。
+Windows也可在命令行运行.venv\Scripts\python.exe -m silicon_professor，Mac运行.venv/bin/python -m silicon_professor查看错误。反馈时不要公开账号、密码或无关环境日志。
 
 ## 核心设计无法验证或发布
 
@@ -47,6 +47,8 @@
 | 项目委托未完成 | 返回简报，看每个目标的当前值；完整签核本身不代替关卡目标 |
 
 ## 结果看起来不合理
+
+**为什么改了核心，短测试IPC完全一样？** 默认5条指令访存程序被冷cache主导，2宽与12宽可能都是53周期。使用“运行CPU性能套件”，逐项观察独立运算、依赖链、缓存重用、乘法任务，设为对照再改硬件；不会为了看起来有效而人为改IPC。
 
 **为什么更宽的CPU没有快四倍？** 依赖链、端口、cache、分派/提交宽度、队列与串行部分都会限制收益。
 

@@ -13,7 +13,8 @@ from PySide6.QtWidgets import (QWidget,QVBoxLayout,QHBoxLayout,QLabel,QPushButto
 from ...data.core_designs import KINDS,FIELDS,BENCH_FIELDS,default_hardware,default_bench
 from ...data.architectures import MODES
 from ...engine.core_studio import (SCHEMA,validate_hardware,structure,run_design,
-    verify_design,design_model,hardware_from_legacy)
+    verify_design,design_model,hardware_from_legacy,hardware_from_template,cpu_performance_report)
+from ...engine.core_performance import performance_cases
 from ...engine.ip_library import make_design_asset,read_asset,write_asset,attach_asset
 from ..core_graph import CoreGraph
 from ..widgets import Card
@@ -25,6 +26,7 @@ class StudioScreen(QWidget):
         super().__init__();self.win=win;self.current=None;self._loading=True
         self.controls={};self.bench_controls={};self.groups={};self.fields={}
         self.verification=None;self.last_result=None;self.selected_module=None;self.expanded=False
+        self.last_performance=None;self.performance_baseline=None
         outer=QVBoxLayout(self);outer.setContentsMargins(22,18,22,18);outer.setSpacing(12)
         heading=QHBoxLayout()
         title=QLabel('LAB · 核心设计');title.setObjectName('H2');heading.addWidget(title)
@@ -156,7 +158,7 @@ class StudioScreen(QWidget):
         drafts.append(record);self._load_draft(record);self._persist()
 
     def _load_draft(self,record):
-        self._loading=True;self.current=record;self.verification=None;self.last_result=None
+        self._loading=True;self.current=record;self.verification=None;self.last_result=None;self.last_performance=None
         self.selected_module=None;self.name_edit.setText(record['name']);self.kind_label.setText(KINDS[record['kind']])
         self.win.core_workspace['active']=record['id']
         self._build_parameters();self._build_bench();self._clear_outputs()
@@ -230,6 +232,14 @@ class StudioScreen(QWidget):
         self._clear(self.bench_layout);self.bench_controls={}
         title=QLabel('我的测试台');title.setObjectName('H3');self.bench_layout.addWidget(title)
         note=QLabel('测试汇编、矩阵尺寸、图像与校准值不属于核心硬件。');note.setWordWrap(True);note.setObjectName('Muted');self.bench_layout.addWidget(note)
+        if self.current['kind']=='cpu':
+            presets=QComboBox();presets.addItem('选择资源测试程序…',None)
+            for case in performance_cases(self.current['hardware']['architecture']):presets.addItem(case['name'],case['id'])
+            presets.currentIndexChanged.connect(lambda:self._load_performance_case(presets.currentData()));self.bench_layout.addWidget(presets)
+            self.performance_btn=QPushButton('运行CPU性能套件 · 逐项比较IPC')
+            self.performance_btn.clicked.connect(self.run_performance);self.bench_layout.addWidget(self.performance_btn)
+            self.pin_performance=QPushButton('将上次性能套件设为对照')
+            self.pin_performance.clicked.connect(self._pin_performance);self.bench_layout.addWidget(self.pin_performance)
         for field in BENCH_FIELDS[self.current['kind']]:
             label=QLabel(field['label']);label.setWordWrap(True);label.setObjectName('Muted');self.bench_layout.addWidget(label)
             control=self._control(field,self.current['bench'][field['key']],self._bench_changed)
@@ -242,7 +252,7 @@ class StudioScreen(QWidget):
         self.current['hardware']={key:self._value(control) for key,control in self.controls.items()}
         if before!=self.current['hardware'].get('architecture'):
             self.current['bench']=default_bench('cpu',self.current['hardware']);self._loading=True;self._build_bench();self._loading=False
-        self.current['published_id']=None;self.verification=None;self.last_result=None
+        self.current['published_id']=None;self.verification=None;self.last_result=None;self.last_performance=None
         self._clear_outputs();self._preview();self._refresh_drafts();self._persist();self.set_learning_mode();self.refresh()
         self.status.setText('硬件已修改，旧验证结果失效。草稿已自动保存。')
 
@@ -321,7 +331,7 @@ class StudioScreen(QWidget):
         try:
             self.verification=verify_design(self.current['kind'],self.current['hardware'])
             self._clear_outputs()
-            self._table('固定验证',('任务','结果','cycle','观察'),[(c['name'],'通过' if c['passed'] else '失败',c['cycles'],c['observation']) for c in self.verification['cases']])
+            self._table('固定验证',('任务','结果','指令数','周期','IPC','观察'),[(c['name'],'通过' if c['passed'] else '失败',c['instructions'] if c['instructions'] is not None else '—',c['cycles'],f"{c['ipc']:.4f}" if c['ipc'] is not None else '—',c['observation']) for c in self.verification['cases']])
             passed=self.verification['passed']
             self.test_summary.setText(f"{len(self.verification['cases'])}项固定向量 · {'通过' if passed else '失败'}\n周期是资源模型；不是完整ISA、RTL或PDK认证。")
             self.status.setText('核心固定验证通过，可以发布 IP。' if passed else '固定验证失败，请修复硬件资源或约束。')
@@ -336,7 +346,8 @@ class StudioScreen(QWidget):
             if kind=='cpu':
                 self._table('架构寄存器',('寄存器','HEX','unsigned'),[(name,hex(value),value) for name,value in zip(result['register_names'],result['registers'])])
                 self._table('调度时序',('指令','分派','发射','完成','提交'),[(r['instruction'].text,r['dispatch'],r['issue'],r['done'],r['retire']) for r in result['rows']])
-                extra=f"IPC {result['ipc']:.3f} · cache hit {result['cache']['hit_rate']:.1%}"
+                h=result['hardware']
+                extra=f"IPC {result['ipc']:.5f} = {result['instructions']}条 / {result['cycles']}周期 · cache hit {result['cache']['hit_rate']:.1%}\n资源：{h['width']}共同宽度 / {h['execution_ports']}总发射 / {h['alu_ports']}ALU / {h['rob_size']}在途 / {h['cache_kb']}KiB cache\n短访存/依赖程序可能不受加宽影响。使用性能套件查看不同资源瓶颈。"
             elif kind=='gpu':
                 self._table('逐lane输出',('lane','FP32'),list(enumerate(result['output'])))
                 self._table('warp资源',('warp','处理器','开始','完成','分歧路径'),[(r['warp'],r['processor'],r['start'],r['finish'],r['paths']) for r in result['warps']])
@@ -355,6 +366,33 @@ class StudioScreen(QWidget):
             self.test_summary.setText(f"我的测试：{result['cycles']} cycle\n{extra}\n自定义测试结果不替代固定验证套件。")
             self.status.setText('测试台运行完成；修改输入不会改变硬件身份。')
         except (ValueError,TypeError,KeyError,OverflowError) as ex:self.last_result=None;self.status.setText('测试未完成：'+str(ex))
+
+    def _load_performance_case(self,key):
+        if not key or not self.current or self.current['kind']!='cpu':return
+        case=next(c for c in performance_cases(self.current['hardware']['architecture']) if c['id']==key)
+        for field,value in case['bench'].items():self.bench_controls[field].setPlainText(value)
+
+    def run_performance(self):
+        if not self.current or self.current['kind']!='cpu':return
+        try:
+            result=cpu_performance_report(self.current['hardware']);self.last_performance=result
+            self.last_result=None;self._clear_outputs()
+            baseline=self.performance_baseline
+            usable=baseline and baseline['hardware']['architecture']==result['hardware']['architecture'] and [c['id'] for c in baseline['cases']]==[c['id'] for c in result['cases']]
+            original={c['id']:c for c in baseline['cases']} if usable else {}
+            rows=[]
+            for c in result['cases']:
+                prev=original.get(c['id']);change=f"{(c['ipc']/prev['ipc']-1)*100:+.1f}%" if prev else '未设同任务对照'
+                rows.append((c['name'],c['instructions'],c['cycles'],f"{c['ipc']:.5f}",f"{c['cache_hit_rate']:.1%}",change,c['focus']))
+            self._table('CPU性能套件',('任务','指令数','周期','IPC','cache命中','IPC对照变化','主要资源'),rows)
+            h=result['hardware'];self.test_summary.setText(f"性能套件：{result['instructions']}条 / {result['cycles']}周期 = IPC {result['ipc']:.5f}\n{h['width']}共同宽度 / {h['execution_ports']}发射 / {h['alu_ports']}ALU / {h['rob_size']}在途 / {h['cache_kb']}KiB\n"+result['scope'])
+            self.status.setText('按任务观察瓶颈；先设为对照，再修改硬件并重跑。性能套件不替代固定功能验证。')
+            self.tabs.setCurrentWidget(self.validation_page)
+        except (ValueError,TypeError,KeyError) as ex:self.last_performance=None;self.status.setText('性能测试失败：'+str(ex))
+
+    def _pin_performance(self):
+        if self.last_performance:self.performance_baseline=deepcopy(self.last_performance);self.status.setText('已保存性能对照。修改硬件后重跑同ISA同任务套件。')
+        else:self.status.setText('先运行CPU性能套件，再保存对照。')
 
     def publish_current(self):
         if not self.current or not self.verification or not self.verification['passed']:return None
@@ -411,6 +449,13 @@ class StudioScreen(QWidget):
         self.win.core_workspace['drafts'].append(record);self._load_draft(record)
         self.status.setText('已载入硬件设计。' if 'design' in asset else '旧实验资产已转换为硬件草稿；原资产保留。重新验证后可发布。')
         self._persist()
+
+    def load_template(self,model):
+        if len(self.win.core_workspace['drafts'])>=64:raise ValueError('草稿最多64项。')
+        hardware=hardware_from_template(model)
+        record=dict(id=uuid.uuid4().hex,name=model['name'],kind='cpu',hardware=hardware,bench=default_bench('cpu',hardware),published_id=None)
+        self.win.core_workspace['drafts'].append(record);self._load_draft(record);self._persist()
+        self.status.setText('已复制教学模板的完整硬件。编辑、验证后发布成自己的核心；原模板不会改变。')
 
     def load_selected(self):
         asset=self._selected_asset()

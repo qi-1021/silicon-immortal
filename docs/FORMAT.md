@@ -4,9 +4,9 @@
 
 ## 三种版本信息
 
-- `producer.version`：游戏版本，目前`0.1.0-alpha.3`，第一次正式发布前使用alpha。
+- `producer.version`：游戏版本，目前`0.1.0-alpha.4`，第一次正式发布前使用alpha。
 - `version`：文件结构版本。SoC与IP当前均为1。与游戏版本分开。
-- `producer.model`：模型标识，当前`analytic-v0.6+challenges-v1`。
+- `producer.model`：模型标识，当前`analytic-v0.7+x86-studio-v1`。
 
 版本不作为互相读取的硬门槛。已知的format和实际可理解字段决定能否读取。不同或未知版本会显示兼容提示；未知SoC附加字段忽略并提示，旧IP附加配置保留但不计算。未知核心硬件字段、模板模型结构或ISA不能静默忽略；错误列出字段与来源版本。
 
@@ -16,7 +16,7 @@
 {
   "format": "silicon-professor/design",
   "version": 1,
-  "producer": {"name": "Silicon Immortal", "version": "0.1.0-alpha.3", "release_channel": "alpha", "model": "analytic-v0.6+challenges-v1"},
+  "producer": {"name": "Silicon Immortal", "version": "0.1.0-alpha.4", "release_channel": "alpha", "model": "analytic-v0.7+x86-studio-v1"},
   "created_at": "2026-11-08T00:00:00+00:00",
   "name": "isqi / 01",
   "scenario": "sandbox",

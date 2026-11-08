@@ -3,11 +3,11 @@
   "version": 1,
   "producer": {
     "name": "Silicon Immortal",
-    "version": "0.1.0-alpha.3",
+    "version": "0.1.0-alpha.4",
     "release_channel": "alpha",
-    "model": "analytic-v0.6+challenges-v1"
+    "model": "analytic-v0.7+x86-studio-v1"
   },
-  "created_at": "2026-11-08T13:11:12.156067+00:00",
+  "created_at": "2026-11-08T15:44:48.426662+00:00",
   "name": "09 · 给封装留一毫米 / 参考方案",
   "scenario": "challenge_compact",
   "design": {
@@ -256,9 +256,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "189daff496857cbd797e07d0b324dc36e20176a6facb66aa7abe09a6402249b7"
       },
@@ -316,9 +316,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "e06f990e98d540affb92e8fbdd899ab7767a52e770cfa35bad2309ecff990141"
       },
@@ -370,9 +370,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "e435160e5027add068d4014a27c427bedf13464f564aca495c7cc0ddf1da1999"
       },
@@ -394,9 +394,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "b33ec764522ddcc555edd1772bbaa8572034668cb48ff22fe87aa9f7c09000e4"
       },
@@ -423,9 +423,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "e7cf1936472e8576d020af0e83857814bc43dd246eecd63dcaf6a14b18811026"
       }
@@ -449,7 +449,7 @@
   },
   "engine": {
     "name": "Silicon Professor",
-    "model": "analytic-v0.6+challenges-v1"
+    "model": "analytic-v0.7+x86-studio-v1"
   },
   "provenance": {
     "simulation": true,

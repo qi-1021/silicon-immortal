@@ -66,5 +66,5 @@ for course in COURSES:
         lines.extend([f"- [{s['title']}]({s['url']})；{s['verification']}。\n",
             f"- 定位：{s['locator']}\n",f"- 支持：{s['supports']}\n",
             f"- 不支持：{s['does_not_support']}\n",f"- 本作使用：{s['model_use']}\n\n"])
-Path(ROOT/'docs/LAB_MANUAL.md').write_text(''.join(lines),'utf-8')
+Path(ROOT/'docs/LAB_MANUAL.md').write_text(''.join(lines).rstrip()+'\n','utf-8')
 print(f'Exported {len(COURSES)} lab lessons with explicit reference solutions and source scopes.')

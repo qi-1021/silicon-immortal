@@ -11,7 +11,7 @@ a simulate silicon designer for everyone
 [下载发行版](https://github.com/qi-1021/silicon-immortal/releases) · [玩家手册](docs/guide/README.md) · [问题反馈](https://github.com/qi-1021/silicon-immortal/issues)
 
 ![构建与测试](https://github.com/qi-1021/silicon-immortal/actions/workflows/release.yml/badge.svg)
-![Alpha](https://img.shields.io/badge/version-0.1.0--alpha.3-d8b580)
+![Alpha](https://img.shields.io/badge/version-0.1.0--alpha.4-d8b580)
 ![License](https://img.shields.io/badge/license-MIT-799683)
 
 powered by isqi
@@ -33,17 +33,16 @@ powered by isqi
 
 —— isqi
 
-## 下载与启动
+## 下载与脚本启动
 
-| 平台 | 下载附件 | 启动 |
+当前发行仅提供源码ZIP和启动脚本，不提供exe/app。先安装Python3.12，再从[Releases](https://github.com/qi-1021/silicon-immortal/releases)下载SiliconImmortal-source.zip并完整解压。
+
+| 平台 | 启动脚本 | 要求 |
 | --- | --- | --- |
-| Windows10/11 x64 | Windows-x64.zip | 完整解压，双击SiliconImmortal/SiliconImmortal.exe |
-| macOS14+ Apple Silicon | macOS-arm64.zip | 解压后打开SiliconImmortal.app |
-| macOS14+ Intel | macOS-x64.zip | 解压后打开SiliconImmortal.app |
+| Windows | 双击run.bat | Windows10/11 x64，Python3.12 |
+| Mac | 双击run.command，或终端./run.command | macOS14+，Python3.12；Intel/M系列均可 |
 
-从[Releases](https://github.com/qi-1021/silicon-immortal/releases)下载运行包，无需安装Python。包内附离线图文手册：浏览器打开docs/player-guide/index.html。系统架构、首次打开提示与源码启动见[安装指南](docs/guide/install.md)。
-
-源码用户安装Python3.12后，Windows运行run.bat，Mac运行run.command。首次启动会联网安装PySide6；之后游戏可离线运行。Code → Download ZIP是源码，不是运行包。
+首次启动在本项目创建.venv并联网安装PySide6，后续游戏可离线运行。源码Release附图文离线手册：浏览器打开docs/player-guide/index.html；直接克隆仓库也可阅读docs/guide/README.md。具体Python安装、脚本权限与排障见[安装指南](docs/guide/install.md)。
 
 ## 从核心开始
 
@@ -58,11 +57,13 @@ LAB默认是核心设计台，课程位于“实验与教学”。无需先建So
 | NPU | 阵列、INT8/16、累加器位宽、scratchpad、时钟/带宽 | GEMM、tile占用、有限整数溢出与周期 |
 | ISP | 黑电平/增益/去马赛克/gamma旁路、并行度、行缓冲、量化 | RAW/RGB测试图像、像素输出与周期 |
 
-硬件与测试台分开保存；修改测试输入不改变核心身份，硬件修改使旧验证失效。发布IP是不可变快照，不会随草稿修改偷偷改变原SoC。详见[第一颗核心](docs/guide/first-core.md)与[加速器设计](docs/guide/accelerators.md)。
+x86提供单发射顺序、双发射顺序和四发射乱序三个教学模板，架构页可载入LAB编辑完整硬件；工作站项目可直接使用。x86表示Intel/AMD广为使用的指令家族，目前执行32位IA-32整数子集，尚无x86-64、SSE/AVX或OS。
 
-## 18个项目，32节课程
+硬件与测试台分开保存；修改测试输入不改变核心身份，硬件修改使旧验证失效。性能测试提供独立吞吐、依赖链、缓存重用和乘法四类任务，逐项IPC与基线对照；短程序不敏感时不会人为改分。发布IP是不可变快照，不会随草稿修改偷偷改变原SoC。详见[第一颗核心](docs/guide/first-core.md)与[加速器设计](docs/guide/accelerators.md)。
 
-6个自由产品项目覆盖中端5G、旗舰、先进节点、轻薄本、折叠屏和研究沙盒。新增12项挑战委托，每关有明确目标、实时检查、操作提示和可运行参考方案：
+## 19个项目，32节课程
+
+7个自由产品项目覆盖中端5G、旗舰、先进节点、轻薄本、折叠屏、x86工作站和研究沙盒。新增12项挑战委托，每关有明确目标、实时检查、操作提示和可运行参考方案：
 
 | 工程挑战 | 产品挑战 | 核心挑战 |
 | --- | --- | --- |
@@ -132,11 +133,11 @@ python tools/export_examples.py
 python tools/export_challenges.py
 python tools/export_lab_manual.py
 python tools/capture_screens.py
-# 发行/手册构建需 requirements-build.txt
+# 发行/手册构建需 requirements-docs.txt
 python tools/build_manual.py
-python tools/build_release.py
+python tools/source_release.py
 ```
 
-GitHub Actions分别在Windows x64、Mac arm64和Mac x64运行全套测试、原生打包和打包GUI冒烟。当前版本与发布内容见[发行说明](docs/RELEASE_NOTES.md)。
+GitHub Actions分别在Windows x64、Mac arm64和Mac x64运行全套测试与图文手册检查，只发布源码和脚本。当前版本与发布内容见[发行说明](docs/RELEASE_NOTES.md)。
 
 本作采用MIT，第三方维持原许可。GitHub为主仓库；[code.qiisme1021.space镜像](https://code.qiisme1021.space/isqi/silicon-immortal)同步代码，问题反馈集中到GitHub。

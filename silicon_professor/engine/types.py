@@ -232,6 +232,11 @@ def empty_design(scenario_id: str = "mid2019") -> Design:
     if scenario_id in CHALLENGES:
         from .challenges import challenge_design
         return challenge_design(scenario_id)
+    if scenario_id=='x86_workstation':
+        d=empty_design('laptop2025');d.scenario_id=scenario_id
+        d.cores=[CoreGroup('x86_dual',4,1.,False,0.)]
+        d.pdn_quality=1.;d.verification_effort=.9
+        return d
     if scenario_id == "flagship2022":
         d = Design(scenario_id=scenario_id, node_id="n4p", l3_mb=8, noc="mesh",
                    dram="lpddr5", gpu_id="g715", gpu_units=11, npu_id="npu16",

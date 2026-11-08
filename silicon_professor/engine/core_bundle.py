@@ -10,7 +10,7 @@ COMMON = {'id', 'name', 'note', 'evidence', 'confidence', 'parameter_basis', 'li
 FIELDS = {
     'cpu': COMMON | {'vendor', 'arch', 'isa', 'year', 'tier', 'license', 'ref_node',
                       'ipc', 'fmax_ref', 'logic_area', 'l2_default', 'l2_max', 'power_ref',
-                      'leak_frac', 'eng_weeks', 'decode', 'rob', 'eco', 'execution_model'},
+                      'leak_frac', 'eng_weeks', 'decode', 'rob', 'eco', 'execution_model','hardware'},
     'gpu': COMMON | {'vendor', 'year', 'ref_node', 'unit_name', 'default_units',
                       'min_units', 'max_units', 'perf_per_unit', 'area_per_unit',
                       'power_per_unit', 'compat', 'cu_per_unit'},
@@ -55,7 +55,11 @@ def validate_templates(records):
         if set(model)-FIELDS[kind]: fail('本版无法解释模板字段：'+', '.join(sorted(set(model)-FIELDS[kind])))
         if model['id'] != ident or record.get('name') != model['name']: fail('名称/ID与模型不一致。')
         for field, value in model.items():
-            if field in NUMBERS:
+            if field=='hardware':
+                if kind!='cpu':fail('只有CPU教学模板支持hardware。')
+                from .core_studio import validate_hardware
+                validate_hardware('cpu',value)
+            elif field in NUMBERS:
                 if field == 'license_cost_m' and value is None: continue
                 if type(value) not in (int, float) or not math.isfinite(value) or not 0 <= value <= 1_000_000:
                     fail(f'model.{field}须为有限非负数值。')

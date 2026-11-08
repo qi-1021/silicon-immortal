@@ -84,6 +84,13 @@ def main():
         w.grab().save(str(out/'studio_cpu.png'))
         studio.verify_current();studio.publish_current();settle()
         w.grab().save(str(out/'studio_validation.png'))
+        studio.run_performance();settle();w.grab().save(str(out/'studio_performance.png'))
+        w.start_scenario('x86_workstation');w.go('architecture');settle();w.grab().save(str(out/'x86_workstation.png'))
+        architecture=w.screens['architecture'];menu=architecture._make_add_menu('x86')
+        menu.show();settle();menu.grab().save(str(out/'core_menu.png'));menu.close()
+        architecture._show_core_info(0);architecture._edit_template();settle()
+        w.grab().save(str(out/'studio_x86.png'));studio.run_performance();settle()
+        w.grab().save(str(out/'studio_x86_performance.png'))
         for kind in ('gpu','npu','isp'):
             studio.new_design(kind);studio.name_edit.setText('isqi / '+kind.upper()+' 01');settle()
             w.grab().save(str(out/f'studio_{kind}.png'))

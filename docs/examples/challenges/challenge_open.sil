@@ -3,11 +3,11 @@
   "version": 1,
   "producer": {
     "name": "Silicon Immortal",
-    "version": "0.1.0-alpha.3",
+    "version": "0.1.0-alpha.4",
     "release_channel": "alpha",
-    "model": "analytic-v0.6+challenges-v1"
+    "model": "analytic-v0.7+x86-studio-v1"
   },
-  "created_at": "2026-11-08T13:11:12.136797+00:00",
+  "created_at": "2026-11-08T15:44:48.385996+00:00",
   "name": "05 · 开放指令集的迁移账单 / 参考方案",
   "scenario": "challenge_open",
   "design": {
@@ -229,9 +229,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "d34c1a3b21f680dcbb9dce98e548d0d9b1a6a374bf6afdb4384c3ba08c0eff2a"
       },
@@ -283,9 +283,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "e435160e5027add068d4014a27c427bedf13464f564aca495c7cc0ddf1da1999"
       },
@@ -307,9 +307,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "b33ec764522ddcc555edd1772bbaa8572034668cb48ff22fe87aa9f7c09000e4"
       },
@@ -336,9 +336,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "b9f99af36988a74d2803bc7ba0e716692bc974a14d4aeff261fc2315b4ab28d5"
       }
@@ -362,7 +362,7 @@
   },
   "engine": {
     "name": "Silicon Professor",
-    "model": "analytic-v0.6+challenges-v1"
+    "model": "analytic-v0.7+x86-studio-v1"
   },
   "provenance": {
     "simulation": true,

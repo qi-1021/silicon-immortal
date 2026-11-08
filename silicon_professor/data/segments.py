@@ -104,6 +104,14 @@ SEGMENTS["fold2026"] = dict(
 
 from .challenges import challenge_segments
 SEGMENTS.update(challenge_segments(SEGMENTS))
+from copy import deepcopy
+SEGMENTS['x86_workstation']=deepcopy(SEGMENTS['laptop2025'])
+SEGMENTS['x86_workstation'].update(id='x86_workstation',name='x86 工作站 · 32位核心设计',year=2026,budget_m=300,
+    tagline='从Intel/AMD熟悉的指令家族开始，设计自己的32位x86核心。',
+    brief='选择顺序或乱序x86教学核，检查程序依赖、缓存与吞吐，再用于工作站SoC。三种模板都含可执行硬件定义，可载入LAB编辑；不冒称Intel/AMD厂商产品，尚无x86-64长模式、SSE/AVX或OS。',
+    allowed_licenses=['arm','riscv','research','custom'],
+    tutorial='先用x86双发射顺序核；架构页“在LAB编辑教学核心”打开硬件，比较独立运算、依赖链和缓存任务。发布后替换同ISA集群。',
+    evidence=['intel_ia32'],confidence='game_assumption')
 SEGMENT_LIST = list(SEGMENTS.values())
 
 for _item in SEGMENTS.values():

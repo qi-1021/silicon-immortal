@@ -131,6 +131,11 @@ QComboBox QAbstractItemView {{
     background: {PANEL2}; border: 1px solid {BORDER_HI};
     selection-background-color: {PANEL3}; color: {TEXT};
 }}
+QMenu {{ background-color:{PANEL}; color:{TEXT}; border:1px solid {BORDER_HI}; padding:6px; }}
+QMenu::item {{ background-color:{PANEL}; padding:8px 16px; border-radius:4px; }}
+QMenu::item:selected {{ background-color:{PANEL3}; color:{CYAN}; }}
+QMenu::item:disabled {{ color:{DIM}; }}
+QMenu::separator {{ height:1px; background-color:{BORDER}; margin:5px 8px; }}
 QPlainTextEdit, QTextEdit {{ background:{BG2}; color:{TEXT}; border:1px solid {BORDER}; border-radius:6px; padding:8px; }}
 QPlainTextEdit:focus {{ border-color:{CYAN_DIM}; }}
 QTabWidget::pane {{ border:1px solid {BORDER}; background:{BG}; }}

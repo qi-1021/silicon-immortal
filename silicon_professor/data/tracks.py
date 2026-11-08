@@ -1,4 +1,4 @@
-"""CPU 指令集赛道：ARM / RISC-V 独立成段，x86 以桩位预留。
+"""CPU 指令集赛道：Arm / RISC-V / x86 独立成段。
 
 赛道是一等公民：核心目录、生态模型、校验文案都按赛道组织。
 新增赛道只需要在 TRACKS 里加一条，再配上对应 isa 的核心数据，
@@ -28,11 +28,11 @@ TRACKS = {
         evidence=[], confidence="medium",
     ),
     "x86": dict(
-        id="x86", name="x86 实验架构", short="x86", available=True,
+        id="x86", name="x86 · Intel / AMD 指令家族", short="x86", available=True,
         match=("x86_64","x86_32"),
         eco_base=0.60, eco_gain=0.20,
-        tagline="IA-32整数lab与定制IP；不代表可采购的Intel/AMD核",
-        note="x86在研究沙盒可执行整数子集与IP复用。软件生态/授权/工艺并不由ISA名字保证。",
+        tagline="32位整数核心设计与SoC复用 · IA-32 · 尚无x86-64",
+        note="x86提供参数化教学核心、硬件设计与工作站项目。ISA属于Intel/AMD广为使用的家族，模板不是其商业CPU复刻或授权IP。",
         evidence=[], confidence="low",
     ),
 }

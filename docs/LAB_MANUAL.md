@@ -1,6 +1,6 @@
 # 实验室手册
 
-当前游戏版本 `0.1.0-alpha.3`，模型 `analytic-v0.6+challenges-v1`。九个可运行工作台：核心与指令、GPU、NPU、ISP、缓存、互连、时序、功耗/热和数字逻辑。18节进阶实验课与14节产品设计课程互补。下面给出输入、观察目标、参考解、原文定位和实现边界。
+当前游戏版本 `0.1.0-alpha.4`，模型 `analytic-v0.7+x86-studio-v1`。九个可运行工作台：核心与指令、GPU、NPU、ISP、缓存、互连、时序、功耗/热和数字逻辑。18节进阶实验课与14节产品设计课程互补。下面给出输入、观察目标、参考解、原文定位和实现边界。
 
 ## 先设计核心，再用实验验证
 
@@ -40,7 +40,7 @@ LAB默认打开核心设计台，可独立新建、命名、复制CPU/GPU/NPU/IS
 
 ## 可运行架构与原文
 
-### RISC-V RV32
+### RISC-V · 32位（RV32）
 
 RV32I整数/编码、M、18条RV32 Zbb；无特权/OS/二进制取指/浮点/向量。
 
@@ -48,13 +48,13 @@ RV32I整数/编码、M、18条RV32 Zbb；无特权/OS/二进制取指/浮点/向
 - [RISC-V Unprivileged ISA — M Extension for Integer Multiplication and Division](https://docs.riscv.org/reference/isa/v20260120/unpriv/m-st-ext.html)；fulltext_checked。定位：Multiplication；Division；Table 1: Semantics for division by zero and division overflow。
 - [RISC-V Unprivileged ISA — RV32 Zbb Basic Bit-manipulation](https://docs.riscv.org/reference/isa/v20260120/unpriv/b-st-ext.html)；fulltext_checked。定位：Zbb: Extension for Basic bit-manipulation；18条RV32指令的各自 Description/Operation；riscv-opcodes rv_zbb/rv32_zbb 的固定位编码。
 
-### x86 IA-32
+### x86 · Intel/AMD 指令家族 · 32位（IA-32）
 
 8个E寄存器，MOV、ADD/SUB/CMP、布尔、双操作数IMUL、Jcc/JMP与32位MOV访存。无x87/SSE/AVX、段/页表、长模式或异常。
 
 - [Intel 64 and IA-32 Architectures Software Developer’s Manual, Volumes 2A/2B](https://cdrdv2.intel.com/v1/dl/getContent/671199)；fulltext_checked。定位：Vol.2A ADD pp.3-14–3-15; CMP、IMUL pp.3-451–3-454; Jcc pp.3-499–3-503. Vol.2B MOV pp.4-27–4-31, Flags Affected: None.
 
-### Arm AArch64
+### Arm · 64位（AArch64）
 
 W/X整数、零寄存器/NZCV、MOV/ADD/SUB/布尔/MUL、B/BL/RET、LDR/STR子集；无SIMD/SVE/SME/EL/系统寄存器。
 

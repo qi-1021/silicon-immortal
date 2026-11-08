@@ -8,6 +8,7 @@ from .labs import run_experiment
 from .lab_accelerators import npu_lab, isp_lab, fp32
 
 SCHEMA='parameterized-core-v1'
+from .core_performance import cpu_performance_report
 
 
 def validate_hardware(kind,hardware):
@@ -146,7 +147,8 @@ def structure(kind,hardware):
     def node(key,title,detail,group=None):nodes.append(dict(id=key,title=title,detail=detail,group=group or key))
     def edge(a,b,label='data'):edges.append(dict(source=a,target=b,label=label))
     if kind=='cpu':
-        node('contract',h['architecture'],'整数指令子集；单上下文')
+        from ..data.architectures import isa_name
+        node('contract',isa_name(h['architecture']),'整数指令子集；单上下文')
         node('frontend','取指 / 分派',f"{h['width']}宽 · 填充{h['pipeline']}cycle")
         node('scheduler','ROB / 发射' if h['issue_order']=='out_of_order' else '顺序发射队列',f"{h['rob_size']}在途 · 总发射{h['execution_ports']}宽")
         node('alu','整数 ALU',f"{h['alu_ports']}个 · 1cycle")
@@ -234,3 +236,10 @@ def hardware_from_legacy(kind,config):
     if kind=='isp' and 'stages' in config:
         for key in ('black_level','gain','demosaic','gamma'):h[key+'_enabled']=key in config['stages']
     return validate_hardware(kind,h)
+
+
+def hardware_from_template(model):
+    """仅转换带明确硬件定义的教学模板；不猜测商业CPU的RTL。"""
+    if not isinstance(model,dict) or not isinstance(model.get('hardware'),dict):
+        raise ValueError('该模板只有SoC参数，未提供可执行硬件定义；可在LAB新建自己的核心。')
+    return validate_hardware('cpu',model['hardware'])

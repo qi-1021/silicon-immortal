@@ -3,11 +3,11 @@
   "version": 1,
   "producer": {
     "name": "Silicon Immortal",
-    "version": "0.1.0-alpha.3",
+    "version": "0.1.0-alpha.4",
     "release_channel": "alpha",
-    "model": "analytic-v0.6+challenges-v1"
+    "model": "analytic-v0.7+x86-studio-v1"
   },
-  "created_at": "2026-11-08T13:11:12.118368+00:00",
+  "created_at": "2026-11-08T15:44:48.345333+00:00",
   "name": "02 · 把热预算还给机身 / 参考方案",
   "scenario": "challenge_thermal",
   "design": {
@@ -256,9 +256,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "0c6f73231240074a12bb46bd79dfdd912464d27cb196b458d825b5052ba3dc3a"
       },
@@ -316,9 +316,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "8edadee5b9c24af82acd0d68c2d5e0aaecd46336dd1d54a8d36d9d9740cd78ff"
       },
@@ -370,9 +370,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "5e5183cf9cf49f076386c06b9f8c37f7c459a976f996f11e009c14f23b9b69c2"
       },
@@ -394,9 +394,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "b33ec764522ddcc555edd1772bbaa8572034668cb48ff22fe87aa9f7c09000e4"
       },
@@ -423,9 +423,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.3",
+          "version": "0.1.0-alpha.4",
           "release_channel": "alpha",
-          "model": "analytic-v0.6+challenges-v1"
+          "model": "analytic-v0.7+x86-studio-v1"
         },
         "digest": "50d4383cbc3d8e7ff6ca81812d3a76029df2100e5377b7aa2ba919ba88de6aa5"
       }
@@ -449,7 +449,7 @@
   },
   "engine": {
     "name": "Silicon Professor",
-    "model": "analytic-v0.6+challenges-v1"
+    "model": "analytic-v0.7+x86-studio-v1"
   },
   "provenance": {
     "simulation": true,

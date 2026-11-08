@@ -53,8 +53,8 @@ def main():
     if (restored.to_dict() != materialize(design) or not replay['valid']
             or replay['die_area'] != result['die_area']):
         raise RuntimeError('SoC导入后定义或面积发生变化。')
-    for label in ('studio-compute', 'template-soc'):
-        design=empty_design('sandbox');design.name='isqi / '+label
+    for label in ('studio-compute', 'template-soc','x86-workstation'):
+        design=empty_design('x86_workstation' if label=='x86-workstation' else 'sandbox');design.name='isqi / '+label
         if label=='studio-compute':
             design.cores=[]
             for kind in ('cpu','cpu','gpu','npu','isp'):attach_asset(design,assets['studio-'+kind])
@@ -64,7 +64,7 @@ def main():
         loaded,_=read_design(path);replayed=simulate(loaded)
         if loaded.to_dict()!=materialize(design) or replayed['die_area']!=result['die_area']:
             raise RuntimeError(label+'定义或面积重放不一致。')
-    print(f'重放通过：{len(assets)}个.cor和3个.sil；旧资产、新硬件设计与完整模板包。')
+    print(f'重放通过：{len(assets)}个.cor和4个.sil；旧资产、新硬件设计、x86工作站与完整模板包。')
     print(f'教学签核：{replay["signoff"]["ready"]}；不代表真实EDA签核。')
     for note in notes:
         print(note)

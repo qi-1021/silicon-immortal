@@ -35,7 +35,7 @@ def main():
         for other,_ in PAGES:text=text.replace(']('+other+'.md)','](#'+other+')')
         rendered=markdown.markdown(text,extensions=['tables','fenced_code','sane_lists'])
         articles.append(f'<article id="{slug}">{rendered}</article>')
-    css=(ROOT/'docs/guide/manual.css').read_text()
+    css=(ROOT/'docs/guide/manual.css').read_text(encoding="utf-8")
     page='''<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>硅仙人 · 玩家手册</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23191f21'/%3E%3Cpath d='M46 18H18v14h28v14H18' fill='none' stroke='%23ddb887' stroke-width='5'/%3E%3C/svg%3E">

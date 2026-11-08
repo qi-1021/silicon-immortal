@@ -1,6 +1,8 @@
 # 硅仙人 · 玩家手册
 
-**从第一颗核心到一份可以分享的芯片设计。** 当前发行：`0.1.0-alpha.3`。
+源码发行：Windows用run.bat，Mac用run.command；需Python3.12，首次自动安装依赖。
+
+**从第一颗核心到一份可以分享的芯片设计。** 当前发行：`0.1.0-alpha.4`。
 
 ![硅仙人项目首页](../screens/start.png)
 
@@ -20,7 +22,7 @@
 
 | 你想做什么 | 阅读位置 |
 | --- | --- |
-| 下载、启动Windows或Mac版本 | [安装与启动](install.md) |
+| 安装Python、用Windows或Mac脚本启动 | [安装与启动](install.md) |
 | 从零设计一个自己的CPU | [第一颗核心](first-core.md) |
 | 完成架构、布局、封装与流片 | [第一颗SoC](soc.md) |
 | 挑战带宽、热、成本与核心设计 | [12项设计委托](challenges.md) |

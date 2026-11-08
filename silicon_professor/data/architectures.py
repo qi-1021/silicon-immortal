@@ -1,10 +1,16 @@
 """历史 ISA 家族注册表。列举不等于全集，未实现的执行器必须明确标注。"""
+ISA_OPTIONS=[('riscv32','RISC-V · 32位（RV32）'),('x86_32','x86 · Intel/AMD 指令家族 · 32位（IA-32）'),('aarch64','Arm · 64位（AArch64）')]
+
+def isa_name(isa):
+    names=dict(ISA_OPTIONS)
+    return names.get(isa,{'riscv':'RISC-V','armv8':'Arm · ARMv8','armv9':'Arm · ARMv9','x86_64':'x86 · 64位（AMD64 / Intel 64）'}.get(isa,isa))
+
 ARCHITECTURES = {
-    'riscv32':dict(name='RISC-V RV32',width='32',execution='implemented_subset',sources=['riscv_isa','riscv_m','riscv_zbb'],
+    'riscv32':dict(name=isa_name('riscv32'),width='32',execution='implemented_subset',sources=['riscv_isa','riscv_m','riscv_zbb'],
         scope='RV32I整数/编码、M、18条RV32 Zbb；无特权/OS/二进制取指/浮点/向量。'),
-    'x86_32':dict(name='x86 IA-32',width='32',execution='implemented_subset',sources=['intel_ia32'],
+    'x86_32':dict(name=isa_name('x86_32'),width='32',execution='implemented_subset',sources=['intel_ia32'],
         scope='8个E寄存器，MOV、ADD/SUB/CMP、布尔、双操作数IMUL、Jcc/JMP与32位MOV访存。无x87/SSE/AVX、段/页表、长模式或异常。'),
-    'aarch64':dict(name='Arm AArch64',width='32/64',execution='implemented_subset',sources=['arm_a64_isa'],
+    'aarch64':dict(name=isa_name('aarch64'),width='32/64',execution='implemented_subset',sources=['arm_a64_isa'],
         scope='W/X整数、零寄存器/NZCV、MOV/ADD/SUB/布尔/MUL、B/BL/RET、LDR/STR子集；无SIMD/SVE/SME/EL/系统寄存器。'),
 }
 HISTORICAL = [

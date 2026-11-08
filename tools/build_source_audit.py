@@ -15,7 +15,7 @@ def main():
     raw = directory / "raw"
     if not raw.exists(): raw = ROOT / ".research-cache/raw"
     evidence_path = ROOT / "silicon_professor/data/evidence.json"
-    sources = json.loads(evidence_path.read_text())
+    sources = json.loads(evidence_path.read_text(encoding="utf-8"))
     for source in sources.values():
         documents = []
         for filename in source.pop("files", []):
@@ -24,7 +24,7 @@ def main():
         if documents:
             source["audit"]["documents"] = documents
     evidence_path.write_text(json.dumps(sources, ensure_ascii=False, indent=2) + "\n")
-    legacy = json.loads((directory / "legacy_sources.json").read_text())
+    legacy = json.loads((directory / "legacy_sources.json").read_text(encoding="utf-8"))
     entries = {}
     replacements = {"apple_m4_news": "apple_m4", "apple_m4": "apple_m4", "sifive_p670": "sifive_p670"}
     for sid, old in legacy.items():
@@ -41,7 +41,7 @@ def main():
         elif "bilibili.com/video/" in url:
             file = raw / f"legacy_{sid}.raw"
             if file.exists():
-                info = json.loads(file.read_text())
+                info = json.loads(file.read_text(encoding="utf-8"))
                 data = info.get("data") or {}
                 entry["retrieval"] = dict(api_code=info.get("code"), sha256=hashlib.sha256(file.read_bytes()).hexdigest())
                 if info.get("code") == 0:

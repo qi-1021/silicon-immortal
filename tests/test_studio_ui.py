@@ -133,5 +133,26 @@ class TestStudioUI(unittest.TestCase):
             self.assertEqual(s._current_asset()['id'],asset['id'])
             self.assertTrue(s.export_btn.isEnabled())
 
+    def test_cpu_performance_updates_from_hardware_and_can_compare_baseline(self):
+        s=self.window.screens['studio']
+        s.controls['width'].setValue(1);s.controls['execution_ports'].setValue(1);s.controls['alu_ports'].setValue(1)
+        s.run_performance();first=s.last_performance['ipc'];s._pin_performance()
+        s.controls['width'].setValue(4);s.controls['execution_ports'].setValue(4);s.controls['alu_ports'].setValue(4)
+        s.run_performance();self.assertGreater(s.last_performance['ipc'],first)
+        self.assertEqual(s.last_performance['hardware']['alu_ports'],4)
+        self.assertIn('IPC对照变化',[s.output_tabs.widget(0).horizontalHeaderItem(i).text() for i in range(s.output_tabs.widget(0).columnCount())])
+
+    def test_x86_template_can_be_added_and_opened_in_lab_with_opaque_menu(self):
+        w=self.window;w.start_scenario('x86_workstation');screen=w.screens['architecture'];screen.refresh()
+        menu=screen._make_add_menu('x86');self.addCleanup(menu.close)
+        self.assertTrue(any('双发射' in a.text() for a in menu.actions()))
+        menu.resize(menu.sizeHint());menu.show();self.app.processEvents()
+        pixel=menu.grab().toImage().pixelColor(3,3)
+        self.assertEqual(pixel.alpha(),255)
+        self.assertLess(pixel.red(),90)
+        screen._show_core_info(0);screen._edit_template()
+        self.assertEqual(w.screens['studio'].current['hardware']['architecture'],'x86_32')
+        self.assertEqual(w.screens['studio'].current['hardware']['width'],2)
+
 
 if __name__=='__main__':unittest.main()

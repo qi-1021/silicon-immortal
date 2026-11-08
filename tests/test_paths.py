@@ -18,3 +18,7 @@ class TestPaths(unittest.TestCase):
     def test_explicit_save_directory_and_source_legacy_saves(self):
         with tempfile.TemporaryDirectory() as td,patch.dict('os.environ',{'SILICON_PROFESSOR_SAVE_DIR':td}):
             self.assertEqual(player_data_dir(),Path(td))
+
+    def test_existing_localappdata_does_not_need_home_lookup(self):
+        with patch.dict('os.environ',{'LOCALAPPDATA':'C:/Local'},clear=True),patch('sys.frozen',True,create=True),patch('sys.platform','win32'),patch('pathlib.Path.home',side_effect=RuntimeError('no home')):
+            self.assertEqual(player_data_dir(),Path('C:/Local/SiliconImmortal'))

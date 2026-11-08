@@ -17,7 +17,7 @@ from ...engine.labs import DEFAULTS, KINDS, json_result, run_experiment
 from ...engine.types import CoreGroup
 from ...engine.lab_cpu import architectural_state_at
 from ...engine.isa import instruction_catalog
-from ...data.architectures import ARCHITECTURES,MODES
+from ...data.architectures import ARCHITECTURES,MODES,ISA_OPTIONS
 from ...engine.ip_library import make_asset,attach_asset,read_asset,write_asset
 from ...version import producer
 from .. import theme as T
@@ -44,7 +44,7 @@ NUMBERS = {
     'isp':[('width','图像宽',4,64),('height','图像高',4,64),('black_level','12bit黑电平',0,4095),('gain','增益',.1,8.0),('gamma','Gamma',.1,4.0),('output_bits','输出位宽',8,10),('pixels_per_cycle','像素 / 周期',1,16),('bandwidth_gbs','带宽 / GB/s',.1,128.0),('frequency_ghz','时钟 / GHz',.1,4.0)],
 }
 CHOICES = {"cache": ("policy", [("lru","LRU"),("fifo","FIFO")]),
-           'cpu':('architecture',[('riscv32','RISC-V RV32'),('x86_32','x86 IA-32'),('aarch64','Arm AArch64')]),
+           'cpu':('architecture',ISA_OPTIONS),
            'gpu':('task',[('axpy','AXPY / FP32'),('branch','分歧分支 / FP32')]),
            "network": ("topology",[("mesh","Mesh / XY"),("ring","双向 Ring")]),
            "logic": ("op",[("add","加法"),("and","AND"),("xor","XOR"),("or","OR")])}

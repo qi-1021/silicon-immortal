@@ -10,6 +10,7 @@ from ...data.blocks import DRAMS, GPUS, NPUS, STORAGE, get_gpu, get_npu, get_isp
 from ...data.cores import CORES, get_ip
 from ...engine.core_bundle import template_catalog
 from ...data.tracks import TRACKS, track_of_isa
+from ...data.architectures import isa_name
 from ...data.nodes import NODES
 from ...data.segments import SEGMENTS
 from ...engine.types import CoreGroup, Impl
@@ -147,7 +148,7 @@ class ArchitectureScreen(QWidget):
 
     def _build_cpu_card(self):
         self.cpu_card = Card("CPU 核心组 · 按指令集赛道独立设计",
-                             "ARM 与 RISC-V 各自成段；x86 在路线图上")
+                             "Arm / RISC-V / x86 · 模板核心与自己的核心都可组成SoC")
         self.left.addWidget(self.cpu_card)
         self.arm_card = Card("ARM 阵营", TRACKS["arm"]["tagline"])
         self.arm_card.add_layout(self._cpu_head())
@@ -171,7 +172,7 @@ class ArchitectureScreen(QWidget):
         self.rv_eco.setStyleSheet(f"color:{T.DIM}; font-size:10px; line-height:1.6;")
         self.rv_card.add(self.rv_eco)
         self.left.addWidget(self.rv_card)
-        self.x86_card=Card('x86 实验架构',TRACKS['x86']['tagline'])
+        self.x86_card=Card(TRACKS['x86']['name'],TRACKS['x86']['tagline'])
         self.x86_box=QVBoxLayout()
         self.x86_card.add_layout(self.x86_box)
         x86=QPushButton('+ 添加 x86 核心组')
@@ -186,6 +187,8 @@ class ArchitectureScreen(QWidget):
         self.core_info.setWordWrap(True)
         self.core_info.setStyleSheet(f"color:{T.DIM}; font-size:10px; line-height:1.6;")
         info_card.add(self.core_info)
+        self.edit_template=QPushButton('在LAB编辑教学核心')
+        self.edit_template.clicked.connect(self._edit_template);info_card.add(self.edit_template)
         self.left.addWidget(info_card)
 
     def _build_cache_card(self):
@@ -352,10 +355,12 @@ class ArchitectureScreen(QWidget):
         ip = get_ip(self.win.design, self.win.design.cores[idx].core_id)
         if not ip:
             return
+        self.selected_core_index=idx
+        self.edit_template.setEnabled('hardware' in ip)
         lic = {"arm": "Arm 授权", "riscv": "RISC-V 授权", "research": "研究档案（不可授权）",
                "custom": "自研"}.get(ip["license"], ip["license"])
         self.core_info.setText(
-            f"{ip['name']} · {ip['year']} 年 · {ip['arch']} / {ip['isa']} · "
+            f"{ip['name']} · {ip['year']} 年 · {ip['arch']} / {isa_name(ip['isa'])} · "
             f"{ip['decode']} 宽解码 / ROB {ip['rob']} · IPC 指数 {ip['ipc']:.2f}\n"
             f"参考 {ip['ref_node'].upper()}：{ip['fmax_ref']:.2f}GHz · 逻辑面积 {ip['logic_area']:.1f}mm² · "
             f"L2 {ip['l2_default']:g}MB · {lic}\n{ip['note']}")
@@ -371,7 +376,7 @@ class ArchitectureScreen(QWidget):
         self.gpu.blockSignals(True)
         self.gpu.clear()
         d = self.win.design
-        sandbox = d and d.scenario_id == "sandbox"
+        sandbox = d and 'research' in self.win.scenario['allowed_licenses']
         year = self.win.scenario["year"]
         for g in template_catalog(d,'gpu',GPUS).values():
             if g["license_cost_m"] is None and not sandbox:
@@ -404,7 +409,7 @@ class ArchitectureScreen(QWidget):
 
             combo = QComboBox()
             combo.setMinimumWidth(236)
-            sandbox = d.scenario_id == "sandbox"
+            sandbox = 'research' in self.win.scenario['allowed_licenses']
             year = self.win.scenario["year"]
             for c in template_catalog(d,'cpu',CORES).values():
                 if track_of_isa(c["isa"]) != track:
@@ -413,7 +418,7 @@ class ArchitectureScreen(QWidget):
                     continue
                 if not sandbox and c["year"] > year:
                     continue
-                combo.addItem(f"{c['name']} · {c['year']} · {c['isa'].upper()}  [{c['tier']}]", c["id"])
+                combo.addItem(f"{c['name']} · {c['year']} · {isa_name(c['isa'])}  [{c['tier']}]", c["id"])
             for asset_id,record in d.embedded_ips.items():
                 if record['kind']!='cpu':continue
                 model=get_ip(d,'ip:'+asset_id)
@@ -473,8 +478,15 @@ class ArchitectureScreen(QWidget):
             self.rows.append(dict(combo=combo, count=count, l2=l2, shared=shared, clock=clk))
 
     def _add_menu(self, track: str):
+        menu=self._make_add_menu(track)
+        anchor = {'arm':self.arm_add,'riscv':self.rv_add,'x86':self.x86_add}[track]
+        menu.exec(anchor.mapToGlobal(anchor.rect().bottomLeft()))
+        menu.deleteLater()
+
+    def _make_add_menu(self,track):
         menu = QMenu(self)
-        sandbox = self.win.design.scenario_id == "sandbox"
+        menu.setAttribute(Qt.WidgetAttribute.WA_TranslucentBackground,False)
+        sandbox = 'research' in self.win.scenario['allowed_licenses']
         year = self.win.scenario["year"]
         for c in template_catalog(self.win.design,'cpu',CORES).values():
             if track_of_isa(c["isa"]) != track:
@@ -483,18 +495,24 @@ class ArchitectureScreen(QWidget):
                 continue
             if not sandbox and c["year"] > year:
                 continue
-            act = menu.addAction(f"{c['name']}  ·  {c['year']}  ·  {c['isa'].upper()}")
+            act = menu.addAction(f"{c['name']}  ·  {c['year']}  ·  {isa_name(c['isa'])}")
             act.triggered.connect(lambda _, cid=c["id"]: self._add(cid))
         from ...engine.ip_library import asset_model
         for record in self.win.ip_library.values():
             if record['kind']!='cpu' or track_of_isa(asset_model(record)['isa'])!=track:continue
             act=menu.addAction(record['name']+' · LAB IP')
             act.triggered.connect(lambda _,r=record:self._attach(r))
-        if sandbox and not any(g.core_id == "custom" for g in self.win.design.cores):
+        if sandbox and track_of_isa(get_ip(self.win.design,'custom')['isa'])==track and not any(g.core_id == "custom" for g in self.win.design.cores):
             act = menu.addAction("自研核（实验室）  ·  custom")
             act.triggered.connect(lambda: self._add("custom"))
-        anchor = {'arm':self.arm_add,'riscv':self.rv_add,'x86':self.x86_add}[track]
-        menu.exec(anchor.mapToGlobal(anchor.rect().bottomLeft()))
+        return menu
+
+    def _edit_template(self):
+        d=self.win.design;index=getattr(self,'selected_core_index',0)
+        if not d or index>=len(d.cores):return
+        model=get_ip(d,d.cores[index].core_id)
+        if not model or 'hardware' not in model:return
+        studio=self.win.screens['studio'];studio.load_template(model);self.win.go('studio')
 
     # ---------- mutations ----------
     def _attach(self,record):
