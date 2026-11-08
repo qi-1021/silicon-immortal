@@ -1,0 +1,41 @@
+{
+  "format": "silicon-professor/ip",
+  "version": 1,
+  "id": "08babdccd15ab313b918a17d6a382e29",
+  "digest": "08babdccd15ab313b918a17d6a382e2997ac461568f7c246511e9cb37680dba0",
+  "name": "isqi / ia32",
+  "kind": "cpu",
+  "producer": {
+    "name": "Silicon Immortal",
+    "version": "0.1.0-alpha.3",
+    "release_channel": "alpha",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "config": {
+    "source": "MOV EAX,6\nMOV EBX,7\nIMUL EAX,EBX\nMOV [0],EAX\nMOV ECX,[0]\nCMP ECX,42\nHALT",
+    "memory": "",
+    "architecture": "x86_32",
+    "width": 2,
+    "rob_size": 32,
+    "execution_ports": 2,
+    "pipeline": 8,
+    "cache_kb": 16,
+    "hit_latency": 2,
+    "miss_latency": 40,
+    "multiply_latency": 3,
+    "extensions": []
+  },
+  "verification": {
+    "passed": true,
+    "checks": [
+      "user-input-model-completed",
+      "fixed-add-store-load-vector"
+    ],
+    "model": "lab-ip-v1",
+    "scope": "functional-model-self-tests; not RTL/ISA compliance",
+    "cycles": 56,
+    "observed_ipc": 0.10714285714285714
+  },
+  "parameter_basis": "game_assumption",
+  "compatibility_notes": []
+}

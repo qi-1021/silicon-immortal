@@ -1,0 +1,92 @@
+{
+  "format": "silicon-professor/ip",
+  "version": 1,
+  "id": "8c3402766b5fff7cc535b48101bfd470",
+  "digest": "8c3402766b5fff7cc535b48101bfd470918e2f245dfe87b3ec5722d8d0018c65",
+  "name": "isqi / Studio ISP",
+  "kind": "isp",
+  "identity_basis": "kind/name/design",
+  "design": {
+    "schema": "parameterized-core-v1",
+    "hardware": {
+      "black_level_enabled": true,
+      "gain_enabled": true,
+      "demosaic_enabled": true,
+      "gamma_enabled": true,
+      "output_bits": 8,
+      "pixels_per_cycle": 1,
+      "max_width": 64,
+      "frequency_ghz": 0.5,
+      "bandwidth_gbs": 4.0
+    }
+  },
+  "producer": {
+    "name": "Silicon Immortal",
+    "version": "0.1.0-alpha.3",
+    "release_channel": "alpha",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "config": {
+    "output_bits": 8,
+    "pixels_per_cycle": 1,
+    "frequency_ghz": 0.5,
+    "bandwidth_gbs": 4.0,
+    "stages": [
+      "black_level",
+      "gain",
+      "demosaic",
+      "gamma"
+    ],
+    "width": 8,
+    "height": 8,
+    "black_level": 64,
+    "gain": 1.0,
+    "gamma": 2.2
+  },
+  "verification": {
+    "passed": true,
+    "cases": [
+      {
+        "name": "黑电平常量帧",
+        "passed": true,
+        "cycles": 85,
+        "instructions": null,
+        "ipc": null,
+        "compute_cycles": 53,
+        "transfer_cycles": 32,
+        "observation": "预期每通道0；rgb；常量帧不证明画质"
+      },
+      {
+        "name": "非零常量帧",
+        "passed": true,
+        "cycles": 85,
+        "instructions": null,
+        "ipc": null,
+        "compute_cycles": 53,
+        "transfer_cycles": 32,
+        "observation": "预期每通道64；rgb；常量帧不证明画质"
+      },
+      {
+        "name": "RGGB 渐变与范围",
+        "passed": true,
+        "cycles": 85,
+        "instructions": null,
+        "ipc": null,
+        "compute_cycles": 53,
+        "transfer_cycles": 32,
+        "observation": "32 pixels；范围/形状检查"
+      }
+    ],
+    "checks": [
+      "黑电平常量帧",
+      "非零常量帧",
+      "RGGB 渐变与范围"
+    ],
+    "scope": "fixed functional vectors and resource scheduling; not full ISA/RTL/PDK certification",
+    "model": "parameterized-core-v1",
+    "cycles": 255,
+    "observed_ipc": null
+  },
+  "parameter_basis": "game_assumption",
+  "compatibility_notes": []
+}

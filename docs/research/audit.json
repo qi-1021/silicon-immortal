@@ -1,0 +1,879 @@
+{
+  "checked_on": "2026-11-08",
+  "policy": "正式来源只保留明确身份和范围；书目核验不等于正文核验，参数估算无来源背书。",
+  "legacy": {
+    "murphy1964": {
+      "original_title": "Cost-size optima of monolithic integrated circuits",
+      "original_url": "https://doi.org/10.1109/PROC.1964.2992",
+      "original_year": 1964,
+      "disposition": "corrected",
+      "replacement": "murphy1964",
+      "reason": "旧 DOI 2992 实际为 Shapiro、Jones、Perkins 的 Orbital properties of the West Ford dipole belt；已纠正。"
+    },
+    "cacti7": {
+      "original_title": "CACTI 7: New tools for interconnect exploration in innovative off-chip memories",
+      "original_url": "https://github.com/HewlettPackard/cacti",
+      "original_year": 2017,
+      "disposition": "corrected",
+      "replacement": "cacti7",
+      "reason": "改为明确书目、版本、正文定位和支持范围。状态为 fulltext_checked；旧数值校准说法撤回。"
+    },
+    "gem5": {
+      "original_title": "The gem5 simulator",
+      "original_url": "https://www.gem5.org/",
+      "original_year": 2011,
+      "disposition": "corrected",
+      "replacement": "gem5",
+      "reason": "改为明确书目、版本、正文定位和支持范围。状态为 fulltext_checked；旧数值校准说法撤回。"
+    },
+    "dally_towles": {
+      "original_title": "Principles and Practices of Interconnection Networks",
+      "original_url": "",
+      "original_year": 2004,
+      "disposition": "withdrawn",
+      "reason": "遗留书目没有页码或具体章节；出版社页访问受限，未取得可核验正文。互连 lab 改为公开算法规则，不引用本书证明数值。"
+    },
+    "sankaranarayanan2005": {
+      "original_title": "A case for thermal-aware floorplanning at the microarchitectural level",
+      "original_url": "",
+      "original_year": 2005,
+      "disposition": "corrected",
+      "replacement": "sankaranarayanan2005",
+      "reason": "定位为 v7paper15.pdf；试探的 v7paper5.pdf 为分支预测竞赛介绍，已排除。"
+    },
+    "esmaeilzadeh2011": {
+      "original_title": "Dark silicon and the end of multicore scaling",
+      "original_url": "",
+      "original_year": 2011,
+      "disposition": "corrected",
+      "replacement": "esmaeilzadeh2011",
+      "reason": "改为明确书目、版本、正文定位和支持范围。状态为 bibliography_checked；旧数值校准说法撤回。"
+    },
+    "borkar2011": {
+      "original_title": "The future of microprocessors",
+      "original_url": "",
+      "original_year": 2011,
+      "disposition": "corrected",
+      "replacement": "borkar2011",
+      "reason": "改为明确书目、版本、正文定位和支持范围。状态为 bibliography_checked；旧数值校准说法撤回。"
+    },
+    "irds2023": {
+      "original_title": "International Roadmap for Devices and Systems (IRDS) 2023 Edition",
+      "original_url": "https://irds.ieee.org/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "只有 IRDS 主页，没有指定 2023 版报告章节、表格与节点定义；未读取所需原表。不能支撑晶圆价、成熟度、D0 或厂商 SRAM 密度。"
+    },
+    "spec2017": {
+      "original_title": "SPEC CPU 2017",
+      "original_url": "https://www.spec.org/cpu2017/",
+      "original_year": 2017,
+      "disposition": "corrected",
+      "replacement": "spec2017",
+      "reason": "改为明确书目、版本、正文定位和支持范围。状态为 fulltext_checked；旧数值校准说法撤回。"
+    },
+    "geekbench6": {
+      "original_title": "Geekbench 6",
+      "original_url": "https://www.geekbench.com/",
+      "original_year": 2023,
+      "disposition": "corrected",
+      "replacement": "geekbench6",
+      "reason": "改为明确书目、版本、正文定位和支持范围。状态为 fulltext_checked；旧数值校准说法撤回。"
+    },
+    "arm_a55": {
+      "original_title": "Arm Cortex-A55 Processor",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2017,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。 补查的具体 TRM 页只返回 Arm Developer 页面壳，未取得正文，不能判定技术内容。"
+    },
+    "arm_a76": {
+      "original_title": "Arm Cortex-A76 Processor",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2018,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。 补查的具体 TRM 页只返回 Arm Developer 页面壳，未取得正文，不能判定技术内容。"
+    },
+    "arm_a77": {
+      "original_title": "Arm Cortex-A77 Processor",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2019,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_a78": {
+      "original_title": "Arm Cortex-A78 Processor",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2020,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_a510": {
+      "original_title": "Arm Cortex-A510 Processor",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2021,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_a710": {
+      "original_title": "Arm Cortex-A710 Processor",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2021,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_a715": {
+      "original_title": "Arm Cortex-A715 Processor",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2022,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_x1": {
+      "original_title": "Arm Cortex-X1 Processor",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2020,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_x2": {
+      "original_title": "Arm Cortex-X2 Processor",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2021,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_x3": {
+      "original_title": "Arm Cortex-X3 Processor",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2022,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_x4": {
+      "original_title": "Arm Cortex-X4 / A720 / A520",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_a520": {
+      "original_title": "Arm Cortex-A520",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_a725": {
+      "original_title": "Arm Cortex-A725",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2024,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_c1": {
+      "original_title": "Arm C1-Ultra / C1-Premium / C1-Pro",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2025,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "kurnal_xring_o3": {
+      "original_title": "Kurnal Insights: Xiaomi XRING O3 die shot",
+      "original_url": "https://kurnal-insights.com/uploads/Xiaomi/xiaomi-xring-o3/Dieshot-V1-Xring-O3-12.81x10.80x0.16mm.webp",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "sha256": "3873a21785324577ed979c5b878aca8908e62aa0424bcbfd496c0721d81531f6",
+        "observed": "HTML 页面，非所请求的 WebP"
+      },
+      "reason": "直接图片链接返回 HTML/访问检查页面，未取得可核验的原图、作者标注或尺寸测量方法。文件名中的 mm 值不能当实际测量；没有用此图校准模块面积。"
+    },
+    "kurnal_d9500": {
+      "original_title": "Kurnal Insights: MediaTek Dimensity 9500 die shot",
+      "original_url": "https://kurnal-insights.com/uploads/MTK/mediatek-dimensity-9500-mt6993/D9500-Dieshot.thumb.webp",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "sha256": "bf1bbe2a32dca92abfe4f72895a619b3da8bcca77e64953ce47ff7779e2d0ecd",
+        "observed": "未取得可确认原图"
+      },
+      "reason": "直接图片链接返回 HTML/访问检查页面，未取得可核验的原图、作者标注或尺寸测量方法。文件名中的 mm 值不能当实际测量；没有用此图校准模块面积。"
+    },
+    "kurnal_sm8975": {
+      "original_title": "Kurnal Insights: Snapdragon 8 Elite Extreme Gen6 die shot",
+      "original_url": "https://kurnal-insights.com/uploads/Qualcomm/qualcomm-8elite-extreme-gen6sm8975/SM8975.thumb.webp",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "sha256": "04a500511aaff0fffaa3021132ec9e2a9c392222a5627c2bcf769737da155b75",
+        "observed": "未取得可确认原图"
+      },
+      "reason": "直接图片链接返回 HTML/访问检查页面，未取得可核验的原图、作者标注或尺寸测量方法。文件名中的 mm 值不能当实际测量；没有用此图校准模块面积。"
+    },
+    "kurnal_a20": {
+      "original_title": "Kurnal Insights: Apple A20 Pro die shot",
+      "original_url": "https://kurnal-insights.com/uploads/Apple/apple-a20-pro/A20Pro-8.00x12.35x0.67.thumb.webp",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "sha256": "f76d1a808664346dbd5f211b354953d29e806b23d7523083f21c50197e1ea081",
+        "observed": "未取得可确认原图"
+      },
+      "reason": "直接图片链接返回 HTML/访问检查页面，未取得可核验的原图、作者标注或尺寸测量方法。文件名中的 mm 值不能当实际测量；没有用此图校准模块面积。"
+    },
+    "kurnal_k9030": {
+      "original_title": "Kurnal Insights: Kirin 9030 die shot",
+      "original_url": "https://kurnal-insights.com/uploads/Huawei/hisilicon-hi36d0-kirin-9030/k9030-hi36D0-12.95x10.94x0.11.thumb.webp",
+      "original_year": 2025,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "sha256": "deef3341c4b7075aa94af7304d428a0571e6aca07096cbf95733bb08330f2fc0",
+        "observed": "未取得可确认原图"
+      },
+      "reason": "直接图片链接返回 HTML/访问检查页面，未取得可核验的原图、作者标注或尺寸测量方法。文件名中的 mm 值不能当实际测量；没有用此图校准模块面积。"
+    },
+    "kurnal_k9050": {
+      "original_title": "Kurnal Insights: Kirin 9050 die shot",
+      "original_url": "https://kurnal-insights.com/uploads/Huawei/hisilicon-hi36e0-kirin-9050/K9050-Hi36E0-Logic-Die.thumb.webp",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "sha256": "ea43c8c95e83467988f2969317802a3b848cb1a5d2e1b90d2fe78900e29ea093",
+        "observed": "未取得可确认原图"
+      },
+      "reason": "直接图片链接返回 HTML/访问检查页面，未取得可核验的原图、作者标注或尺寸测量方法。文件名中的 mm 值不能当实际测量；没有用此图校准模块面积。"
+    },
+    "kurnal_tensor_g4": {
+      "original_title": "Kurnal Insights: Google Tensor G4 die shot",
+      "original_url": "https://kurnal-insights.com/uploads/Google/google-tensor-g4/google-tensor-g4.thumb.webp",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "sha256": "45c5478ba0a27a05714647a164545b8ef5f53d64ee5585110b59a64ebeec6ecd",
+        "observed": "未取得可确认原图"
+      },
+      "reason": "直接图片链接返回 HTML/访问检查页面，未取得可核验的原图、作者标注或尺寸测量方法。文件名中的 mm 值不能当实际测量；没有用此图校准模块面积。"
+    },
+    "xring_o3": {
+      "original_title": "Xiaomi XRING O3 发布资料",
+      "original_url": "",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "reason": "条目“Xiaomi XRING O3 发布资料”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“小米发布会”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "kirin9500": {
+      "original_title": "Kirin 9500 架构与性能分析",
+      "original_url": "",
+      "original_year": 2025,
+      "disposition": "withdrawn",
+      "reason": "条目“Kirin 9500 架构与性能分析”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“AnandTech / 极客湾”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "tensor_g6_leak": {
+      "original_title": "Google Tensor G6 leak: Arm C1 cores, Titan M3, dated PowerVR GPU",
+      "original_url": "https://android.gadgethacks.com/news/google-tensor-g6-leak-arm-c1-cores-titan-m3-and-a-dated-gpu/",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "reason": "来源为前瞻媒体链接，未完成正文、原始爆料与实测证据核对；不作已发布规格或 GPU 兼容性结论。"
+    },
+    "geekerwan_sd8ee6": {
+      "original_title": "极客湾：骁龙8 Elite Extreme Gen6前瞻上手",
+      "original_url": "https://www.bilibili.com/video/BV17uhW6VE2R",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "api_code": 0,
+        "sha256": "40d4e0868c8e216c64935753fed76184c1eac347dafbb27b87956a5a7ec69c30"
+      },
+      "identity": {
+        "title": "骁龙8 Elite Extreme Gen6前瞻上手：高通新旗舰手机来啦！",
+        "uploader": "极客湾Geekerwan",
+        "published_at": "2026-09-22T21:30:00+00:00",
+        "duration_seconds": 651,
+        "bvid": "BV17uhW6VE2R"
+      },
+      "reason": "视频接口已核对题名、UP 主、发布日期和时长；没有获取/逐段核对视频正文、测试条件及时间戳。元数据不能证明性能排名、黑屏概率、面积或寿命。本条退出正式结论链，保留身份记录；并非判定视频不存在。"
+    },
+    "geekerwan_flagship2026": {
+      "original_title": "极客湾：旗舰手机芯片大横评（A20 Pro / 8EE6 / 天玑9600 Pro / 玄戒O3 / 麒麟9050 Pro / Tensor G6）",
+      "original_url": "https://www.bilibili.com/video/BV1kMxM6FECM",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "api_code": 0,
+        "sha256": "c9aae7a1bee92e1d6e1ad3ab970d67d69393e6a6f7a3945b9b4c14c72c376eeb"
+      },
+      "identity": {
+        "title": "旗舰手机芯片大横评：苹果高通发哥玄戒谁最强？",
+        "uploader": "极客湾Geekerwan",
+        "published_at": "2026-10-27T07:45:29+00:00",
+        "duration_seconds": 3435,
+        "bvid": "BV1kMxM6FECM"
+      },
+      "reason": "视频接口已核对题名、UP 主、发布日期和时长；没有获取/逐段核对视频正文、测试条件及时间戳。元数据不能证明性能排名、黑屏概率、面积或寿命。本条退出正式结论链，保留身份记录；并非判定视频不存在。"
+    },
+    "geekerwan_d9500": {
+      "original_title": "极客湾：天玑9500前瞻上手",
+      "original_url": "https://www.bilibili.com/video/BV1RWnFzbED3",
+      "original_year": 2025,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "api_code": 0,
+        "sha256": "e0d85ab8ccd81cc83ec449c97611120053ef8044b18fb97bc006676ac53d772d"
+      },
+      "identity": {
+        "title": "天玑9500前瞻上手：GPU巨强！",
+        "uploader": "极客湾Geekerwan",
+        "published_at": "2025-09-22T10:00:00+00:00",
+        "duration_seconds": 596,
+        "bvid": "BV1RWnFzbED3"
+      },
+      "reason": "视频接口已核对题名、UP 主、发布日期和时长；没有获取/逐段核对视频正文、测试条件及时间戳。元数据不能证明性能排名、黑屏概率、面积或寿命。本条退出正式结论链，保留身份记录；并非判定视频不存在。"
+    },
+    "geekerwan_9030": {
+      "original_title": "极客湾：华为Mate 80 Pro性能分析（麒麟9030）",
+      "original_url": "https://www.bilibili.com/video/BV1F7T46wEyT",
+      "original_year": 2025,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "api_code": 0,
+        "sha256": "ebfca023b6d40810068fd778067439cce12e0d8b695b9ca662201e0235628931"
+      },
+      "identity": {
+        "title": "华为Mate 80 Pro性能分析：进步巨大！",
+        "uploader": "极客湾Geekerwan",
+        "published_at": "2026-07-03T12:55:18+00:00",
+        "duration_seconds": 1541,
+        "bvid": "BV1F7T46wEyT"
+      },
+      "reason": "视频接口已核对题名、UP 主、发布日期和时长；没有获取/逐段核对视频正文、测试条件及时间戳。元数据不能证明性能排名、黑屏概率、面积或寿命。本条退出正式结论链，保留身份记录；并非判定视频不存在。"
+    },
+    "geekerwan_d9600pro": {
+      "original_title": "极客湾：天玑9600 Pro前瞻上手（首个 2nm 旗舰）",
+      "original_url": "https://www.bilibili.com/video/BV1aoeJ6vEoz",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "api_code": 0,
+        "sha256": "c32a15d20d3d92e01b004558011fc95501d4fa745f90310cd2a2955eacf0de8f"
+      },
+      "identity": {
+        "title": "天玑9600 Pro前瞻上手：2nm旗舰手机能效如何？",
+        "uploader": "极客湾Geekerwan",
+        "published_at": "2026-09-15T12:11:16+00:00",
+        "duration_seconds": 440,
+        "bvid": "BV1aoeJ6vEoz"
+      },
+      "reason": "视频接口已核对题名、UP 主、发布日期和时长；没有获取/逐段核对视频正文、测试条件及时间戳。元数据不能证明性能排名、黑屏概率、面积或寿命。本条退出正式结论链，保留身份记录；并非判定视频不存在。"
+    },
+    "geekerwan_8e5": {
+      "original_title": "极客湾：骁龙8 Elite Gen5性能分析（常规升级）",
+      "original_url": "https://www.bilibili.com/video/BV1YMnWzoExG",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "api_code": 0,
+        "sha256": "431091d1337c82f2e3b6744770c92ba4a54d999fa07c4cacf62dedf9597b3e5b"
+      },
+      "identity": {
+        "title": "骁龙8 Elite Gen5性能分析：常规升级",
+        "uploader": "极客湾Geekerwan",
+        "published_at": "2025-09-25T01:10:00+00:00",
+        "duration_seconds": 714,
+        "bvid": "BV1YMnWzoExG"
+      },
+      "reason": "视频接口已核对题名、UP 主、发布日期和时长；没有获取/逐段核对视频正文、测试条件及时间戳。元数据不能证明性能排名、黑屏概率、面积或寿命。本条退出正式结论链，保留身份记录；并非判定视频不存在。"
+    },
+    "geekerwan_9050pro": {
+      "original_title": "极客湾：华为Mate 90 韬定律/逻辑折叠解析（麒麟9050 Pro切片）",
+      "original_url": "https://www.bilibili.com/video/BV1heam6TExz",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "api_code": 0,
+        "sha256": "0f9ad38b048b94eb65a05ba560066a3d1593477b324d2a9fa2731ed0bf43538a"
+      },
+      "identity": {
+        "title": "逻辑折叠深度解析！华为Mate 90系列韬定律芯片有多强？",
+        "uploader": "极客湾Geekerwan",
+        "published_at": "2026-10-02T07:46:57+00:00",
+        "duration_seconds": 1019,
+        "bvid": "BV1heam6TExz"
+      },
+      "reason": "视频接口已核对题名、UP 主、发布日期和时长；没有获取/逐段核对视频正文、测试条件及时间戳。元数据不能证明性能排名、黑屏概率、面积或寿命。本条退出正式结论链，保留身份记录；并非判定视频不存在。"
+    },
+    "tansanquan_o100": {
+      "original_title": "谈三圈：拆解玄戒O100的先进封装（混合键合与硅通孔）",
+      "original_url": "https://www.bilibili.com/video/BV11PhT6rEkb",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "api_code": 0,
+        "sha256": "f807e149d582fbbd708a9b625c98893ca391a0e6e3eda048119e4cefbefe52fb"
+      },
+      "identity": {
+        "title": "三层堆叠芯片？拆解玄戒O100的先进封装：混合键合与硅通孔",
+        "uploader": "谈三圈",
+        "published_at": "2026-08-25T00:00:00+00:00",
+        "duration_seconds": 1168,
+        "bvid": "BV11PhT6rEkb"
+      },
+      "reason": "视频接口已核对题名、UP 主、发布日期和时长；没有获取/逐段核对视频正文、测试条件及时间戳。元数据不能证明性能排名、黑屏概率、面积或寿命。本条退出正式结论链，保留身份记录；并非判定视频不存在。"
+    },
+    "dami_o3": {
+      "original_title": "大米评测：玄戒O3 零售机性能实测",
+      "original_url": "https://www.bilibili.com/video/BV1sEe36bE2j",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "api_code": 0,
+        "sha256": "df1c2d5d772b786bff46455a18b4ad9d2eaed7958037d195764d1c765e563cc9"
+      },
+      "identity": {
+        "title": "大力出奇迹？玄戒O3 零售机性能实测：小米18 Fold & 小米平板9 Pro Max | 大米评测",
+        "uploader": "大米评测",
+        "published_at": "2026-09-17T13:54:52+00:00",
+        "duration_seconds": 838,
+        "bvid": "BV1sEe36bE2j"
+      },
+      "reason": "视频接口已核对题名、UP 主、发布日期和时长；没有获取/逐段核对视频正文、测试条件及时间戳。元数据不能证明性能排名、黑屏概率、面积或寿命。本条退出正式结论链，保留身份记录；并非判定视频不存在。"
+    },
+    "kurnal_d9600": {
+      "original_title": "Kurnal Insights: MediaTek Dimensity 9600 Pro die shot",
+      "original_url": "https://kurnal-insights.com/uploads/MTK/mediatek-dimensity-9600-pro-mt6995/D9600-Pro-MT6995Z-10.47x12.80x0.15mm.thumb.webp",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "sha256": "aa8d4aae74967d558f3ec7101995bfb6668a47583e9b9dade9d0dbc9b5063065",
+        "observed": "未取得可确认原图"
+      },
+      "reason": "直接图片链接返回 HTML/访问检查页面，未取得可核验的原图、作者标注或尺寸测量方法。文件名中的 mm 值不能当实际测量；没有用此图校准模块面积。"
+    },
+    "tsmc_n3b_trap": {
+      "original_title": "N3B 首发代价：A17 Pro 独占与 N3E 回归",
+      "original_url": "",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "条目“N3B 首发代价：A17 Pro 独占与 N3E 回归”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“AnandTech / TechInsights 相关报道”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "snapdragon_810": {
+      "original_title": "骁龙810“火龙”事件",
+      "original_url": "",
+      "original_year": 2015,
+      "disposition": "withdrawn",
+      "reason": "条目“骁龙810“火龙”事件”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“多家媒体”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "xiaomi_surge_s1": {
+      "original_title": "小米澎湃 S1 公开规格资料（引用待核验）",
+      "original_url": "",
+      "original_year": 2017,
+      "disposition": "withdrawn",
+      "reason": "条目“小米澎湃 S1 公开规格资料（引用待核验）”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“多家媒体”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "oppo_zeku": {
+      "original_title": "OPPO 哲库解散；马里亚纳 X / vivo V 系列小芯片路线",
+      "original_url": "",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "条目“OPPO 哲库解散；马里亚纳 X / vivo V 系列小芯片路线”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“多家媒体”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "huawei_p10_flash": {
+      "original_title": "华为 P10 闪存门（UFS 混用）",
+      "original_url": "",
+      "original_year": 2017,
+      "disposition": "withdrawn",
+      "reason": "条目“华为 P10 闪存门（UFS 混用）”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“多家媒体”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "apple_a9_dualsource": {
+      "original_title": "苹果 A9 双代工（三星 vs 台积电）“芯片门”",
+      "original_url": "",
+      "original_year": 2015,
+      "disposition": "withdrawn",
+      "reason": "条目“苹果 A9 双代工（三星 vs 台积电）“芯片门””缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“多家媒体”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "xuezhongqi_d9600m": {
+      "original_title": "薛忠琦科技：天玑9600M就是天玑9500的超频版",
+      "original_url": "https://www.bilibili.com/video/BV1SSaM6XE3t",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "retrieval": {
+        "api_code": 0,
+        "sha256": "8f32e70ccbca0fc4e7565e2f12a5b29a32968f416709dc2c2b3683607d18b054"
+      },
+      "identity": {
+        "title": "天玑9600M就是天玑9500的超频版。你也管这个叫升级吗？",
+        "uploader": "薛忠琦科技",
+        "published_at": "2026-09-24T22:08:51+00:00",
+        "duration_seconds": 56,
+        "bvid": "BV1SSaM6XE3t"
+      },
+      "reason": "视频接口已核对题名、UP 主、发布日期和时长；没有获取/逐段核对视频正文、测试条件及时间戳。元数据不能证明性能排名、黑屏概率、面积或寿命。本条退出正式结论链，保留身份记录；并非判定视频不存在。"
+    },
+    "google_tensor": {
+      "original_title": "Google Tensor G6 analysis",
+      "original_url": "",
+      "original_year": 2026,
+      "disposition": "withdrawn",
+      "reason": "条目“Google Tensor G6 analysis”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“AnandTech / 极客湾”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "sd_elite5": {
+      "original_title": "Snapdragon 8 Elite Gen 5",
+      "original_url": "https://www.qualcomm.com/",
+      "original_year": 2025,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.qualcomm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "apple_a19": {
+      "original_title": "Apple A19 Pro / M5",
+      "original_url": "https://www.apple.com/",
+      "original_year": 2025,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.apple.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_x925": {
+      "original_title": "Arm Cortex-X925 / A725",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2024,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_neoverse": {
+      "original_title": "Arm Neoverse N2 / V2",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2022,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_gpu": {
+      "original_title": "Arm Mali / Immortalis GPU",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2024,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "arm_ethos": {
+      "original_title": "Arm Ethos NPU",
+      "original_url": "https://developer.arm.com/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://developer.arm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "sifive_p670": {
+      "original_title": "SiFive Performance P670",
+      "original_url": "https://www.sifive.com/",
+      "original_year": 2023,
+      "disposition": "corrected",
+      "replacement": "sifive_p670",
+      "reason": "改为明确书目、版本、正文定位和支持范围。状态为 fulltext_checked；旧数值校准说法撤回。"
+    },
+    "sifive_p870": {
+      "original_title": "SiFive Performance P870",
+      "original_url": "https://www.sifive.com/",
+      "original_year": 2024,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.sifive.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "tsmc_n7": {
+      "original_title": "TSMC 7nm Technology",
+      "original_url": "https://www.tsmc.com/",
+      "original_year": 2018,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.tsmc.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "tsmc_n5": {
+      "original_title": "TSMC 5nm Technology",
+      "original_url": "https://www.tsmc.com/",
+      "original_year": 2020,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.tsmc.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。 补查 5nm 专页返回 HTTP 403，未据此补充未读内容。"
+    },
+    "tsmc_n4p": {
+      "original_title": "TSMC N4P Technology",
+      "original_url": "https://www.tsmc.com/",
+      "original_year": 2022,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.tsmc.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "tsmc_n3e": {
+      "original_title": "TSMC N3E Technology",
+      "original_url": "https://www.tsmc.com/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.tsmc.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "samsung_sf4": {
+      "original_title": "Samsung SF4",
+      "original_url": "https://semiconductor.samsung.com/",
+      "original_year": 2021,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://semiconductor.samsung.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "samsung_sf3": {
+      "original_title": "Samsung SF3 (GAA)",
+      "original_url": "https://semiconductor.samsung.com/",
+      "original_year": 2024,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://semiconductor.samsung.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "intel18a": {
+      "original_title": "Intel 18A",
+      "original_url": "https://www.intel.com/",
+      "original_year": 2025,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.intel.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "smic_n2": {
+      "original_title": "SMIC N+2",
+      "original_url": "",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "条目“SMIC N+2”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“公开资料”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "qualcomm_oryon": {
+      "original_title": "Qualcomm Oryon CPU / Snapdragon X Elite",
+      "original_url": "https://www.qualcomm.com/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.qualcomm.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "apple_m4": {
+      "original_title": "Apple unveils M4",
+      "original_url": "https://www.apple.com/",
+      "original_year": 2024,
+      "disposition": "corrected",
+      "replacement": "apple_m4",
+      "reason": "改为明确书目、版本、正文定位和支持范围。状态为 fulltext_checked；旧数值校准说法撤回。"
+    },
+    "xring_launch": {
+      "original_title": "Xiaomi XRING O1 发布资料",
+      "original_url": "",
+      "original_year": 2025,
+      "disposition": "withdrawn",
+      "reason": "条目“Xiaomi XRING O1 发布资料”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“小米发布会”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "techinsights_m1": {
+      "original_title": "Apple M1 die analysis",
+      "original_url": "https://www.techinsights.com/",
+      "original_year": 2020,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.techinsights.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "techinsights_a17": {
+      "original_title": "Apple A17 Pro die analysis",
+      "original_url": "https://www.techinsights.com/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.techinsights.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "teardown_sd855": {
+      "original_title": "Snapdragon 855 die analysis",
+      "original_url": "",
+      "original_year": 2019,
+      "disposition": "withdrawn",
+      "reason": "条目“Snapdragon 855 die analysis”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“公开拆解”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "teardown_package": {
+      "original_title": "Mobile SoC packaging teardown",
+      "original_url": "",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "条目“Mobile SoC packaging teardown”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“公开拆解”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "anandtech_855": {
+      "original_title": "Snapdragon 855 performance analysis",
+      "original_url": "https://www.anandtech.com/",
+      "original_year": 2019,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.anandtech.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "anandtech_888": {
+      "original_title": "Snapdragon 888 power/performance",
+      "original_url": "https://www.anandtech.com/",
+      "original_year": 2021,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.anandtech.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "anandtech_x4": {
+      "original_title": "Cortex-X4, A720 and A520 analysis",
+      "original_url": "https://www.anandtech.com/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.anandtech.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "anandtech_d9300": {
+      "original_title": "Dimensity 9300 analysis",
+      "original_url": "https://www.anandtech.com/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.anandtech.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "geekerwan_888": {
+      "original_title": "骁龙 888 功耗与发热实测",
+      "original_url": "",
+      "original_year": 2021,
+      "disposition": "withdrawn",
+      "reason": "条目“骁龙 888 功耗与发热实测”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“Bilibili / YouTube”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "geekerwan_8g3": {
+      "original_title": "骁龙 8 Gen 3 深度测试",
+      "original_url": "",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "条目“骁龙 8 Gen 3 深度测试”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“Bilibili / YouTube”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "geekerwan_9300": {
+      "original_title": "天玑 9300 深度测试",
+      "original_url": "",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "条目“天玑 9300 深度测试”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“Bilibili / YouTube”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "geekerwan_9400": {
+      "original_title": "天玑 9400 / X925 深度测试",
+      "original_url": "",
+      "original_year": 2024,
+      "disposition": "withdrawn",
+      "reason": "条目“天玑 9400 / X925 深度测试”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“Bilibili / YouTube”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "geekerwan_kirin": {
+      "original_title": "麒麟 9000s 深度测试",
+      "original_url": "",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "条目“麒麟 9000s 深度测试”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“Bilibili / YouTube”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "chipsandcheese_m1": {
+      "original_title": "Apple M1 microarchitecture analysis",
+      "original_url": "https://chipsandcheese.com/",
+      "original_year": 2021,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://chipsandcheese.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "chipsandcheese_m4": {
+      "original_title": "Apple M4 microarchitecture",
+      "original_url": "https://chipsandcheese.com/",
+      "original_year": 2024,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://chipsandcheese.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "chipsandcheese_oryon": {
+      "original_title": "Qualcomm Oryon microarchitecture",
+      "original_url": "https://chipsandcheese.com/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://chipsandcheese.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "samsung_mongoose": {
+      "original_title": "Samsung Mongoose M5 analysis",
+      "original_url": "https://www.anandtech.com/",
+      "original_year": 2020,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.anandtech.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "samsung_xclipse": {
+      "original_title": "Xclipse 940 (RDNA 3) analysis",
+      "original_url": "https://www.anandtech.com/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.anandtech.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "imagination_gpu": {
+      "original_title": "PowerVR DXT series",
+      "original_url": "https://www.imaginationtech.com/",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://www.imaginationtech.com/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "riscv_ecosystem": {
+      "original_title": "RISC-V Android 生态现状",
+      "original_url": "https://riscv.org/",
+      "original_year": 2024,
+      "disposition": "withdrawn",
+      "reason": "遗留链接为机构/媒体主页或未定位资料（https://riscv.org/），未提供文章版本、具体章节或参数表；同名核心/厂商并不能验证 PPA、ROB 或授权价。"
+    },
+    "thermal_phone": {
+      "original_title": "手机持续性能与表面温度测试方法",
+      "original_url": "",
+      "original_year": 2024,
+      "disposition": "withdrawn",
+      "reason": "条目“手机持续性能与表面温度测试方法”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“公开测试”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "thermal_laptop": {
+      "original_title": "轻薄本散热与持续功耗",
+      "original_url": "",
+      "original_year": 2024,
+      "disposition": "withdrawn",
+      "reason": "条目“轻薄本散热与持续功耗”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“公开测试”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "huawei_kirin9000s": {
+      "original_title": "Kirin 9000s teardown",
+      "original_url": "",
+      "original_year": 2023,
+      "disposition": "withdrawn",
+      "reason": "条目“Kirin 9000s teardown”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“公开拆解”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "samsung_mongoose_news": {
+      "original_title": "Samsung 回归 Arm 公版核的报道",
+      "original_url": "",
+      "original_year": 2020,
+      "disposition": "withdrawn",
+      "reason": "条目“Samsung 回归 Arm 公版核的报道”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“多家媒体”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "benchmark_boosting": {
+      "original_title": "Smartphone benchmark boosting reports",
+      "original_url": "",
+      "original_year": 2013,
+      "disposition": "withdrawn",
+      "reason": "条目“Smartphone benchmark boosting reports”缺少具体原始文章/文档 URL、出版版本或时间戳，无法从“公开报道”定位支持的事实；撤回全部关联数值与故障归因，不用同主题替代原文。"
+    },
+    "apple_m4_news": {
+      "original_title": "Apple M4 launch coverage",
+      "original_url": "",
+      "original_year": 2024,
+      "disposition": "replaced",
+      "replacement": "apple_m4",
+      "reason": "旧条目只有机构主页/模糊标题，替换为已读的具体原始文档；不沿用旧数值推断。"
+    },
+    "amdahl1967": {
+      "original_title": "Validity of the single processor approach to achieving large scale computing capabilities",
+      "original_url": "https://doi.org/10.1145/1465482.1465560",
+      "original_year": 1967,
+      "disposition": "corrected",
+      "replacement": "amdahl1967",
+      "reason": "改为明确书目、版本、正文定位和支持范围。状态为 bibliography_checked；旧数值校准说法撤回。"
+    },
+    "roofline2009": {
+      "original_title": "Roofline: an insightful visual performance model for multicore architectures",
+      "original_url": "https://doi.org/10.1145/1498765.1498785",
+      "original_year": 2009,
+      "disposition": "corrected",
+      "replacement": "roofline2009",
+      "reason": "改为明确书目、版本、正文定位和支持范围。状态为 bibliography_checked；旧数值校准说法撤回。"
+    }
+  },
+  "active": {
+    "murphy1964": "bibliography_checked",
+    "cacti7": "fulltext_checked",
+    "gem5": "fulltext_checked",
+    "sankaranarayanan2005": "fulltext_checked",
+    "esmaeilzadeh2011": "bibliography_checked",
+    "borkar2011": "bibliography_checked",
+    "amdahl1967": "bibliography_checked",
+    "roofline2009": "bibliography_checked",
+    "roofline2008": "fulltext_checked",
+    "spec2017": "fulltext_checked",
+    "geekbench6": "fulltext_checked",
+    "riscv_isa": "fulltext_checked",
+    "riscv_m": "fulltext_checked",
+    "riscv_zbb": "fulltext_checked",
+    "apple_m1": "fulltext_checked",
+    "apple_m4": "fulltext_checked",
+    "sifive_p670": "fulltext_checked",
+    "intel_ia32": "fulltext_checked",
+    "arm_a64_isa": "fulltext_checked",
+    "cuda_simt": "fulltext_checked",
+    "tpu2017": "fulltext_checked",
+    "demosaic2011": "fulltext_checked",
+    "picorv32_rtl": "fulltext_checked"
+  }
+}

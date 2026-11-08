@@ -1,0 +1,38 @@
+{
+  "format": "silicon-professor/ip",
+  "version": 1,
+  "id": "0704368ebbf68bf7437aa92da77e4ad1",
+  "digest": "0704368ebbf68bf7437aa92da77e4ad1b09e099cc4b945567c928965651e1ac1",
+  "name": "isqi / isp",
+  "kind": "isp",
+  "producer": {
+    "name": "Silicon Immortal",
+    "version": "0.1.0-alpha.3",
+    "release_channel": "alpha",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "config": {
+    "width": 8,
+    "height": 8,
+    "black_level": 64,
+    "gain": 1.0,
+    "gamma": 2.2,
+    "output_bits": 8,
+    "pixels_per_cycle": 1,
+    "bandwidth_gbs": 4.0,
+    "frequency_ghz": 0.5
+  },
+  "verification": {
+    "passed": true,
+    "checks": [
+      "user-input-model-completed",
+      "black-level-zero-frame"
+    ],
+    "model": "lab-ip-v1",
+    "scope": "functional-model-self-tests; not RTL/ISA compliance",
+    "cycles": 147,
+    "observed_ipc": null
+  },
+  "parameter_basis": "game_assumption",
+  "compatibility_notes": []
+}

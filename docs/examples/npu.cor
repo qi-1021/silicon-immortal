@@ -1,0 +1,39 @@
+{
+  "format": "silicon-professor/ip",
+  "version": 1,
+  "id": "659ec4dc117a2985058fe0153c4274bc",
+  "digest": "659ec4dc117a2985058fe0153c4274bc4508d048409585c1e947202349ada64c",
+  "name": "isqi / npu",
+  "kind": "npu",
+  "producer": {
+    "name": "Silicon Immortal",
+    "version": "0.1.0-alpha.3",
+    "release_channel": "alpha",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "config": {
+    "m": 8,
+    "n": 8,
+    "k": 8,
+    "rows": 4,
+    "cols": 4,
+    "precision_bits": 8,
+    "accumulator_bits": 32,
+    "scratchpad_kb": 4,
+    "bandwidth_gbs": 16.0,
+    "frequency_ghz": 1.0
+  },
+  "verification": {
+    "passed": true,
+    "checks": [
+      "user-input-model-completed",
+      "2x2-gemm-hand-reference"
+    ],
+    "model": "lab-ip-v1",
+    "scope": "functional-model-self-tests; not RTL/ISA compliance",
+    "cycles": 88,
+    "observed_ipc": null
+  },
+  "parameter_basis": "game_assumption",
+  "compatibility_notes": []
+}

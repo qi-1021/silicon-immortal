@@ -1,0 +1,43 @@
+{
+  "format": "silicon-professor/ip",
+  "version": 1,
+  "id": "1e6fb34fba2897d932e4c4238bd295f0",
+  "digest": "1e6fb34fba2897d932e4c4238bd295f0982c281b7331653154ef251003025bf1",
+  "name": "isqi / rv32",
+  "kind": "cpu",
+  "producer": {
+    "name": "Silicon Immortal",
+    "version": "0.1.0-alpha.3",
+    "release_channel": "alpha",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "config": {
+    "source": "ADDI x1,x0,6\nADDI x2,x0,7\nMUL x3,x1,x2\nSW x3,0(x0)\nLW x4,0(x0)\nHALT",
+    "memory": "",
+    "architecture": "riscv32",
+    "width": 2,
+    "rob_size": 32,
+    "execution_ports": 2,
+    "pipeline": 8,
+    "cache_kb": 16,
+    "hit_latency": 2,
+    "miss_latency": 40,
+    "multiply_latency": 3,
+    "extensions": [
+      "M"
+    ]
+  },
+  "verification": {
+    "passed": true,
+    "checks": [
+      "user-input-model-completed",
+      "fixed-add-store-load-vector"
+    ],
+    "model": "lab-ip-v1",
+    "scope": "functional-model-self-tests; not RTL/ISA compliance",
+    "cycles": 55,
+    "observed_ipc": 0.09090909090909091
+  },
+  "parameter_basis": "game_assumption",
+  "compatibility_notes": []
+}

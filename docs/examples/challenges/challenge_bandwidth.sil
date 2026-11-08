@@ -1,0 +1,576 @@
+{
+  "format": "silicon-professor/design",
+  "version": 1,
+  "producer": {
+    "name": "Silicon Immortal",
+    "version": "0.1.0-alpha.3",
+    "release_channel": "alpha",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "created_at": "2026-11-08T13:11:12.127014+00:00",
+  "name": "03 · 内存墙前的编译农场 / 参考方案",
+  "scenario": "challenge_bandwidth",
+  "design": {
+    "scenario_id": "challenge_bandwidth",
+    "name": "03 · 内存墙前的编译农场 / 参考方案",
+    "node_id": "n3p",
+    "cores": [
+      {
+        "core_id": "x925",
+        "count": 4,
+        "l2_mb": 2.0,
+        "l2_shared": false,
+        "clock": 3.4,
+        "impl": {
+          "lib": "sd",
+          "vt": "svt",
+          "density": 0.35,
+          "timing": 0.35,
+          "aspect": 1.0
+        }
+      },
+      {
+        "core_id": "a725",
+        "count": 4,
+        "l2_mb": 1.0,
+        "l2_shared": false,
+        "clock": 2.8,
+        "impl": {
+          "lib": "sd",
+          "vt": "svt",
+          "density": 0.35,
+          "timing": 0.35,
+          "aspect": 1.0
+        }
+      },
+      {
+        "core_id": "a520",
+        "count": 4,
+        "l2_mb": 0.256,
+        "l2_shared": false,
+        "clock": 1.8,
+        "impl": {
+          "lib": "sd",
+          "vt": "svt",
+          "density": 0.35,
+          "timing": 0.35,
+          "aspect": 1.0
+        }
+      }
+    ],
+    "l3_mb": 16,
+    "l3_shared": true,
+    "slc_mb": 0.0,
+    "noc": "mesh",
+    "dram": "lpddr5x",
+    "gpu_id": "g925",
+    "gpu_units": 12,
+    "npu_id": "npu45",
+    "modem_id": "modem5g",
+    "storage_id": "ufs31",
+    "isp": true,
+    "media": true,
+    "display": true,
+    "metal_stack": "balanced",
+    "package_id": "imc25d",
+    "chiplet": false,
+    "cooling_id": "laptop",
+    "ambient_c": 25,
+    "floorplan_aspect": 1.1,
+    "routing_overhead": 0.12,
+    "placements": {
+      "core:0:0": {
+        "x": 0.48145902121699524,
+        "y": 0.15,
+        "rot": 0,
+        "w": 3.6322549303161638,
+        "h": 3.154494244634403
+      },
+      "core:0:1": {
+        "x": 0.48145902121699524,
+        "y": 3.304494244634403,
+        "rot": 0,
+        "w": 3.6322549303161638,
+        "h": 3.154494244634403
+      },
+      "core:0:2": {
+        "x": 4.4451729727501545,
+        "y": 0.6368654097959104,
+        "rot": 0,
+        "w": 2.147586486375076,
+        "h": 5.335257669676985
+      },
+      "core:0:3": {
+        "x": 0.15,
+        "y": 6.777748975923879,
+        "rot": 0,
+        "w": 3.28016055481989,
+        "h": 3.4930995240129077
+      },
+      "core:1:0": {
+        "x": 9.917658579381404,
+        "y": 6.156126577798272,
+        "rot": 0,
+        "w": 0.9725748934570374,
+        "h": 2.031884653094117
+      },
+      "core:1:1": {
+        "x": 6.755501851178606,
+        "y": 8.373429520979695,
+        "rot": 0,
+        "w": 1.7833934757211851,
+        "h": 1.1080897328060832
+      },
+      "core:1:2": {
+        "x": 6.755501851178606,
+        "y": 9.481519253785779,
+        "rot": 0,
+        "w": 1.7833934757211851,
+        "h": 1.1080897328060832
+      },
+      "core:1:3": {
+        "x": 8.701637718953167,
+        "y": 8.544452360146675,
+        "rot": 0,
+        "w": 1.0544391299139682,
+        "h": 1.874133787278205
+      },
+      "core:2:0": {
+        "x": 9.843599853615324,
+        "y": 9.312606767562894,
+        "rot": 0,
+        "w": 0.9591106144749317,
+        "h": 0.3192505547572417
+      },
+      "core:2:1": {
+        "x": 9.814425518699261,
+        "y": 9.631857322320135,
+        "rot": 0,
+        "w": 0.6394070763166207,
+        "h": 0.4788758321358628
+      },
+      "core:2:2": {
+        "x": 9.814425518699261,
+        "y": 10.110733154455998,
+        "rot": 0,
+        "w": 0.6394070763166207,
+        "h": 0.4788758321358628
+      },
+      "core:2:3": {
+        "x": 10.512181264848007,
+        "y": 9.70576713485213,
+        "rot": 0,
+        "w": 0.3780522079904361,
+        "h": 0.8099320392077356
+      },
+      "l3": {
+        "x": 6.59275945912523,
+        "y": 0.4716685963022095,
+        "rot": 0,
+        "w": 2.4703772437922247,
+        "h": 3.5249677035692453
+      },
+      "gpu": {
+        "x": 3.43016055481989,
+        "y": 6.777748975923879,
+        "rot": 0,
+        "w": 3.16259890430534,
+        "h": 3.4930995240129077
+      },
+      "npu": {
+        "x": 9.063136702917456,
+        "y": 0.47166859630220925,
+        "rot": 0,
+        "w": 1.8270967699209875,
+        "h": 3.5249677035692457
+      },
+      "isp": {
+        "x": 8.439925637045327,
+        "y": 6.156126577798272,
+        "rot": 0,
+        "w": 1.4777329423360774,
+        "h": 2.031884653094116
+      },
+      "modem": {
+        "x": 6.924396051953481,
+        "y": 4.3183048961736645,
+        "rot": 0,
+        "w": 3.6342008280567093,
+        "h": 1.6524033915373015
+      },
+      "media": {
+        "x": 6.59275945912523,
+        "y": 6.156126577798272,
+        "rot": 0,
+        "w": 1.8471661779200972,
+        "h": 2.031884653094116
+      },
+      "display": {
+        "x": 9.756076848867135,
+        "y": 8.44590594343735,
+        "rot": 0,
+        "w": 1.1341566239713081,
+        "h": 0.7942244016678901
+      },
+      "io": {
+        "x": 0.15,
+        "y": 10.58960898659186,
+        "rot": 0,
+        "w": 11.660599863038891,
+        "h": 0.1609363434434935
+      },
+      "dramphy": {
+        "x": 10.890233472838442,
+        "y": 0.15,
+        "rot": 0,
+        "w": 0.9203663902004493,
+        "h": 10.43960898659186
+      }
+    },
+    "bench_tuning": 0.0,
+    "bench_isa": 0.0,
+    "rotated_once": false,
+    "eco_invest": 0.0,
+    "price": 190,
+    "reputation": 0.5,
+    "verification_effort": 1.0,
+    "pvt_corner": "tt",
+    "pdn_quality": 1.0,
+    "memory_channels": 8,
+    "memory_gb": 8,
+    "workload_parallel": 0.99,
+    "workload_set_mb": 32.0,
+    "workload_intensity": 0.1,
+    "seed": 2025,
+    "custom": {
+      "name": "自研大核",
+      "isa": "armv9",
+      "decode": 6,
+      "rob": 320,
+      "l1_kb": 64,
+      "pipeline": 12,
+      "backend": 6,
+      "extensions": [
+        "M"
+      ]
+    },
+    "embedded_ips": {},
+    "ip_blocks": {},
+    "core_templates": {
+      "cpu:a520": {
+        "kind": "cpu",
+        "catalog_id": "a520",
+        "name": "Cortex-A520",
+        "model_schema": "catalog-ppa-v1",
+        "model": {
+          "id": "a520",
+          "name": "Cortex-A520",
+          "vendor": "Arm",
+          "arch": "ARMv9.2-A",
+          "isa": "armv9",
+          "year": 2023,
+          "tier": "little",
+          "license": "arm",
+          "ref_node": "n4p",
+          "ipc": 0.45,
+          "fmax_ref": 2.3,
+          "logic_area": 0.25,
+          "l2_default": 0.256,
+          "l2_max": 0.512,
+          "power_ref": 0.16,
+          "leak_frac": 0.24,
+          "license_cost_m": 0.9,
+          "eng_weeks": 2,
+          "decode": 2,
+          "rob": 0,
+          "note": "游戏参数集：IPC、Fmax、面积、功耗、ROB 与许可费用未逐项由厂商规格校准。具体产品的 ISA 与微架构需查其原始手册。",
+          "evidence": [],
+          "confidence": "high",
+          "eco": 1.0,
+          "parameter_basis": "game_assumption",
+          "execution_model": "in_order"
+        },
+        "reference_node": {
+          "id": "n4p",
+          "name": "TSMC N4P",
+          "short": "N4P",
+          "vendor": "TSMC",
+          "year": 2022,
+          "area_scale": 0.94,
+          "sram_mb": 0.8,
+          "freq_scale": 1.06,
+          "leak_scale": 1.05,
+          "wafer_cost": 17500,
+          "d0": 0.07,
+          "mask_cost": 10,
+          "maturity": 0.93,
+          "vmin": 0.57,
+          "note": "教学节点情景：面积、频率、SRAM密度、缺陷率、成熟度与费用均为未校准假设。节点名称不等于物理线宽。",
+          "evidence": [],
+          "confidence": "high",
+          "parameter_basis": "game_assumption"
+        },
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "digest": "189daff496857cbd797e07d0b324dc36e20176a6facb66aa7abe09a6402249b7"
+      },
+      "cpu:a725": {
+        "kind": "cpu",
+        "catalog_id": "a725",
+        "name": "Cortex-A725",
+        "model_schema": "catalog-ppa-v1",
+        "model": {
+          "id": "a725",
+          "name": "Cortex-A725",
+          "vendor": "Arm",
+          "arch": "ARMv9.2-A",
+          "isa": "armv9",
+          "year": 2024,
+          "tier": "mid",
+          "license": "arm",
+          "ref_node": "n3e",
+          "ipc": 0.94,
+          "fmax_ref": 3.4,
+          "logic_area": 1.54,
+          "l2_default": 0.512,
+          "l2_max": 1.0,
+          "power_ref": 0.82,
+          "leak_frac": 0.18,
+          "license_cost_m": 4.5,
+          "eng_weeks": 5,
+          "decode": 5,
+          "rob": 256,
+          "note": "游戏参数集：IPC、Fmax、面积、功耗、ROB 与许可费用未逐项由厂商规格校准。具体产品的 ISA 与微架构需查其原始手册。",
+          "evidence": [],
+          "confidence": "medium",
+          "eco": 1.0,
+          "parameter_basis": "game_assumption"
+        },
+        "reference_node": {
+          "id": "n3e",
+          "name": "TSMC N3E",
+          "short": "N3E",
+          "vendor": "TSMC",
+          "year": 2023,
+          "area_scale": 0.66,
+          "sram_mb": 0.6,
+          "freq_scale": 1.12,
+          "leak_scale": 1.12,
+          "wafer_cost": 20500,
+          "d0": 0.1,
+          "mask_cost": 14,
+          "maturity": 0.88,
+          "vmin": 0.55,
+          "note": "教学节点情景：面积、频率、SRAM密度、缺陷率、成熟度与费用均为未校准假设。节点名称不等于物理线宽。",
+          "evidence": [],
+          "confidence": "medium",
+          "parameter_basis": "game_assumption"
+        },
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "digest": "e06f990e98d540affb92e8fbdd899ab7767a52e770cfa35bad2309ecff990141"
+      },
+      "cpu:x925": {
+        "kind": "cpu",
+        "catalog_id": "x925",
+        "name": "Cortex-X925",
+        "model_schema": "catalog-ppa-v1",
+        "model": {
+          "id": "x925",
+          "name": "Cortex-X925",
+          "vendor": "Arm",
+          "arch": "ARMv9.2-A",
+          "isa": "armv9",
+          "year": 2024,
+          "tier": "big",
+          "license": "arm",
+          "ref_node": "n3e",
+          "ipc": 1.17,
+          "fmax_ref": 3.8,
+          "logic_area": 11.3,
+          "l2_default": 2.0,
+          "l2_max": 3.0,
+          "power_ref": 2.8,
+          "leak_frac": 0.17,
+          "license_cost_m": 9.0,
+          "eng_weeks": 11,
+          "decode": 8,
+          "rob": 448,
+          "note": "游戏参数集：IPC、Fmax、面积、功耗、ROB 与许可费用未逐项由厂商规格校准。具体产品的 ISA 与微架构需查其原始手册。",
+          "evidence": [],
+          "confidence": "medium",
+          "eco": 1.0,
+          "parameter_basis": "game_assumption"
+        },
+        "reference_node": {
+          "id": "n3e",
+          "name": "TSMC N3E",
+          "short": "N3E",
+          "vendor": "TSMC",
+          "year": 2023,
+          "area_scale": 0.66,
+          "sram_mb": 0.6,
+          "freq_scale": 1.12,
+          "leak_scale": 1.12,
+          "wafer_cost": 20500,
+          "d0": 0.1,
+          "mask_cost": 14,
+          "maturity": 0.88,
+          "vmin": 0.55,
+          "note": "教学节点情景：面积、频率、SRAM密度、缺陷率、成熟度与费用均为未校准假设。节点名称不等于物理线宽。",
+          "evidence": [],
+          "confidence": "medium",
+          "parameter_basis": "game_assumption"
+        },
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "digest": "e21fcb6bf3595580b5bb2bc139a505fe93a08aeb1c2da2c58f4e9455020a2393"
+      },
+      "gpu:g925": {
+        "kind": "gpu",
+        "catalog_id": "g925",
+        "name": "Immortalis-G925 MC16",
+        "model_schema": "catalog-ppa-v1",
+        "model": {
+          "id": "g925",
+          "name": "Immortalis-G925 MC16",
+          "vendor": "Arm",
+          "year": 2024,
+          "ref_node": "n3e",
+          "unit_name": "MC",
+          "default_units": 16,
+          "min_units": 10,
+          "max_units": 20,
+          "perf_per_unit": 70,
+          "area_per_unit": 0.98,
+          "power_per_unit": 0.22,
+          "license_cost_m": 6.5,
+          "compat": 1.0,
+          "cu_per_unit": 1,
+          "note": "玄戒 O1 / 天玑 9400 同款，规模大、能效进步明显。",
+          "evidence": [],
+          "confidence": "medium",
+          "parameter_basis": "game_assumption"
+        },
+        "reference_node": {
+          "id": "n3e",
+          "name": "TSMC N3E",
+          "short": "N3E",
+          "vendor": "TSMC",
+          "year": 2023,
+          "area_scale": 0.66,
+          "sram_mb": 0.6,
+          "freq_scale": 1.12,
+          "leak_scale": 1.12,
+          "wafer_cost": 20500,
+          "d0": 0.1,
+          "mask_cost": 14,
+          "maturity": 0.88,
+          "vmin": 0.55,
+          "note": "教学节点情景：面积、频率、SRAM密度、缺陷率、成熟度与费用均为未校准假设。节点名称不等于物理线宽。",
+          "evidence": [],
+          "confidence": "medium",
+          "parameter_basis": "game_assumption"
+        },
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "digest": "e435160e5027add068d4014a27c427bedf13464f564aca495c7cc0ddf1da1999"
+      },
+      "isp:isp": {
+        "kind": "isp",
+        "catalog_id": "isp",
+        "name": "ISP",
+        "model_schema": "catalog-ppa-v1",
+        "model": {
+          "id": "isp",
+          "name": "ISP",
+          "area": 4.0,
+          "power": 0.45,
+          "license_cost_m": 2.0,
+          "color": "#7ee7c7",
+          "edge": false,
+          "parameter_basis": "game_assumption"
+        },
+        "reference_node": null,
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "digest": "b33ec764522ddcc555edd1772bbaa8572034668cb48ff22fe87aa9f7c09000e4"
+      },
+      "npu:npu45": {
+        "kind": "npu",
+        "catalog_id": "npu45",
+        "name": "旗舰 NPU",
+        "model_schema": "catalog-ppa-v1",
+        "model": {
+          "id": "npu45",
+          "name": "旗舰 NPU",
+          "tops": 45,
+          "area": 9.0,
+          "power": 1.8,
+          "license_cost_m": 5.5,
+          "note": "面积和散热压力都不小，但 AI 评分高。",
+          "evidence": [],
+          "confidence": "medium",
+          "precision": "INT8",
+          "sparsity": "dense",
+          "operations_per_mac": 2,
+          "parameter_basis": "game_assumption"
+        },
+        "reference_node": null,
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "digest": "b9f99af36988a74d2803bc7ba0e716692bc974a14d4aeff261fc2315b4ab28d5"
+      }
+    }
+  },
+  "core_bundle": {
+    "schema": "embedded-cores-v1"
+  },
+  "summary": {
+    "die_area_mm2": 136.622,
+    "st": 2390.1,
+    "mt": 8807.3,
+    "gpu": 870.0,
+    "ai_tops": 44.7,
+    "ai_score": 44.7,
+    "peak_power_w": 16.72,
+    "unit_cost_usd": 91.25,
+    "review": 99.3,
+    "grade": "B",
+    "valid": true
+  },
+  "engine": {
+    "name": "Silicon Professor",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "provenance": {
+    "simulation": true,
+    "visuals": "procedural-floorplan-illustration",
+    "legacy_ai_tops_is_score": true,
+    "signoff_ready": true
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "format": "silicon-professor/ip",
+  "version": 1,
+  "id": "d472425adff0259169008f2e75b867e7",
+  "digest": "d472425adff0259169008f2e75b867e7875c3a0aad64f7c1ccabc12348192768",
+  "name": "isqi / Studio NPU",
+  "kind": "npu",
+  "identity_basis": "kind/name/design",
+  "design": {
+    "schema": "parameterized-core-v1",
+    "hardware": {
+      "rows": 4,
+      "cols": 4,
+      "precision_bits": 8,
+      "accumulator_bits": 32,
+      "scratchpad_kb": 4,
+      "frequency_ghz": 1.0,
+      "bandwidth_gbs": 16.0
+    }
+  },
+  "producer": {
+    "name": "Silicon Immortal",
+    "version": "0.1.0-alpha.3",
+    "release_channel": "alpha",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "config": {
+    "rows": 4,
+    "cols": 4,
+    "precision_bits": 8,
+    "accumulator_bits": 32,
+    "scratchpad_kb": 4,
+    "frequency_ghz": 1.0,
+    "bandwidth_gbs": 16.0,
+    "m": 8,
+    "n": 8,
+    "k": 8
+  },
+  "verification": {
+    "passed": true,
+    "cases": [
+      {
+        "name": "2×2 手算矩阵",
+        "passed": true,
+        "cycles": 6,
+        "instructions": null,
+        "ipc": null,
+        "compute_cycles": 4,
+        "transfer_cycles": 2,
+        "observation": "预期 [[19,22],[43,50]]"
+      },
+      {
+        "name": "8×8 资源与矩阵",
+        "passed": true,
+        "cycles": 88,
+        "instructions": null,
+        "ipc": null,
+        "compute_cycles": 56,
+        "transfer_cycles": 32,
+        "observation": "512 MAC；本地占用128B；容量匹配True"
+      },
+      {
+        "name": "有限累加器边界",
+        "passed": true,
+        "cycles": 5,
+        "instructions": null,
+        "ipc": null,
+        "compute_cycles": 4,
+        "transfer_cycles": 1,
+        "observation": "精确64516 → INT32结果64516；溢出按wrap语义检查"
+      }
+    ],
+    "checks": [
+      "2×2 手算矩阵",
+      "8×8 资源与矩阵",
+      "有限累加器边界"
+    ],
+    "scope": "fixed functional vectors and resource scheduling; not full ISA/RTL/PDK certification",
+    "model": "parameterized-core-v1",
+    "cycles": 99,
+    "observed_ipc": null
+  },
+  "parameter_basis": "game_assumption",
+  "compatibility_notes": []
+}

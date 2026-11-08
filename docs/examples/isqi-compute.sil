@@ -1,0 +1,472 @@
+{
+  "format": "silicon-professor/design",
+  "version": 1,
+  "producer": {
+    "name": "Silicon Immortal",
+    "version": "0.1.0-alpha.3",
+    "release_channel": "alpha",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "created_at": "2026-11-08T13:24:39.856708+00:00",
+  "name": "isqi / RV32 compute SoC",
+  "scenario": "sandbox",
+  "design": {
+    "scenario_id": "sandbox",
+    "name": "isqi / RV32 compute SoC",
+    "node_id": "n3e",
+    "cores": [
+      {
+        "core_id": "ip:1e6fb34fba2897d932e4c4238bd295f0",
+        "count": 1,
+        "l2_mb": 1.0,
+        "l2_shared": false,
+        "clock": 0.0,
+        "impl": {
+          "lib": "sd",
+          "vt": "svt",
+          "density": 0.35,
+          "timing": 0.35,
+          "aspect": 1.0
+        }
+      },
+      {
+        "core_id": "ip:1e6fb34fba2897d932e4c4238bd295f0",
+        "count": 1,
+        "l2_mb": 1.0,
+        "l2_shared": false,
+        "clock": 0.0,
+        "impl": {
+          "lib": "sd",
+          "vt": "svt",
+          "density": 0.35,
+          "timing": 0.35,
+          "aspect": 1.0
+        }
+      }
+    ],
+    "l3_mb": 12,
+    "l3_shared": true,
+    "slc_mb": 0.0,
+    "noc": "mesh",
+    "dram": "lpddr5x",
+    "gpu_id": "g925",
+    "gpu_units": 2,
+    "npu_id": "npu30",
+    "modem_id": "modem5g",
+    "storage_id": "ufs31",
+    "isp": true,
+    "media": true,
+    "display": true,
+    "metal_stack": "balanced",
+    "package_id": "fowlp",
+    "chiplet": false,
+    "cooling_id": "vc",
+    "ambient_c": 25.0,
+    "floorplan_aspect": 1.1,
+    "routing_overhead": 0.12,
+    "placements": {
+      "core:0:0": {
+        "x": 3.92174872334639,
+        "y": 0.17096773601553836,
+        "rot": 0,
+        "w": 1.7945785020444218,
+        "h": 1.7945785020444218
+      },
+      "core:1:0": {
+        "x": 3.92174872334639,
+        "y": 2.007481710091037,
+        "rot": 0,
+        "w": 1.7945785020444218,
+        "h": 1.7945785020444218
+      },
+      "l3": {
+        "x": 0.15,
+        "y": 0.3474748399623788,
+        "rot": 0,
+        "w": 3.6129898986497335,
+        "h": 1.9319179393799588
+      },
+      "gpu": {
+        "x": 3.7629898986497334,
+        "y": 3.9954159480042812,
+        "rot": 0,
+        "w": 1.0673050630271659,
+        "h": 1.6864906411056584
+      },
+      "npu": {
+        "x": 5.618125647924943,
+        "y": 4.982025349434537,
+        "rot": 0,
+        "w": 0.25696040216252625,
+        "h": 0.7913770574234997
+      },
+      "isp": {
+        "x": 4.8302949616769,
+        "y": 4.982025349434537,
+        "rot": 0,
+        "w": 0.7878306862480429,
+        "h": 0.7913770574234993
+      },
+      "modem": {
+        "x": 0.45662449212935396,
+        "y": 2.4768676193047163,
+        "rot": 0,
+        "w": 2.9997409143910256,
+        "h": 2.078416596712928
+      },
+      "media": {
+        "x": 0.4566244921293531,
+        "y": 4.555284216017645,
+        "rot": 0,
+        "w": 2.9997409143910274,
+        "h": 1.2990103729455793
+      },
+      "display": {
+        "x": 4.8302949616769,
+        "y": 3.914523765899093,
+        "rot": 0,
+        "w": 1.0447910884105691,
+        "h": 0.8951135836821594
+      },
+      "io": {
+        "x": 0.15,
+        "y": 5.854294588963224,
+        "rot": 0,
+        "w": 6.5994744541326815,
+        "h": 0.2952276420664859
+      },
+      "dramphy": {
+        "x": 5.875086050087469,
+        "y": 0.15,
+        "rot": 0,
+        "w": 0.8743884040452131,
+        "h": 5.704294588963224
+      }
+    },
+    "bench_tuning": 0.0,
+    "bench_isa": 0.0,
+    "rotated_once": false,
+    "eco_invest": 0.0,
+    "price": 120,
+    "reputation": 0.5,
+    "verification_effort": 1,
+    "pvt_corner": "tt",
+    "pdn_quality": 1,
+    "memory_channels": 0,
+    "memory_gb": 8,
+    "workload_parallel": 0.9,
+    "workload_set_mb": 32.0,
+    "workload_intensity": 4.0,
+    "seed": 7,
+    "custom": {
+      "name": "自研大核",
+      "isa": "armv9",
+      "decode": 6,
+      "rob": 320,
+      "l1_kb": 64,
+      "pipeline": 12,
+      "backend": 6,
+      "extensions": [
+        "M"
+      ]
+    },
+    "embedded_ips": {
+      "1e6fb34fba2897d932e4c4238bd295f0": {
+        "format": "silicon-professor/ip",
+        "version": 1,
+        "id": "1e6fb34fba2897d932e4c4238bd295f0",
+        "digest": "1e6fb34fba2897d932e4c4238bd295f0982c281b7331653154ef251003025bf1",
+        "name": "isqi / rv32",
+        "kind": "cpu",
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "config": {
+          "source": "ADDI x1,x0,6\nADDI x2,x0,7\nMUL x3,x1,x2\nSW x3,0(x0)\nLW x4,0(x0)\nHALT",
+          "memory": "",
+          "architecture": "riscv32",
+          "width": 2,
+          "rob_size": 32,
+          "execution_ports": 2,
+          "pipeline": 8,
+          "cache_kb": 16,
+          "hit_latency": 2,
+          "miss_latency": 40,
+          "multiply_latency": 3,
+          "extensions": [
+            "M"
+          ]
+        },
+        "verification": {
+          "passed": true,
+          "checks": [
+            "user-input-model-completed",
+            "fixed-add-store-load-vector"
+          ],
+          "model": "lab-ip-v1",
+          "scope": "functional-model-self-tests; not RTL/ISA compliance",
+          "cycles": 55,
+          "observed_ipc": 0.09090909090909091
+        },
+        "parameter_basis": "game_assumption",
+        "compatibility_notes": []
+      },
+      "bd38221b41b6abfc9af42329658ee468": {
+        "format": "silicon-professor/ip",
+        "version": 1,
+        "id": "bd38221b41b6abfc9af42329658ee468",
+        "digest": "bd38221b41b6abfc9af42329658ee468c2a6d31fab06d453f0cb2372c66bc27e",
+        "name": "isqi / gpu",
+        "kind": "gpu",
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "config": {
+          "elements": 64,
+          "warp_size": 8,
+          "processors": 2,
+          "task": "axpy",
+          "pattern": "alternating",
+          "bandwidth_gbs": 16.0,
+          "frequency_ghz": 1.0
+        },
+        "verification": {
+          "passed": true,
+          "checks": [
+            "user-input-model-completed",
+            "fp32-per-lane-reference"
+          ],
+          "model": "lab-ip-v1",
+          "scope": "functional-model-self-tests; not RTL/ISA compliance",
+          "cycles": 56,
+          "observed_ipc": null
+        },
+        "parameter_basis": "game_assumption",
+        "compatibility_notes": []
+      },
+      "659ec4dc117a2985058fe0153c4274bc": {
+        "format": "silicon-professor/ip",
+        "version": 1,
+        "id": "659ec4dc117a2985058fe0153c4274bc",
+        "digest": "659ec4dc117a2985058fe0153c4274bc4508d048409585c1e947202349ada64c",
+        "name": "isqi / npu",
+        "kind": "npu",
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "config": {
+          "m": 8,
+          "n": 8,
+          "k": 8,
+          "rows": 4,
+          "cols": 4,
+          "precision_bits": 8,
+          "accumulator_bits": 32,
+          "scratchpad_kb": 4,
+          "bandwidth_gbs": 16.0,
+          "frequency_ghz": 1.0
+        },
+        "verification": {
+          "passed": true,
+          "checks": [
+            "user-input-model-completed",
+            "2x2-gemm-hand-reference"
+          ],
+          "model": "lab-ip-v1",
+          "scope": "functional-model-self-tests; not RTL/ISA compliance",
+          "cycles": 88,
+          "observed_ipc": null
+        },
+        "parameter_basis": "game_assumption",
+        "compatibility_notes": []
+      },
+      "0704368ebbf68bf7437aa92da77e4ad1": {
+        "format": "silicon-professor/ip",
+        "version": 1,
+        "id": "0704368ebbf68bf7437aa92da77e4ad1",
+        "digest": "0704368ebbf68bf7437aa92da77e4ad1b09e099cc4b945567c928965651e1ac1",
+        "name": "isqi / isp",
+        "kind": "isp",
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "config": {
+          "width": 8,
+          "height": 8,
+          "black_level": 64,
+          "gain": 1.0,
+          "gamma": 2.2,
+          "output_bits": 8,
+          "pixels_per_cycle": 1,
+          "bandwidth_gbs": 4.0,
+          "frequency_ghz": 0.5
+        },
+        "verification": {
+          "passed": true,
+          "checks": [
+            "user-input-model-completed",
+            "black-level-zero-frame"
+          ],
+          "model": "lab-ip-v1",
+          "scope": "functional-model-self-tests; not RTL/ISA compliance",
+          "cycles": 147,
+          "observed_ipc": null
+        },
+        "parameter_basis": "game_assumption",
+        "compatibility_notes": []
+      }
+    },
+    "ip_blocks": {
+      "gpu": "bd38221b41b6abfc9af42329658ee468",
+      "npu": "659ec4dc117a2985058fe0153c4274bc",
+      "isp": "0704368ebbf68bf7437aa92da77e4ad1"
+    },
+    "core_templates": {
+      "gpu:g925": {
+        "kind": "gpu",
+        "catalog_id": "g925",
+        "name": "Immortalis-G925 MC16",
+        "model_schema": "catalog-ppa-v1",
+        "model": {
+          "id": "g925",
+          "name": "Immortalis-G925 MC16",
+          "vendor": "Arm",
+          "year": 2024,
+          "ref_node": "n3e",
+          "unit_name": "MC",
+          "default_units": 16,
+          "min_units": 10,
+          "max_units": 20,
+          "perf_per_unit": 70,
+          "area_per_unit": 0.98,
+          "power_per_unit": 0.22,
+          "license_cost_m": 6.5,
+          "compat": 1.0,
+          "cu_per_unit": 1,
+          "note": "玄戒 O1 / 天玑 9400 同款，规模大、能效进步明显。",
+          "evidence": [],
+          "confidence": "medium",
+          "parameter_basis": "game_assumption"
+        },
+        "reference_node": {
+          "id": "n3e",
+          "name": "TSMC N3E",
+          "short": "N3E",
+          "vendor": "TSMC",
+          "year": 2023,
+          "area_scale": 0.66,
+          "sram_mb": 0.6,
+          "freq_scale": 1.12,
+          "leak_scale": 1.12,
+          "wafer_cost": 20500,
+          "d0": 0.1,
+          "mask_cost": 14,
+          "maturity": 0.88,
+          "vmin": 0.55,
+          "note": "教学节点情景：面积、频率、SRAM密度、缺陷率、成熟度与费用均为未校准假设。节点名称不等于物理线宽。",
+          "evidence": [],
+          "confidence": "medium",
+          "parameter_basis": "game_assumption"
+        },
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "digest": "e435160e5027add068d4014a27c427bedf13464f564aca495c7cc0ddf1da1999"
+      },
+      "isp:isp": {
+        "kind": "isp",
+        "catalog_id": "isp",
+        "name": "ISP",
+        "model_schema": "catalog-ppa-v1",
+        "model": {
+          "id": "isp",
+          "name": "ISP",
+          "area": 4.0,
+          "power": 0.45,
+          "license_cost_m": 2.0,
+          "color": "#7ee7c7",
+          "edge": false,
+          "parameter_basis": "game_assumption"
+        },
+        "reference_node": null,
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "digest": "b33ec764522ddcc555edd1772bbaa8572034668cb48ff22fe87aa9f7c09000e4"
+      },
+      "npu:npu30": {
+        "kind": "npu",
+        "catalog_id": "npu30",
+        "name": "高性能 NPU",
+        "model_schema": "catalog-ppa-v1",
+        "model": {
+          "id": "npu30",
+          "name": "高性能 NPU",
+          "tops": 30,
+          "area": 6.8,
+          "power": 1.2,
+          "license_cost_m": 4.0,
+          "note": "教学高算力档位；模型是否能运行还取决于内存、算子和软件。",
+          "evidence": [],
+          "confidence": "medium",
+          "precision": "INT8",
+          "sparsity": "dense",
+          "operations_per_mac": 2,
+          "parameter_basis": "game_assumption"
+        },
+        "reference_node": null,
+        "producer": {
+          "name": "Silicon Immortal",
+          "version": "0.1.0-alpha.3",
+          "release_channel": "alpha",
+          "model": "analytic-v0.6+challenges-v1"
+        },
+        "digest": "cd0a7415bfd0bd58c0ef792411325b3cdf438fa174269f04934126870e50a33f"
+      }
+    }
+  },
+  "core_bundle": {
+    "schema": "embedded-cores-v1"
+  },
+  "summary": {
+    "die_area_mm2": 47.1,
+    "st": 482.6,
+    "mt": 557.3,
+    "gpu": 60.0,
+    "ai_tops": 0.6,
+    "ai_score": 0.6,
+    "peak_power_w": 3.78,
+    "unit_cost_usd": 25.34,
+    "review": 82.6,
+    "grade": "B",
+    "valid": true
+  },
+  "engine": {
+    "name": "Silicon Professor",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "provenance": {
+    "simulation": true,
+    "visuals": "procedural-floorplan-illustration",
+    "legacy_ai_tops_is_score": true,
+    "signoff_ready": true
+  }
+}

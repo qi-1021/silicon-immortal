@@ -1,0 +1,36 @@
+{
+  "format": "silicon-professor/ip",
+  "version": 1,
+  "id": "bd38221b41b6abfc9af42329658ee468",
+  "digest": "bd38221b41b6abfc9af42329658ee468c2a6d31fab06d453f0cb2372c66bc27e",
+  "name": "isqi / gpu",
+  "kind": "gpu",
+  "producer": {
+    "name": "Silicon Immortal",
+    "version": "0.1.0-alpha.3",
+    "release_channel": "alpha",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "config": {
+    "elements": 64,
+    "warp_size": 8,
+    "processors": 2,
+    "task": "axpy",
+    "pattern": "alternating",
+    "bandwidth_gbs": 16.0,
+    "frequency_ghz": 1.0
+  },
+  "verification": {
+    "passed": true,
+    "checks": [
+      "user-input-model-completed",
+      "fp32-per-lane-reference"
+    ],
+    "model": "lab-ip-v1",
+    "scope": "functional-model-self-tests; not RTL/ISA compliance",
+    "cycles": 56,
+    "observed_ipc": null
+  },
+  "parameter_basis": "game_assumption",
+  "compatibility_notes": []
+}

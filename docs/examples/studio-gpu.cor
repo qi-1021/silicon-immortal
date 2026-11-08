@@ -1,0 +1,85 @@
+{
+  "format": "silicon-professor/ip",
+  "version": 1,
+  "id": "4e1223b5ebcfd739984f14a086e9fda8",
+  "digest": "4e1223b5ebcfd739984f14a086e9fda80aa95bdf4d53169c20b047007dc5f485",
+  "name": "isqi / Studio GPU",
+  "kind": "gpu",
+  "identity_basis": "kind/name/design",
+  "design": {
+    "schema": "parameterized-core-v1",
+    "hardware": {
+      "processors": 2,
+      "warp_size": 8,
+      "resident_warps": 4,
+      "alu_latency": 4,
+      "issue_interval": 1,
+      "frequency_ghz": 1.0,
+      "bandwidth_gbs": 16.0
+    }
+  },
+  "producer": {
+    "name": "Silicon Immortal",
+    "version": "0.1.0-alpha.3",
+    "release_channel": "alpha",
+    "model": "analytic-v0.6+challenges-v1"
+  },
+  "config": {
+    "processors": 2,
+    "warp_size": 8,
+    "resident_warps": 4,
+    "alu_latency": 4,
+    "issue_interval": 1,
+    "frequency_ghz": 1.0,
+    "bandwidth_gbs": 16.0,
+    "elements": 128,
+    "task": "axpy",
+    "pattern": "alternating"
+  },
+  "verification": {
+    "passed": true,
+    "cases": [
+      {
+        "name": "axpy/uniform · 128",
+        "passed": true,
+        "cycles": 115,
+        "instructions": null,
+        "ipc": null,
+        "compute_cycles": 19,
+        "transfer_cycles": 96,
+        "observation": "256 ops；分歧warp 0；逐lane FP32参考"
+      },
+      {
+        "name": "branch/uniform · 128",
+        "passed": true,
+        "cycles": 115,
+        "instructions": null,
+        "ipc": null,
+        "compute_cycles": 19,
+        "transfer_cycles": 96,
+        "observation": "256 ops；分歧warp 0；逐lane FP32参考"
+      },
+      {
+        "name": "branch/alternating · 129",
+        "passed": true,
+        "cycles": 129,
+        "instructions": null,
+        "ipc": null,
+        "compute_cycles": 32,
+        "transfer_cycles": 97,
+        "observation": "194 ops；分歧warp 16；逐lane FP32参考"
+      }
+    ],
+    "checks": [
+      "axpy/uniform · 128",
+      "branch/uniform · 128",
+      "branch/alternating · 129"
+    ],
+    "scope": "fixed functional vectors and resource scheduling; not full ISA/RTL/PDK certification",
+    "model": "parameterized-core-v1",
+    "cycles": 359,
+    "observed_ipc": null
+  },
+  "parameter_basis": "game_assumption",
+  "compatibility_notes": []
+}
