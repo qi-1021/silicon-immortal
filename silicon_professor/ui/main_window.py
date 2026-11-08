@@ -28,6 +28,7 @@ from .screens.showcase import ShowcaseScreen
 from .screens.signoff import SignoffScreen
 from .screens.tutorial import TutorialScreen
 from .screens.start import StartScreen
+from .screens.sandbox import SandboxScreen
 from .screens.engineering import EngineeringScreen
 from .screens.labs import LabsScreen
 from .screens.studio import StudioScreen
@@ -139,7 +140,10 @@ class Header(QFrame):
         }
         for k, (l2, unit) in self.stats.items():
             l2.setText(vals.get(k, "—"))
-        if result["signoff"]["ready"]:
+        if result['signoff'].get('mode')=='advisory':
+            self.valid.setText(f"● 自由设计 · {len(result['signoff']['diagnostics'])}项建议")
+            self.valid.setStyleSheet(f"color:{T.AMBER}; font-size:11px;")
+        elif result["signoff"]["ready"]:
             self.valid.setText("● 可签核")
             self.valid.setStyleSheet(f"color:{T.GREEN}; font-size:11px;")
         else:
@@ -164,6 +168,7 @@ class MainWindow(QMainWindow):
         self.progress: dict = {}
         self.lab_workspace: dict = {}
         self.core_workspace: dict = {}
+        self.sandbox_workspace: dict = {};self.project_workspace: dict = {}
         self.published_design = None
         self._save = savemod.load()
         self.ip_library={}
@@ -229,6 +234,7 @@ class MainWindow(QMainWindow):
         self.studio_button.setObjectName("Nav")
         self.studio_button.clicked.connect(lambda: self.go("studio"))
         navl.addWidget(self.studio_button)
+        free=QPushButton('自由沙盒');free.setObjectName('Nav');free.clicked.connect(self.start_sandbox);navl.addWidget(free)
         manual=QPushButton('玩家手册 ↗');manual.setObjectName('Nav')
         manual.clicked.connect(self.open_manual);navl.addWidget(manual)
         self.hint = QLabel("")
@@ -249,7 +255,7 @@ class MainWindow(QMainWindow):
             ("start", StartScreen), ("brief", BriefScreen), ("architecture", ArchitectureScreen),
             ("physical", PhysicalScreen), ("floorplan", FloorplanScreen), ("package", PackageScreen),
             ("engineering", EngineeringScreen), ("signoff", SignoffScreen), ("report", ReportScreen), ("showcase", ShowcaseScreen), ("tutorial", TutorialScreen),
-            ("codex", CodexScreen), ("sources", SourcesScreen), ("labs", LabsScreen), ("studio", StudioScreen),
+            ("codex", CodexScreen), ("sources", SourcesScreen), ("labs", LabsScreen), ("studio", StudioScreen),('sandbox',SandboxScreen),
         ]:
             s = cls(self)
             self.screens[key] = s
@@ -269,6 +275,7 @@ class MainWindow(QMainWindow):
         self.progress = data.get("progress", {})
         self.lab_workspace = data.get("lab_workspace", {})
         self.core_workspace = data.get("core_workspace", {})
+        self.sandbox_workspace=data.get('sandbox_workspace',{});self.project_workspace=data.get('project_workspace',{})
         from ..engine.ip_library import validate_asset
         self.ip_library={}
         library=data.get('ip_library',{})
@@ -289,10 +296,15 @@ class MainWindow(QMainWindow):
                 self.design = None
 
     def persist(self):
+        if self.design:
+            snapshot=dict(design=self.design.to_dict(),published_design=self.published_design,tutorial_id=self.tutorial_id)
+            if self.design.scenario_id=='sandbox':self.sandbox_workspace=snapshot
+            else:self.project_workspace=snapshot
         savemod.save(dict(design=self.design.to_dict() if self.design else None, progress=self.progress,
                           tutorial_id=self.tutorial_id, published_design=self.published_design,
                           lab_workspace=self.lab_workspace,core_workspace=self.core_workspace,
-                          ip_library=self.ip_library,learning_mode=self.learning_mode))
+                          ip_library=self.ip_library,learning_mode=self.learning_mode,
+                          sandbox_workspace=self.sandbox_workspace,project_workspace=self.project_workspace))
 
     def _set_mode(self,*_):
         self.learning_mode=self.mode_picker.currentData()
@@ -311,6 +323,8 @@ class MainWindow(QMainWindow):
         return self.design is not None and self.published_design == self.design.to_dict()
 
     def start_scenario(self, sid: str):
+        if sid=='sandbox':self.start_sandbox();return
+        self.persist()
         self.tutorial_id = None
         self.design = empty_design(sid)
         self.design.name = f"{SEGMENTS[sid]['name']} SoC"
@@ -327,6 +341,22 @@ class MainWindow(QMainWindow):
         dlg = SearchDialog(self)
         if dlg.exec() == QDialog.DialogCode.Accepted and dlg.choice:
             self.open_result(dlg.choice)
+
+    def start_sandbox(self,checked=False,fresh=False):
+        self.persist()
+        saved=self.sandbox_workspace if not fresh else {}
+        try:self.design=Design.from_dict(saved['design']) if isinstance(saved,dict) and saved.get('design') else empty_design('sandbox')
+        except (ValueError,TypeError,KeyError):self.design=empty_design('sandbox')
+        self.design.scenario_id='sandbox'
+        if not self.design.name:self.design.name='我的自由设计'
+        self.published_design=saved.get('published_design') if isinstance(saved,dict) else None;self.tutorial_id=None
+        self.scenario=SEGMENTS['sandbox'];self.recompute_now();self.go('sandbox')
+
+    def return_to_project(self):
+        if not isinstance(self.project_workspace,dict) or not self.project_workspace.get('design'):return
+        self.persist();saved=self.project_workspace
+        self.design=Design.from_dict(saved['design']);self.published_design=saved.get('published_design');self.tutorial_id=saved.get('tutorial_id')
+        self.scenario=SEGMENTS[self.design.scenario_id];self.recompute_now();self.go('architecture')
 
     def open_manual(self):
         from pathlib import Path
@@ -345,6 +375,7 @@ class MainWindow(QMainWindow):
         if not path:return
         try:
             design,notes=export.read_design(path)
+            self.persist()
             self.design=design;self.scenario=SEGMENTS.get(design.scenario_id,SEGMENTS['sandbox'])
             self.tutorial_id=None;self.published_design=None
             self.recompute_now(force_layout=False)
@@ -499,6 +530,7 @@ class MainWindow(QMainWindow):
         m = self.result["market"]
         self.published_design = self.design.to_dict()
         sid = self.design.scenario_id
+        if sid=='sandbox':self.persist();self.go('showcase');return
         best = self.progress.get(sid)
         if not best or m["profit"] > best.get("profit", -1e9):
             self.progress[sid] = dict(grade=m["grade"], profit=m["profit"], review=m["review"],

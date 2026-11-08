@@ -3,11 +3,11 @@
   "version": 1,
   "producer": {
     "name": "Silicon Immortal",
-    "version": "0.1.0-alpha.4",
+    "version": "0.1.0-alpha.5",
     "release_channel": "alpha",
-    "model": "analytic-v0.7+x86-studio-v1"
+    "model": "analytic-v0.8+x64-free-studio-v1"
   },
-  "created_at": "2026-11-08T15:44:48.192908+00:00",
+  "created_at": "2026-11-08T16:25:47.892783+00:00",
   "name": "isqi / x86-workstation",
   "scenario": "x86_workstation",
   "design": {
@@ -16,7 +16,7 @@
     "node_id": "n3p",
     "cores": [
       {
-        "core_id": "x86_dual",
+        "core_id": "x64_balanced",
         "count": 4,
         "l2_mb": 1.0,
         "l2_shared": false,
@@ -52,95 +52,95 @@
     "routing_overhead": 0.12,
     "placements": {
       "core:0:0": {
-        "x": 4.325896616640158,
-        "y": 3.0792354243133313,
+        "x": 6.766104895263193,
+        "y": 0.35222565035462783,
         "rot": 0,
-        "w": 1.7396018353216764,
-        "h": 1.7396018353216767
+        "w": 1.5245024654108683,
+        "h": 2.207857606008676
       },
       "core:0:1": {
-        "x": 6.317639099299536,
-        "y": 3.0792354243133313,
+        "x": 5.066163468598735,
+        "y": 2.953531649524923,
         "rot": 0,
-        "w": 1.7396018353216764,
-        "h": 1.7396018353216767
+        "w": 1.6122219460376628,
+        "h": 2.0877301490087357
       },
       "core:0:2": {
-        "x": 4.387756170870697,
-        "y": 4.848297250276898,
+        "x": 6.678385414636399,
+        "y": 2.953531649524923,
         "rot": 0,
-        "w": 2.045823298022691,
-        "h": 1.4792159950370165
+        "w": 1.6122219460376628,
+        "h": 2.0877301490087357
       },
       "core:0:3": {
-        "x": 4.387756170870697,
-        "y": 6.327513245313915,
+        "x": 5.066163468598735,
+        "y": 5.438974762853324,
         "rot": 0,
-        "w": 2.045823298022691,
-        "h": 1.4792159950370165
+        "w": 1.4930174430367646,
+        "h": 2.254417307268848
       },
       "l3": {
-        "x": 0.15,
-        "y": 3.5765180345911287,
+        "x": 2.89914952373644,
+        "y": 0.5180627737004994,
         "rot": 0,
-        "w": 4.049826292971306,
-        "h": 2.1502156808832043
+        "w": 2.167013944862295,
+        "h": 4.0184328396434745
       },
       "gpu": {
         "x": 0.15,
-        "y": 0.4005799922960521,
+        "y": 0.5180627737004998,
         "rot": 0,
-        "w": 4.049826292971306,
-        "h": 2.7278386597582887
+        "w": 2.74914952373644,
+        "h": 4.018432839643474
       },
       "npu": {
-        "x": 0.46427868298076,
-        "y": 5.924253105715069,
+        "x": 0.15,
+        "y": 5.136434228018268,
         "rot": 0,
-        "w": 3.4212689270097862,
-        "h": 1.8824761346358632
+        "w": 2.544054263063366,
+        "h": 2.5315722226427817
       },
       "isp": {
-        "x": 6.621509346792777,
-        "y": 5.024899717465009,
+        "x": 6.5591809116355,
+        "y": 5.438974762853324,
         "rot": 0,
-        "w": 1.561801911497286,
-        "h": 1.9225119810653437
+        "w": 1.3318664992604314,
+        "h": 2.2544173072688474
       },
       "modem": {
-        "x": 4.199826292971307,
-        "y": 0.37503128240732153,
+        "x": 2.6940542630633657,
+        "y": 5.136434228018268,
         "rot": 0,
-        "w": 2.451375363273081,
-        "h": 2.4497128688567984
+        "w": 2.372109205535369,
+        "h": 2.5315722226427813
       },
       "media": {
-        "x": 6.651201656244387,
-        "y": 0.3750312824073211,
+        "x": 5.066163468598735,
+        "y": 0.3522256503546283,
         "rot": 0,
-        "w": 1.5321096020456753,
-        "h": 2.4497128688567993
+        "w": 1.6999414266644572,
+        "h": 2.207857606008675
       },
       "display": {
-        "x": 6.742709865608629,
-        "y": 7.124014165718462,
+        "x": 7.891047410895931,
+        "y": 5.438974762853324,
         "rot": 0,
-        "w": 1.3194008738655831,
-        "h": 0.682715074632469
+        "w": 0.39955994977812925,
+        "h": 2.2544173072688483
       },
       "io": {
         "x": 0.15,
-        "y": 7.806729240350932,
+        "y": 7.899882291634844,
         "rot": 0,
-        "w": 8.660750530104599,
-        "h": 0.21668033247143026
+        "w": 8.760504855663424,
+        "h": 0.21421303169554218
       },
       "dramphy": {
-        "x": 8.183311258290063,
+        "x": 8.290607360674061,
         "y": 0.15,
         "rot": 0,
-        "w": 0.627439271814537,
-        "h": 7.6567292403509315
+        "w": 0.6198974949893626,
+        "h": 7.749882291634844
       }
     },
     "bench_tuning": 0.0,
@@ -152,6 +152,7 @@
     "verification_effort": 1,
     "pvt_corner": "tt",
     "pdn_quality": 1,
+    "pdn_resistance_mohm": 0.0,
     "memory_channels": 0,
     "memory_gb": 8,
     "workload_parallel": 0.9,
@@ -173,46 +174,46 @@
     "embedded_ips": {},
     "ip_blocks": {},
     "core_templates": {
-      "cpu:x86_dual": {
+      "cpu:x64_balanced": {
         "kind": "cpu",
-        "catalog_id": "x86_dual",
-        "name": "x86 · 双发射顺序核",
+        "catalog_id": "x64_balanced",
+        "name": "x86 · 64位 · 均衡双发射核",
         "model_schema": "catalog-ppa-v1",
         "model": {
-          "name": "x86 · 双发射顺序核",
+          "name": "x86 · 64位 · 均衡双发射核",
           "parameter_basis": "game_assumption",
           "evidence": [
             "intel_ia32"
           ],
           "confidence": "assumption",
           "license_cost_m": 0.0,
-          "id": "x86_dual",
+          "id": "x64_balanced",
           "vendor": "STUDIO",
-          "arch": "x86 / IA-32 · 32位整数子集",
-          "isa": "x86_32",
+          "arch": "x86 · 64位整数教学子集",
+          "isa": "x86_64",
           "year": 2026,
-          "tier": "big",
+          "tier": "mid",
           "license": "research",
           "ref_node": "n3e",
-          "ipc": 0.96,
-          "fmax_ref": 2.7214587018641994,
-          "logic_area": 2.69,
+          "ipc": 0.8287292817679559,
+          "fmax_ref": 2.717022143730471,
+          "logic_area": 3.062,
           "l2_default": 1.0,
           "l2_max": 8.0,
-          "power_ref": 0.9207000000000001,
+          "power_ref": 0.9318600000000001,
           "leak_frac": 0.16,
           "eng_weeks": 24,
           "decode": 2,
-          "rob": 32,
-          "note": "可执行参数化x86教学设计；不代表Intel/AMD商业微架构、完整x86或64位长模式。PPA为游戏假设。",
+          "rob": 48,
+          "note": "参数化教学核心：精简/均衡/性能/吞吐表示资源与工作负载方向，不是厂商实物分类；PPA未校准，无OS/SIMD。",
           "hardware": {
-            "architecture": "x86_32",
+            "architecture": "x86_64",
             "enable_m": false,
             "enable_zbb": false,
-            "issue_order": "in_order",
+            "issue_order": "out_of_order",
             "width": 2,
             "pipeline": 8,
-            "rob_size": 32,
+            "rob_size": 48,
             "execution_ports": 2,
             "alu_ports": 2,
             "multiply_ports": 1,
@@ -246,11 +247,11 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.4",
+          "version": "0.1.0-alpha.5",
           "release_channel": "alpha",
-          "model": "analytic-v0.7+x86-studio-v1"
+          "model": "analytic-v0.8+x64-free-studio-v1"
         },
-        "digest": "d1ba6e9b2ace4427d524d2902c6537a4f3691c76619f3d65243e085e0aa562c6"
+        "digest": "e27c0758e67af895a2a8e60203f9aa372549170840a718f7ff7202637d138df8"
       },
       "gpu:g925": {
         "kind": "gpu",
@@ -300,9 +301,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.4",
+          "version": "0.1.0-alpha.5",
           "release_channel": "alpha",
-          "model": "analytic-v0.7+x86-studio-v1"
+          "model": "analytic-v0.8+x64-free-studio-v1"
         },
         "digest": "e435160e5027add068d4014a27c427bedf13464f564aca495c7cc0ddf1da1999"
       },
@@ -324,9 +325,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.4",
+          "version": "0.1.0-alpha.5",
           "release_channel": "alpha",
-          "model": "analytic-v0.7+x86-studio-v1"
+          "model": "analytic-v0.8+x64-free-studio-v1"
         },
         "digest": "b33ec764522ddcc555edd1772bbaa8572034668cb48ff22fe87aa9f7c09000e4"
       },
@@ -353,9 +354,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.4",
+          "version": "0.1.0-alpha.5",
           "release_channel": "alpha",
-          "model": "analytic-v0.7+x86-studio-v1"
+          "model": "analytic-v0.8+x64-free-studio-v1"
         },
         "digest": "b9f99af36988a74d2803bc7ba0e716692bc974a14d4aeff261fc2315b4ab28d5"
       }
@@ -365,26 +366,27 @@
     "schema": "embedded-cores-v1"
   },
   "summary": {
-    "die_area_mm2": 77.939,
-    "st": 1568.5,
-    "mt": 3254.0,
+    "die_area_mm2": 79.627,
+    "st": 1350.4,
+    "mt": 3122.2,
     "gpu": 870.0,
     "ai_tops": 44.7,
     "ai_score": 44.7,
-    "peak_power_w": 7.82,
-    "unit_cost_usd": 61.29,
-    "review": 89.4,
+    "peak_power_w": 7.86,
+    "unit_cost_usd": 62.07,
+    "review": 88.9,
     "grade": "B",
     "valid": true
   },
   "engine": {
     "name": "Silicon Professor",
-    "model": "analytic-v0.7+x86-studio-v1"
+    "model": "analytic-v0.8+x64-free-studio-v1"
   },
   "provenance": {
     "simulation": true,
     "visuals": "procedural-floorplan-illustration",
     "legacy_ai_tops_is_score": true,
-    "signoff_ready": true
+    "signoff_ready": true,
+    "signoff_mode": "required"
   }
 }

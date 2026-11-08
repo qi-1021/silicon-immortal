@@ -72,7 +72,7 @@ def validate_templates(records):
             elif not isinstance(value, str) or not value or len(value)>4096:
                 fail(f'model.{field}须为非空字符串。')
         if kind == 'cpu':
-            if model['isa'] not in ('armv8', 'armv9', 'riscv', 'x86_32') or model['tier'] not in ('big', 'mid', 'little') or model['license'] not in ('arm', 'riscv', 'research'):
+            if model['isa'] not in ('armv8', 'armv9', 'riscv', 'x86_32','x86_64') or model['tier'] not in ('big', 'mid', 'little') or model['license'] not in ('arm', 'riscv', 'research'):
                 fail('CPU类别语义未支持。')
             if not 0 <= model['leak_frac'] <= 1 or model['l2_max'] < model['l2_default']: fail('CPU功耗/缓存范围无效。')
         if kind == 'gpu' and not model['min_units'] <= model['default_units'] <= model['max_units'] <= 1024:

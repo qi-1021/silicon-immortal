@@ -6,7 +6,7 @@
 
 | 现象 | 检查和处理 |
 | --- | --- |
-| 找不到exe/app | 当前仅源码发行，安装Python3.12后运行对应脚本 |
+| 找不到exe/app | 当前仅源码发行，安装Python3.12后运行run.bat/run.command/run.sh |
 | Windows提示找不到py/python | 安装Python3.12，勾选Launcher和PATH；验证py -3.12 --version |
 | Mac脚本没有执行权限 | 终端bash run.command，或chmod +x run.command后./run.command |
 | Python版本太低 | 使用Python3.12创建项目环境，删除环境前确认不是玩家saves目录 |
@@ -53,6 +53,10 @@ Windows也可在命令行运行.venv\Scripts\python.exe -m silicon_professor，M
 **为什么更宽的CPU没有快四倍？** 依赖链、端口、cache、分派/提交宽度、队列与串行部分都会限制收益。
 
 **为什么GPU加驻留warp没有降低传输周期？** 它隐藏本模型的ALU等待，传输数据量和带宽没有变化。当前模型还假设计算与传输不重叠。
+
+**沙盒为什么有问题还允许预览？** 自由沙盒的签核是诊断，目的是理解模型与约束。生成预览不等于真实可制造；产品挑战仍按验收阻止不满足的设计。
+
+**电源网络和散热是谁调？** 芯片/封装PDN是芯片设计事项，工程页可设等效电阻或投入。设备散热器属于整机厂商的场景，芯片通过功耗和封装满足它。
 
 **为什么CPU IPC不能跨架构排名？** 指令数量、指令语义和测试任务不同；SoC IPC指数还有教学映射，不能与真实CPU IPC等同。
 

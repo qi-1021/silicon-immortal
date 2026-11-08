@@ -4,9 +4,9 @@
 
 ## 三种版本信息
 
-- `producer.version`：游戏版本，目前`0.1.0-alpha.4`，第一次正式发布前使用alpha。
+- `producer.version`：游戏版本，目前`0.1.0-alpha.5`，第一次正式发布前使用alpha。
 - `version`：文件结构版本。SoC与IP当前均为1。与游戏版本分开。
-- `producer.model`：模型标识，当前`analytic-v0.7+x86-studio-v1`。
+- `producer.model`：模型标识，当前`analytic-v0.8+x64-free-studio-v1`。
 
 版本不作为互相读取的硬门槛。已知的format和实际可理解字段决定能否读取。不同或未知版本会显示兼容提示；未知SoC附加字段忽略并提示，旧IP附加配置保留但不计算。未知核心硬件字段、模板模型结构或ISA不能静默忽略；错误列出字段与来源版本。
 
@@ -16,7 +16,7 @@
 {
   "format": "silicon-professor/design",
   "version": 1,
-  "producer": {"name": "Silicon Immortal", "version": "0.1.0-alpha.4", "release_channel": "alpha", "model": "analytic-v0.7+x86-studio-v1"},
+  "producer": {"name": "Silicon Immortal", "version": "0.1.0-alpha.5", "release_channel": "alpha", "model": "analytic-v0.8+x64-free-studio-v1"},
   "created_at": "2026-11-08T00:00:00+00:00",
   "name": "isqi / 01",
   "scenario": "sandbox",
@@ -59,6 +59,8 @@
 SoC的CPU组通过`core_id: ip:<id>`引用`embedded_ips`中的定义，可多次实例化；GPU/NPU/ISP通过`ip_blocks`绑定同一嵌入库。导出SoC包含它实际使用的IP，不依赖另一台机器的本地命名库。当前只有研究沙盒允许实例化实验IP，避免把研究样机当商业授权。
 
 ## 导入输入约束
+
+`design.pdn_resistance_mohm`保存芯片/封装等效电阻，范围0..1000mΩ；0沿用历史pdn_quality映射。自由沙盒的签核是建议，`provenance.signoff_mode: advisory`且`signoff_ready: false`，不把可生成预览当物理/产品签核通过。核心分类的模板仍包含完整hardware与名称，x86_64是独立64位ISA标识，不改写旧x86_32资产。
 
 `.sil`最多12MB，`.cor`最多2MB。先检查已知设计字段，再实例化或运行模型。数值应为JSON数字，计数为整数，开关为JSON布尔值；`"false"`不是`false`。不截断小数核数、不把未知制程或IP换成默认值，不接受NaN/Infinity。
 

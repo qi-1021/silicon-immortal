@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (QComboBox, QGridLayout, QHBoxLayout, QLabel,
-                               QPushButton, QScrollArea, QSpinBox, QVBoxLayout, QWidget)
+                               QPushButton, QScrollArea, QSpinBox,QDoubleSpinBox, QVBoxLayout, QWidget)
 
 from ...engine.engineering import PVT_CORNERS
 from .. import theme as T
@@ -41,6 +41,12 @@ class EngineeringScreen(QWidget):
             ("pdn_quality", "电源网络投入", "降低估算等效电阻；高峰值电流需要更好的电源网络。"),
         ]:
             self._slider(verify, field, title, 0, 1, "{:.0%}", hint)
+        pdn_row=QHBoxLayout();pdn_row.addWidget(QLabel('芯片 / 封装 PDN等效电阻'))
+        self.pdn_resistance=QDoubleSpinBox();self.pdn_resistance.setRange(0,1000);self.pdn_resistance.setDecimals(2)
+        self.pdn_resistance.setSuffix(' mΩ');self.pdn_resistance.setSpecialValueText('按投入估算');self.pdn_resistance.setSingleStep(.5)
+        self.pdn_resistance.valueChanged.connect(lambda v:self._set('pdn_resistance_mohm',v));pdn_row.addWidget(self.pdn_resistance);verify.add_layout(pdn_row)
+        note=QLabel('PDN是芯片供电网与封装供电路径，不是设备散热器。0沿用投入映射；手动电阻为设计假设，用I×R估算压降，不代表已提取真实电源网。小电阻需要实际金属、via、bump与去耦设计，本版未建模。')
+        note.setWordWrap(True);note.setObjectName('Muted');verify.add(note)
         self.corner_result = QLabel()
         self.corner_result.setWordWrap(True)
         self.corner_result.setObjectName("Dim")
@@ -148,6 +154,7 @@ class EngineeringScreen(QWidget):
         if self._loading or not self.win.design:
             return
         setattr(self.win.design, field, value)
+        if field=='pdn_resistance_mohm':self.sliders['pdn_quality'].setEnabled(value==0)
         self.win.request_recompute(force_layout=force)
 
     def _preset(self, values):
@@ -171,6 +178,8 @@ class EngineeringScreen(QWidget):
             return
         self._loading = True
         d = self.win.design
+        self.pdn_resistance.setValue(d.pdn_resistance_mohm)
+        self.sliders['pdn_quality'].setEnabled(d.pdn_resistance_mohm==0)
         self.corner.setCurrentIndex(max(0, self.corner.findData(d.pvt_corner)))
         self.channels.setValue(d.memory_channels)
         self.capacity.setValue(d.memory_gb)
@@ -193,7 +202,7 @@ class EngineeringScreen(QWidget):
         self.bottleneck.setText(f"当前瓶颈：{w['bottleneck']}。可达到约 {w['achievable']:.1f} Gop/s。\n共享缓存 {w['shared_cache_mb']:g} MB / 工作集 {w['working_set_mb']:g} MB。")
         self.memory_result.setText(f"{mem['data_rate_mts']} MT/s × {mem['width_bits']} bit ÷ 8\n理论 {mem['theoretical_gbs']:.1f} GB/s · 利用率 {mem['efficiency']:.0%}\n整机配套成本 ${r['cost']['platform_total']:.1f}（含外部内存、存储与散热）")
         self.corner_result.setText("\n".join(f"{c['name']}：相对均值裕量 {c['timing_margin']:+.0%}" for c in e["corners"]) + "\n负裕量可选低可用率的高频档位，不等于所有 die 均能达标。")
-        self.checks.setText("\n".join(("✓ " if c["ok"] else "× ") + c["title"] + ("\n  " + c["remedy"] if not c["ok"] else "") for c in r["signoff"]["checks"]))
+        self.checks.setText("\n\n".join(("✓ " if c["ok"] else "○ " if r['signoff'].get('mode')=='advisory' else "× ") + c["title"] + ("\n原因："+c.get('explanation',c['title'])+"\n方向：" + c["remedy"] if not c["ok"] else "") for c in r["signoff"]["checks"]))
         if self._baseline and self._baseline[0] == id(self.win.design):
             before, now = self._baseline[1], self._snapshot()
             self.compare.setText(f"相对对照：面积 {now['area']-before['area']:+.1f} mm² · 单颗 ${now['cost']-before['cost']:+.1f}\n研发 ${now['nre']-before['nre']:+.1f} M · 任务吞吐 {now['workload']-before['workload']:+.1f} Gop/s")

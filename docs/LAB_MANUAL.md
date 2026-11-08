@@ -1,6 +1,6 @@
 # 实验室手册
 
-当前游戏版本 `0.1.0-alpha.4`，模型 `analytic-v0.7+x86-studio-v1`。九个可运行工作台：核心与指令、GPU、NPU、ISP、缓存、互连、时序、功耗/热和数字逻辑。18节进阶实验课与14节产品设计课程互补。下面给出输入、观察目标、参考解、原文定位和实现边界。
+当前游戏版本 `0.1.0-alpha.5`，模型 `analytic-v0.8+x64-free-studio-v1`。九个可运行工作台：核心与指令、GPU、NPU、ISP、缓存、互连、时序、功耗/热和数字逻辑。18节进阶实验课与14节产品设计课程互补。下面给出输入、观察目标、参考解、原文定位和实现边界。
 
 ## 先设计核心，再用实验验证
 
@@ -27,13 +27,13 @@ LAB默认打开核心设计台，可独立新建、命名、复制CPU/GPU/NPU/IS
 
 ## 结果的含义
 
-- CPU有RV32、IA-32和AArch64整数子集；汇编经过解析再执行，不从二进制取指。各自的指令编码用于学习与核对。单执行上下文、小端、64KiB数据内存；未执行第三方完整合规测试。
+- CPU有RISC-V RV32、x86 IA-32/AMD64与Arm AArch64四个整数子集；汇编解析执行，不从二进制取指。编码用于学习核对。单上下文、小端、64KiB对齐数据内存；未执行完整合规测试。
 - IA-32显示原生算术标志；双操作数IMUL后的未定义标志保留为未知，不能用它推导条件分支。A64区分W写入清零高32位、X64位、零寄存器与NZCV；不支持的SP形式明确报错。MOV立即数只接受一次MOVZ/MOVN能表示的值。
 - 功能解释器产生动态轨迹；时序器按依赖与资源调度。结果值来自正确功能轨迹，不能把内部提交一致性检查当成独立硬件验证。
 - ALU为1周期、乘除延迟由输入指定，发射单元均按教学流水化模型处理；不是真实乘除器设计。访存串行，没有store buffer/MSHR、分支推测、异常恢复或有限物理寄存器。
 - 回放按已生成轨迹的提交时间更新架构寄存器，不是交互式执行环境，也不展现投机寄存器状态。
 - 默认时序的cold cache对每次运行重新初始化；HALT不计为标准指令。顺序落出程序末尾视为实验结束，显式跳转出代码区报错。
-- 三类CPU及GPU/NPU/ISP均能保存为实验IP，在研究沙盒实例化。模型分不能证明完整ISA兼容、驱动可用或商业授权；面积/功耗/Fmax仍来自未校准公式。
+- 四种CPU执行模型及GPU/NPU/ISP均可保存为IP。64位x86有16GPR、32位别名零扩展、REX编码与指定整数/shift/访存/分支；无OS/SIMD。自由沙盒签核给诊断而不阻止预览，产品项目仍需满足任务约束。PPA未校准。
 - GPU执行逐lane FP32 AXPY与分支分歧，未实现完整GPU ISA、shader与图形流水线；NPU执行整数GEMM并检查有限累加器与scratchpad。
 - ISP实现RGGB raw12、黑电平、增益、基本双线性去马赛克和幂gamma/量化；黑帧和范围检查不能证明图像质量。它没有实现MHC算法、自动曝光/白平衡或完整sRGB传递函数。
 - 独立PicoRV32入口编译固定上游RTL并观察ADDI/ADDI/SW后的写入42，只是冒烟测试。解析核心与其RTL时序独立；玩家配置不会自动生成可制造的RTL。
@@ -48,11 +48,17 @@ RV32I整数/编码、M、18条RV32 Zbb；无特权/OS/二进制取指/浮点/向
 - [RISC-V Unprivileged ISA — M Extension for Integer Multiplication and Division](https://docs.riscv.org/reference/isa/v20260120/unpriv/m-st-ext.html)；fulltext_checked。定位：Multiplication；Division；Table 1: Semantics for division by zero and division overflow。
 - [RISC-V Unprivileged ISA — RV32 Zbb Basic Bit-manipulation](https://docs.riscv.org/reference/isa/v20260120/unpriv/b-st-ext.html)；fulltext_checked。定位：Zbb: Extension for Basic bit-manipulation；18条RV32指令的各自 Description/Operation；riscv-opcodes rv_zbb/rv32_zbb 的固定位编码。
 
-### x86 · Intel/AMD 指令家族 · 32位（IA-32）
+### x86 · Intel/AMD · 32位（IA-32）
 
 8个E寄存器，MOV、ADD/SUB/CMP、布尔、双操作数IMUL、Jcc/JMP与32位MOV访存。无x87/SSE/AVX、段/页表、长模式或异常。
 
-- [Intel 64 and IA-32 Architectures Software Developer’s Manual, Volumes 2A/2B](https://cdrdv2.intel.com/v1/dl/getContent/671199)；fulltext_checked。定位：Vol.2A ADD pp.3-14–3-15; CMP、IMUL pp.3-451–3-454; Jcc pp.3-499–3-503. Vol.2B MOV pp.4-27–4-31, Flags Affected: None.
+- [Intel 64 and IA-32 Architectures Software Developer’s Manual, Volumes 1/2A/2B](https://cdrdv2.intel.com/v1/dl/getContent/671199)；fulltext_checked。定位：Vol.1 §3.4.1.1 pp.3-12–3-13：16个GPR、32位写零扩展；Vol.2A ADD pp.3-14–3-15、IMUL pp.3-451–3-454、Jcc pp.3-499–3-503；Vol.2B MOV pp.4-28–4-31与SAL/SAR/SHL/SHR pp.4-603–4-607。
+
+### x86 · Intel/AMD · 64位（AMD64 / Intel 64）
+
+16个64位GPR与32位别名零扩展；MOV/ADD/SUB/CMP/AND/OR/XOR/IMUL/SHL/SHR/SAR、Jcc/JMP、基址+disp32访存与REX编码。教学子集只用64KiB对齐内存；无16/8位寄存器、段/分页/OS、RIP/索引寻址、SSE/AVX/x87或异常。
+
+- [Intel 64 and IA-32 Architectures Software Developer’s Manual, Volumes 1/2A/2B](https://cdrdv2.intel.com/v1/dl/getContent/671199)；fulltext_checked。定位：Vol.1 §3.4.1.1 pp.3-12–3-13：16个GPR、32位写零扩展；Vol.2A ADD pp.3-14–3-15、IMUL pp.3-451–3-454、Jcc pp.3-499–3-503；Vol.2B MOV pp.4-28–4-31与SAL/SAR/SHL/SHR pp.4-603–4-607。
 
 ### Arm · 64位（AArch64）
 
@@ -899,11 +905,11 @@ IA-32使用EAX/ECX/EDX/EBX等32位寄存器，ADD/SUB/CMP改变算术标志，MO
 
 ### 原文与使用范围
 
-- [Intel 64 and IA-32 Architectures Software Developer’s Manual, Volumes 2A/2B](https://cdrdv2.intel.com/v1/dl/getContent/671199)；fulltext_checked。
-- 定位：Vol.2A ADD pp.3-14–3-15; CMP、IMUL pp.3-451–3-454; Jcc pp.3-499–3-503. Vol.2B MOV pp.4-27–4-31, Flags Affected: None.
-- 支持：IA-32整数运算与标志、MOV不改标志、双操作数IMUL截断与CF/OF、Jcc条件及编码。IMUL后的PF/AF/ZF/SF未定义。
-- 不支持：没有实现x86-64、段/页表、x87/SSE/AVX、异常、unaligned通用访存、完整编码取指或真实Intel/AMD微架构；SDM不支持本作PPA数字。
-- 本作使用：arch_cpu.py IA-32原生子集，保持E寄存器和算术标志位位置。时序按共同模型，不把指令当真实固定latency/uops。
+- [Intel 64 and IA-32 Architectures Software Developer’s Manual, Volumes 1/2A/2B](https://cdrdv2.intel.com/v1/dl/getContent/671199)；fulltext_checked。
+- 定位：Vol.1 §3.4.1.1 pp.3-12–3-13：16个GPR、32位写零扩展；Vol.2A ADD pp.3-14–3-15、IMUL pp.3-451–3-454、Jcc pp.3-499–3-503；Vol.2B MOV pp.4-28–4-31与SAL/SAR/SHL/SHR pp.4-603–4-607。
+- 支持：32/64位整数运算与标志；16个64位GPR/32位别名零扩展；REX.W/R/B与MOV寄存器/访存/imm64形式；双操作数IMUL截断与CF/OF、其余算术标志未定义；Jcc条件；shift计数掩码、OF/CF及count=0标志不变。
+- 不支持：本作仅明确整数子集，无段/分页/OS、8/16位别名、RIP/索引寻址、x87/SSE/AVX、异常或完整编码取指；64KiB对齐访存限制是教学输入，不是x86限制。SDM不支持本作uop/latency或PPA数字。
+- 本作使用：arch_cpu.py IA-32与x64_cpu.py Intel64整数子集；原生语义和编码输入资源时序模型，无厂商CPU复刻。
 
 ## 15 · AArch64 W/X与零寄存器
 

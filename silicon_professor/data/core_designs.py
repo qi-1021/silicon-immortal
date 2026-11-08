@@ -19,7 +19,7 @@ def switch(key,label,default,group,level=0,hint=''):
 
 FIELDS={
     'cpu':[
-        choice('architecture','指令家族','riscv32',ISA_OPTIONS,'contract',hint='先选择常见家族。RV32是32位RISC-V；IA-32是32位x86；AArch64是64位Arm。当前执行器都是列明的整数子集，x86没有64位长模式。'),
+        choice('architecture','指令家族','riscv32',ISA_OPTIONS,'contract',hint='RV32是32位RISC-V；IA-32是32位x86；AMD64/Intel64是64位x86；AArch64是64位Arm。都是明确整数子集，无OS/SIMD。'),
         switch('enable_m','实现 M 乘除',True,'contract',hint='仅RV32的可选扩展；x86/A64乘法属于当前原生子集。'),
         switch('enable_zbb','实现 Zbb 位操作',False,'contract',1),
         choice('issue_order','发射次序','out_of_order',[('in_order','顺序发射'),('out_of_order','乱序发射')],'scheduler',hint='两种均顺序提交且无分支推测；乱序使用动态依赖标签。'),
@@ -87,6 +87,7 @@ def default_bench(kind,hardware):
     if kind=='cpu':
         programs={'riscv32':'ADDI x1,x0,6\nADDI x2,x0,7\nADD x3,x1,x2\nSW x3,0(x0)\nLW x4,0(x0)\nHALT',
                   'x86_32':'MOV EAX,6\nMOV EBX,7\nADD EAX,EBX\nMOV [0],EAX\nMOV ECX,[0]\nHALT',
+                  'x86_64':'MOV RAX,6\nMOV RBX,7\nADD RAX,RBX\nMOV R8,256\nMOV [R8],RAX\nMOV RCX,[R8]\nHALT',
                   'aarch64':'MOV X0,#6\nMOV X1,#7\nADD X2,X0,X1\nSTR X2,[X3]\nLDR X4,[X3]\nHALT'}
         return dict(source=programs[hardware['architecture']],memory='')
     return {field['key']:deepcopy(field['default']) for field in BENCH_FIELDS[kind]}

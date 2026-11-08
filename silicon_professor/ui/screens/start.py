@@ -135,6 +135,7 @@ class StartScreen(QWidget):
         right.addWidget(self.cont)
         core_design=QPushButton('设计自己的核心 · LAB')
         core_design.clicked.connect(lambda:win.go('studio'));right.addWidget(core_design)
+        sandbox=QPushButton('进入自由沙盒 · 独立方案');sandbox.clicked.connect(win.start_sandbox);right.addWidget(sandbox)
         how = QPushButton("教学关卡")
         how.clicked.connect(lambda: self.win.go("tutorial"))
         right.addWidget(how)
@@ -153,7 +154,7 @@ class StartScreen(QWidget):
         h.setStyleSheet(f"color:{T.TEXT}; font-size:17px; font-weight:700;")
         sect.addWidget(h)
         sect.addStretch(1)
-        hint = QLabel("6个自由项目 + 12项挑战委托 · 每关有独立验收目标")
+        hint = QLabel("产品项目与12项委托 · 自由沙盒有独立入口")
         hint.setStyleSheet(f"color:{T.DIM}; font-size:11px;")
         sect.addWidget(hint)
         lay.addLayout(sect)
@@ -184,7 +185,7 @@ class StartScreen(QWidget):
                 w.hide()
                 w.setParent(None)
                 w.deleteLater()
-        for i, seg in enumerate(SEGMENT_LIST):
+        for i, seg in enumerate(s for s in SEGMENT_LIST if s['id']!='sandbox'):
             card = ScenarioCard(seg, self.win.progress.get(seg["id"]))
             card.clicked.connect(self.win.start_scenario)
             self.grid.addWidget(card, i // 3, i % 3)

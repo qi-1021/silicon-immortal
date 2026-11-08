@@ -53,10 +53,16 @@ class PackageScreen(QWidget):
         self.pkg_card.add_layout(self.pkg_grid)
         left.addWidget(self.pkg_card)
 
-        self.cool_card = Card("散热方案", "决定持续功耗，而不是峰值跑分")
+        self.cool_card = Card("设备侧散热场景", "整机厂商的使用条件；不属于核心/IP设计")
         self.cool_grid = QGridLayout()
         self.cool_grid.setSpacing(7)
         self.cool_card.add_layout(self.cool_grid)
+        note=QLabel('芯片设计需满足设备给定的热预算；散热器、机身和环境属于整机设计。这里仅作为对照条件，改变它不表示芯片本身变好了。')
+        note.setWordWrap(True);note.setObjectName('Muted');self.cool_card.add(note)
+        self.device_scene=QPushButton('展开设备厂商的散热假设')
+        self.device_scene.setCheckable(True);self.device_scene.toggled.connect(self.cool_card.setVisible)
+        left.addWidget(self.device_scene)
+        self.cool_card.setVisible(False)
         left.addWidget(self.cool_card)
 
         mc = Card("金属堆栈", "更多厚金属层 = 更低 RC 延迟，但 mask 更贵")
@@ -77,7 +83,7 @@ class PackageScreen(QWidget):
         cc.add(self.chiplet_note)
         left.addWidget(cc)
 
-        ac = Card("环境")
+        ac = Card("设备使用条件")
         self.ambient = SliderRow("环境温度", 15, 40, 25, "{:.0f} °C",
                                  "25°C 是实验室；35°C 是夏天户外。")
         ac.add(self.ambient)

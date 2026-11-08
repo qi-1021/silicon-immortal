@@ -169,20 +169,21 @@
 - 核验文件: `rv_b.raw` · SHA-256 `b9923ee87b781ac22a74ea157f9b176d1883f4ea1886d36c74d6e0a81397b09a`
 - 核验文件: `opcodes_zbb.raw` · SHA-256 `f5d7d97b8d5d74135170cc13ba935bf97f39eac03893428604df71c9f8b64c13`
 - 核验文件: `opcodes_rv32_zbb.raw` · SHA-256 `e1274bfd6bb549cd04b60c1c22efbc74078ca6dfd232c5647bcf1b70d14aed70`
-### Intel 64 and IA-32 Architectures Software Developer’s Manual, Volumes 2A/2B
+### Intel 64 and IA-32 Architectures Software Developer’s Manual, Volumes 1/2A/2B
 - id: `intel_ia32`
 - 作者/机构: Intel Corporation
-- 出处: 253666-093US / 253667-093US, September 2026 (2026)
+- 出处: 253665-093US / 253666-093US / 253667-093US, September 2026 (2026)
 - 核验状态: fulltext_checked
 - 链接: https://cdrdv2.intel.com/v1/dl/getContent/671199
-- 原文定位: Vol.2A ADD pp.3-14–3-15; CMP、IMUL pp.3-451–3-454; Jcc pp.3-499–3-503. Vol.2B MOV pp.4-27–4-31, Flags Affected: None.
-- 支持: IA-32整数运算与标志、MOV不改标志、双操作数IMUL截断与CF/OF、Jcc条件及编码。IMUL后的PF/AF/ZF/SF未定义。
-- 不支持: 没有实现x86-64、段/页表、x87/SSE/AVX、异常、unaligned通用访存、完整编码取指或真实Intel/AMD微架构；SDM不支持本作PPA数字。
-- 本作使用: arch_cpu.py IA-32原生子集，保持E寄存器和算术标志位位置。时序按共同模型，不把指令当真实固定latency/uops。
+- 原文定位: Vol.1 §3.4.1.1 pp.3-12–3-13：16个GPR、32位写零扩展；Vol.2A ADD pp.3-14–3-15、IMUL pp.3-451–3-454、Jcc pp.3-499–3-503；Vol.2B MOV pp.4-28–4-31与SAL/SAR/SHL/SHR pp.4-603–4-607。
+- 支持: 32/64位整数运算与标志；16个64位GPR/32位别名零扩展；REX.W/R/B与MOV寄存器/访存/imm64形式；双操作数IMUL截断与CF/OF、其余算术标志未定义；Jcc条件；shift计数掩码、OF/CF及count=0标志不变。
+- 不支持: 本作仅明确整数子集，无段/分页/OS、8/16位别名、RIP/索引寻址、x87/SSE/AVX、异常或完整编码取指；64KiB对齐访存限制是教学输入，不是x86限制。SDM不支持本作uop/latency或PPA数字。
+- 本作使用: arch_cpu.py IA-32与x64_cpu.py Intel64整数子集；原生语义和编码输入资源时序模型，无厂商CPU复刻。
 - 可读作者稿/全文: https://cdrdv2.intel.com/v1/dl/getContent/671241
 - 核验文件: `intel_vol2a.raw` · SHA-256 `87c5acb6f27e24d9d364841a0d2346c91a8482e36f403409954e2d2a8c817bac`
 - 核验文件: `intel_vol2b.raw` · SHA-256 `a261998ace8e07f624bf3e2486bb6cfe950fb8be8d0dc9631bcecb4c5ec953e4`
 - 核验文件: `intel_sdm.raw` · SHA-256 `f405c1263418c56b19104513649eec6080a3a21a5956415941bc3aab5d93d020`
+- 核验文件: `intel_vol1.raw` · SHA-256 `f6ffc430dfa2dada4f791b1ecb462810e59827befe9a9c23f9160941eea642f9`
 ### Arm A64 instruction pseudocode and encoding — 2026-03_rel mirror
 - id: `arm_a64_isa`
 - 作者/机构: Arm Limited; hosted by Stanford / Zachary Yedidia

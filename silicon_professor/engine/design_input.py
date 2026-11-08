@@ -71,6 +71,7 @@ def validate_design_record(record):
     for key, lo, hi in (
         ('ambient_c', -50, 100), ('floorplan_aspect', .2, 5),
         ('routing_overhead', 0, 1), ('price', .01, 1_000_000),
+        ('pdn_resistance_mohm',0,1000),
         ('workload_set_mb', .01, 1_000_000), ('workload_intensity', .001, 1_000_000),
     ):
         _number(d, key, lo, hi)

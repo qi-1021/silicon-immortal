@@ -11,7 +11,7 @@ a simulate silicon designer for everyone
 [下载发行版](https://github.com/qi-1021/silicon-immortal/releases) · [玩家手册](docs/guide/README.md) · [问题反馈](https://github.com/qi-1021/silicon-immortal/issues)
 
 ![构建与测试](https://github.com/qi-1021/silicon-immortal/actions/workflows/release.yml/badge.svg)
-![Alpha](https://img.shields.io/badge/version-0.1.0--alpha.4-d8b580)
+![Alpha](https://img.shields.io/badge/version-0.1.0--alpha.5-d8b580)
 ![License](https://img.shields.io/badge/license-MIT-799683)
 
 powered by isqi
@@ -41,6 +41,7 @@ powered by isqi
 | --- | --- | --- |
 | Windows | 双击run.bat | Windows10/11 x64，Python3.12 |
 | Mac | 双击run.command，或终端./run.command | macOS14+，Python3.12；Intel/M系列均可 |
+| Linux | bash run.sh | Python3.12与官方PySide6所需系统库；本轮按要求未做Linux平台验证 |
 
 首次启动在本项目创建.venv并联网安装PySide6，后续游戏可离线运行。源码Release附图文离线手册：浏览器打开docs/player-guide/index.html；直接克隆仓库也可阅读docs/guide/README.md。具体Python安装、脚本权限与排障见[安装指南](docs/guide/install.md)。
 
@@ -52,18 +53,18 @@ LAB默认是核心设计台，课程位于“实验与教学”。无需先建So
 
 | 设计对象 | 能决定的硬件 | 能观察的结果 |
 | --- | --- | --- |
-| CPU | 三种整数ISA子集、RV32 M/Zbb、顺序/乱序、队列、ALU/乘除资源、cache几何/延迟 | 寄存器、编码、动态依赖与提交时序 |
+| CPU | 四种整数ISA子集、RV32 M/Zbb、顺序/乱序、队列、ALU/乘除资源、cache几何/延迟 | 寄存器、编码、动态依赖与提交时序 |
 | GPU | SIMT处理器、lane、驻留warp、ALU延迟、发射间隔、时钟/带宽 | FP32逐lane结果、分歧路径与资源周期 |
 | NPU | 阵列、INT8/16、累加器位宽、scratchpad、时钟/带宽 | GEMM、tile占用、有限整数溢出与周期 |
 | ISP | 黑电平/增益/去马赛克/gamma旁路、并行度、行缓冲、量化 | RAW/RGB测试图像、像素输出与周期 |
 
-x86提供单发射顺序、双发射顺序和四发射乱序三个教学模板，架构页可载入LAB编辑完整硬件；工作站项目可直接使用。x86表示Intel/AMD广为使用的指令家族，目前执行32位IA-32整数子集，尚无x86-64、SSE/AVX或OS。
+x86现在提供32位与64位整数教学核心：IA-32以及AMD64/Intel64。64位有16个GPR、32位别名零扩展、REX编码、指定访存/算术/移位/分支形式。精简、均衡、宽发射、计算吞吐四种设计方向，也加入Arm64和RISC-V教学模板；每份硬件可在LAB编辑。仍无OS、SSE/AVX、8/16位别名或完整x86实现。
 
 硬件与测试台分开保存；修改测试输入不改变核心身份，硬件修改使旧验证失效。性能测试提供独立吞吐、依赖链、缓存重用和乘法四类任务，逐项IPC与基线对照；短程序不敏感时不会人为改分。发布IP是不可变快照，不会随草稿修改偷偷改变原SoC。详见[第一颗核心](docs/guide/first-core.md)与[加速器设计](docs/guide/accelerators.md)。
 
 ## 19个项目，32节课程
 
-7个自由产品项目覆盖中端5G、旗舰、先进节点、轻薄本、折叠屏、x86工作站和研究沙盒。新增12项挑战委托，每关有明确目标、实时检查、操作提示和可运行参考方案：
+6个产品项目和独立自由沙盒覆盖中端5G、旗舰、先进节点、轻薄本、折叠屏、x86工作站和研究沙盒。新增12项挑战委托，每关有明确目标、实时检查、操作提示和可运行参考方案：
 
 | 工程挑战 | 产品挑战 | 核心挑战 |
 | --- | --- | --- |
@@ -77,7 +78,15 @@ x86提供单发射顺序、双发射顺序和四发射乱序三个教学模板�
 
 [12项委托攻略](docs/guide/challenges.md) · [可直接导入的设计](docs/examples/README.md)
 
-14节产品设计课与18节进阶实验课互补，含观察目标、参考解和原文。初级/中级/高级/专业模式控制提示与参数展开，底层规则相同。CPU历史目录35项，只有RV32I/M/Zbb、IA-32、AArch64三个明确整数子集可运行；未实现项不能当作执行器。
+14节产品设计课与18节进阶实验课互补，含观察目标、参考解和原文。初级/中级/高级/专业模式控制提示与参数展开，底层规则相同。CPU历史目录35项，RV32I/M/Zbb、IA-32、AMD64/Intel64、AArch64四个明确整数子集可运行；未实现项不能当作执行器。
+
+## 独立自由沙盒
+
+![独立沙盒](docs/screens/free_sandbox.png)
+
+自由沙盒在首页与侧栏独立进入，方案单独保存，切换产品项目不覆盖。所有已实现核心/节点可用；签核只提示潜在问题、计算依据与改善方向，不以预算、产品或许可条件阻止预览。无效数值、未知硬件语义或缺失文件定义仍不能解析，“自由”不意味着模型外的硬件已实现。
+
+核心行的表头和控件共用列宽，L2明确“每核私有/全组共享”，频率0表示自动。工程页可以输入芯片/封装PDN等效电阻，以I×R解释压降；设备散热器默认折叠为整机厂商提供的场景，芯片侧负责功耗与封装取舍。
 
 ## 从SoC到样片
 
@@ -138,6 +147,6 @@ python tools/build_manual.py
 python tools/source_release.py
 ```
 
-GitHub Actions分别在Windows x64、Mac arm64和Mac x64运行全套测试与图文手册检查，只发布源码和脚本。当前版本与发布内容见[发行说明](docs/RELEASE_NOTES.md)。
+按用户要求停止重复平台验证；GitHub Actions仅在版本标签发布时生成图文手册与源码附件，不再运行测试矩阵。Linux新增脚本，未运行平台验证。当前版本与发布内容见[发行说明](docs/RELEASE_NOTES.md)。
 
 本作采用MIT，第三方维持原许可。GitHub为主仓库；[code.qiisme1021.space镜像](https://code.qiisme1021.space/isqi/silicon-immortal)同步代码，问题反馈集中到GitHub。

@@ -31,6 +31,7 @@ def main():
         assets[kind] = make_asset(kind, 'isqi / '+kind, deepcopy(DEFAULTS[kind]))
     for kind in ('cpu', 'gpu', 'npu', 'isp'):
         assets['studio-'+kind] = make_design_asset(kind, 'isqi / Studio '+kind.upper(), default_hardware(kind))
+    assets['studio-x64']=make_design_asset('cpu','isqi / x86-64',default_hardware('cpu')|dict(architecture='x86_64',enable_m=False,enable_zbb=False))
     for key, asset in assets.items():
         path = write_asset(output / (key+'.cor'), asset)
         restored = read_asset(path)

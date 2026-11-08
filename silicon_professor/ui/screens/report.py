@@ -159,7 +159,7 @@ class ReportScreen(QWidget):
         self.grade.setStyleSheet(
             f"background:{col}12; border:2px solid {col}; border-radius:52px;"
             f"color:{col}; font-size:46px; font-weight:800;")
-        self.title.setText(("发布结果 · " if self.win.is_released else "发布预估 · ") + self.win.scenario["name"])
+        self.title.setText(('自由方案估算 · ' if self.win.design.scenario_id=='sandbox' else "发布结果 · " if self.win.is_released else "发布预估 · ") + self.win.scenario["name"])
         self.sub.setText(f"{m['targets_met']}/{m['targets_total']} 项指标达成 · "
                          f"市场评分 {m['review']:.0f}")
         self.verdict.setText(f"预计净利润 ${m['profit']:.0f} M。持续性能系数 {p['sustain_ratio']:.0%}，目标达成 {m['targets_met']}/{m['targets_total']}。")

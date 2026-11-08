@@ -3,11 +3,11 @@
   "version": 1,
   "producer": {
     "name": "Silicon Immortal",
-    "version": "0.1.0-alpha.4",
+    "version": "0.1.0-alpha.5",
     "release_channel": "alpha",
-    "model": "analytic-v0.7+x86-studio-v1"
+    "model": "analytic-v0.8+x64-free-studio-v1"
   },
-  "created_at": "2026-11-08T15:44:48.324387+00:00",
+  "created_at": "2026-11-08T16:25:48.027959+00:00",
   "name": "01 · 不赌频率档位 / 参考方案",
   "scenario": "challenge_bin",
   "design": {
@@ -222,6 +222,7 @@
     "verification_effort": 1.0,
     "pvt_corner": "ss",
     "pdn_quality": 1.0,
+    "pdn_resistance_mohm": 0.0,
     "memory_channels": 0,
     "memory_gb": 8,
     "workload_parallel": 0.9,
@@ -298,9 +299,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.4",
+          "version": "0.1.0-alpha.5",
           "release_channel": "alpha",
-          "model": "analytic-v0.7+x86-studio-v1"
+          "model": "analytic-v0.8+x64-free-studio-v1"
         },
         "digest": "189daff496857cbd797e07d0b324dc36e20176a6facb66aa7abe09a6402249b7"
       },
@@ -358,9 +359,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.4",
+          "version": "0.1.0-alpha.5",
           "release_channel": "alpha",
-          "model": "analytic-v0.7+x86-studio-v1"
+          "model": "analytic-v0.8+x64-free-studio-v1"
         },
         "digest": "e06f990e98d540affb92e8fbdd899ab7767a52e770cfa35bad2309ecff990141"
       },
@@ -418,9 +419,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.4",
+          "version": "0.1.0-alpha.5",
           "release_channel": "alpha",
-          "model": "analytic-v0.7+x86-studio-v1"
+          "model": "analytic-v0.8+x64-free-studio-v1"
         },
         "digest": "e21fcb6bf3595580b5bb2bc139a505fe93a08aeb1c2da2c58f4e9455020a2393"
       },
@@ -472,9 +473,9 @@
         },
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.4",
+          "version": "0.1.0-alpha.5",
           "release_channel": "alpha",
-          "model": "analytic-v0.7+x86-studio-v1"
+          "model": "analytic-v0.8+x64-free-studio-v1"
         },
         "digest": "e435160e5027add068d4014a27c427bedf13464f564aca495c7cc0ddf1da1999"
       },
@@ -496,9 +497,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.4",
+          "version": "0.1.0-alpha.5",
           "release_channel": "alpha",
-          "model": "analytic-v0.7+x86-studio-v1"
+          "model": "analytic-v0.8+x64-free-studio-v1"
         },
         "digest": "b33ec764522ddcc555edd1772bbaa8572034668cb48ff22fe87aa9f7c09000e4"
       },
@@ -525,9 +526,9 @@
         "reference_node": null,
         "producer": {
           "name": "Silicon Immortal",
-          "version": "0.1.0-alpha.4",
+          "version": "0.1.0-alpha.5",
           "release_channel": "alpha",
-          "model": "analytic-v0.7+x86-studio-v1"
+          "model": "analytic-v0.8+x64-free-studio-v1"
         },
         "digest": "cd0a7415bfd0bd58c0ef792411325b3cdf438fa174269f04934126870e50a33f"
       }
@@ -551,12 +552,13 @@
   },
   "engine": {
     "name": "Silicon Professor",
-    "model": "analytic-v0.7+x86-studio-v1"
+    "model": "analytic-v0.8+x64-free-studio-v1"
   },
   "provenance": {
     "simulation": true,
     "visuals": "procedural-floorplan-illustration",
     "legacy_ai_tops_is_score": true,
-    "signoff_ready": true
+    "signoff_ready": true,
+    "signoff_mode": "required"
   }
 }

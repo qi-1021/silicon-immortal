@@ -91,6 +91,13 @@ def main():
         architecture._show_core_info(0);architecture._edit_template();settle()
         w.grab().save(str(out/'studio_x86.png'));studio.run_performance();settle()
         w.grab().save(str(out/'studio_x86_performance.png'))
+        w.start_scenario('sandbox');settle();w.grab().save(str(out/'free_sandbox.png'))
+        w.go('architecture');settle();w.grab().save(str(out/'sandbox_architecture.png'))
+        w.go('engineering');w.screens['engineering'].pdn_resistance.setValue(25);w.recompute_now();settle()
+        w.grab().save(str(out/'pdn_parameters.png'))
+        w.go('signoff');settle();w.grab().save(str(out/'sandbox_diagnostics.png'))
+        w.go('package');settle();w.grab().save(str(out/'device_thermal_scene.png'))
+        w.go('studio')
         for kind in ('gpu','npu','isp'):
             studio.new_design(kind);studio.name_edit.setText('isqi / '+kind.upper()+' 01');settle()
             w.grab().save(str(out/f'studio_{kind}.png'))

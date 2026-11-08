@@ -29,6 +29,8 @@ def engineering_report(design, plan, perf, thermal):
     current = thermal["p_burst_actual"] / max(0.4, vdd)
     resistance = (0.014 - 0.010 * clamp(design.pdn_quality, 0, 1))
     resistance *= {"pop": 1.2, "fowlp": 1.0, "imc25d": 0.75}.get(design.package_id, 1.0)
+    manual=getattr(design,'pdn_resistance_mohm',0.)
+    if manual>0:resistance=manual/1000
     droop = current * resistance
 
     # 异构核以最快核归一；得到有效并行算力，而不是直接数核。
@@ -54,7 +56,7 @@ def engineering_report(design, plan, perf, thermal):
         notes.append("所选 PVT 角落无法支撑目标档位：降低目标频率或调整标准单元库与时序投入。")
     return dict(memory=mem, verification_completion=completion, corners=corners,
                 selected_corner=selected, current_a=current, pdn_resistance_ohm=resistance,
-                ir_drop_v=droop, notes=notes, workload=dict(
+                ir_drop_v=droop,pdn_source='手动芯片/封装等效电阻假设' if manual>0 else '投入与封装的历史代理映射', notes=notes, workload=dict(
                     effective_cores=effective_cores, amdahl_speedup=speedup,
                     compute_ceiling=compute, memory_ceiling=roof, achievable=achievable,
                     bottleneck="内存带宽" if roof < compute else "计算 / 串行部分",
@@ -76,6 +78,19 @@ def signoff_report(result):
         ("corner", eng["selected_corner"]["bin_supported"], "所选 PVT 档位", "降低目标频率，或调整库和时序投入。"),
         ("bin", result["bin"]["fraction"] >= 0.10, "频率档位可用率 ≥ 10%", "降低目标频率以提高可出售比例。"),
     ]
-    rows = [dict(id=key, ok=ok, title=title, remedy=remedy) for key, ok, title, remedy in checks]
-    return dict(ready=all(c["ok"] for c in rows), checks=rows,
-                blockers=[c for c in rows if not c["ok"]])
+    explanations={
+        'structure':'；'.join(result['errors']) or '布局/IP检查通过；没有进行真实DRC/LVS。',
+        'budget':f"预计NRE {result['nre']['total']:.1f}M / 参考预算 {result['scenario']['budget_m']}M。",
+        'cost':f"预计芯片成本 ${result['cost']['total']:.2f} / 情景参考 ${lim['max_cost']}。",
+        'skin':f"在设备散热假设下机身 {result['thermal']['tskin']:.1f}°C / 参考 {lim['skin_temp']}°C。设备厂商定义散热条件，芯片侧可以降低功耗或封装热阻。",
+        'power':f"峰值 {result['power']['peak']:.2f}W / 参考 {lim['max_tdp']}W；这取决于时钟、资源与负载。",
+        'verification':f"投入代理完成度 {eng['verification_completion']:.1%}，不是实际测试覆盖率。",
+        'pdn':f"I={eng['current_a']:.2f}A，R={eng['pdn_resistance_ohm']*1000:.2f}mΩ，I×R={eng['ir_drop_v']*1000:.1f}mV / 参考80mV；{eng['pdn_source']}。",
+        'corner':f"{eng['selected_corner']['name']}相对频率裕量 {eng['selected_corner']['timing_margin']:.1%}；非真实STA。",
+        'bin':f"频率档位可用率估算 {result['bin']['fraction']:.2%}；提高目标时钟会降低比例。",
+    }
+    rows = [dict(id=key, ok=ok, title=title, remedy=remedy,explanation=explanations[key]) for key, ok, title, remedy in checks]
+    diagnostics=[c for c in rows if not c['ok']]
+    free=result['scenario']['id']=='sandbox'
+    return dict(ready=True if free else not diagnostics,checks=rows,blockers=[] if free else diagnostics,
+                diagnostics=diagnostics,mode='advisory' if free else 'required')

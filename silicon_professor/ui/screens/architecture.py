@@ -60,7 +60,7 @@ class ArchitectureScreen(QWidget):
 
         self.scroll = QScrollArea()
         self.scroll.setWidgetResizable(True)
-        self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         page = QWidget()
         self.left = QVBoxLayout(page)
         self.left.setContentsMargins(0, 0, 8, 0)
@@ -137,18 +137,26 @@ class ArchitectureScreen(QWidget):
         self.node_card.add(self.node_hint)
         self.left.addWidget(self.node_card)
 
+    def _core_grid(self,layout):
+        layout.setContentsMargins(8,6,8,6);layout.setHorizontalSpacing(6)
+        layout.setColumnStretch(0,1)
+        for column,width in enumerate((66,106,96,116,32),1):layout.setColumnMinimumWidth(column,width)
+
     def _cpu_head(self):
-        head = QHBoxLayout()
-        head.setSpacing(6)
-        for txt, w in [("核心", 1), ("数量", 0), ("L2", 0), ("共享", 0), ("目标 GHz", 0)]:
+        head = QGridLayout();self._core_grid(head)
+        for column,txt in enumerate(('核心 / 设计类型','实例数','L2容量 / MB','L2共享方式','目标频率 / GHz','删除')):
             l = QLabel(txt)
-            l.setStyleSheet(f"color:{T.DIM}; font-size:10px;")
-            head.addWidget(l, w)
+            l.setStyleSheet(f"color:{T.TEXT2}; font-size:11px;")
+            l.setAlignment(Qt.AlignmentFlag.AlignLeft if column==0 else Qt.AlignmentFlag.AlignCenter)
+            if column:l.setFixedWidth((66,106,96,116,32)[column-1])
+            head.addWidget(l,0,column)
         return head
 
     def _build_cpu_card(self):
         self.cpu_card = Card("CPU 核心组 · 按指令集赛道独立设计",
                              "Arm / RISC-V / x86 · 模板核心与自己的核心都可组成SoC")
+        columns=QLabel('列标题与输入共用宽度。L2在“每核私有”时表示每核容量，“全组共享”时表示整组容量；目标频率0表示自动。小窗口可横向滚动，不能用缩紧标题改变列对应。')
+        columns.setWordWrap(True);columns.setObjectName('Muted');self.cpu_card.add(columns)
         self.left.addWidget(self.cpu_card)
         self.arm_card = Card("ARM 阵营", TRACKS["arm"]["tagline"])
         self.arm_card.add_layout(self._cpu_head())
@@ -173,6 +181,7 @@ class ArchitectureScreen(QWidget):
         self.rv_card.add(self.rv_eco)
         self.left.addWidget(self.rv_card)
         self.x86_card=Card(TRACKS['x86']['name'],TRACKS['x86']['tagline'])
+        self.x86_card.add_layout(self._cpu_head())
         self.x86_box=QVBoxLayout()
         self.x86_card.add_layout(self.x86_box)
         x86=QPushButton('+ 添加 x86 核心组')
@@ -403,12 +412,10 @@ class ArchitectureScreen(QWidget):
             row = QFrame()
             row.setObjectName("Panel2")
             row.setStyleSheet(f"QFrame#Panel2 {{ background:{T.BG2}; border:1px solid {T.BORDER}; border-radius:8px; }}")
-            lay = QHBoxLayout(row)
-            lay.setContentsMargins(8, 6, 8, 6)
-            lay.setSpacing(6)
+            lay = QGridLayout(row);self._core_grid(lay)
 
             combo = QComboBox()
-            combo.setMinimumWidth(236)
+            combo.setMinimumWidth(190)
             sandbox = 'research' in self.win.scenario['allowed_licenses']
             year = self.win.scenario["year"]
             for c in template_catalog(d,'cpu',CORES).values():
@@ -418,7 +425,8 @@ class ArchitectureScreen(QWidget):
                     continue
                 if not sandbox and c["year"] > year:
                     continue
-                combo.addItem(f"{c['name']} · {c['year']} · {isa_name(c['isa'])}  [{c['tier']}]", c["id"])
+                combo.addItem(c['name']+' · '+{'little':'精简 / 小核','mid':'均衡核','big':'性能 / 吞吐核'}[c['tier']], c["id"])
+                combo.setItemData(combo.count()-1,f"{isa_name(c['isa'])} · {c['year']}\n{c['note']}",Qt.ItemDataRole.ToolTipRole)
             for asset_id,record in d.embedded_ips.items():
                 if record['kind']!='cpu':continue
                 model=get_ip(d,'ip:'+asset_id)
@@ -426,45 +434,47 @@ class ArchitectureScreen(QWidget):
             if sandbox and any(g.core_id == "custom" for g in d.cores):
                 combo.addItem("自研核（实验室） · 2026 · ARM/RV  [big]", "custom")
             combo.setCurrentIndex(max(0, combo.findData(g.core_id)))
-            lay.addWidget(combo, 1)
+            lay.addWidget(combo,0,0)
 
             count = QSpinBox()
-            count.setRange(0, 10)
+            count.setRange(0,256)
             count.setValue(g.count)
-            count.setFixedWidth(56)
-            lay.addWidget(count)
+            count.setFixedWidth(66);count.setToolTip('本组实例数量；软件布局总上限256，不是真实互连能力保证。')
+            count.setAccessibleName('CPU核心组实例数')
+            lay.addWidget(count,0,1)
 
             l2 = QDoubleSpinBox()
-            l2.setRange(0.128, 8.0)
+            l2.setRange(0,1024)
             l2.setSingleStep(0.128)
             l2.setDecimals(3)
-            l2.setSuffix(" MB")
-            l2.setValue(g.l2_mb or ip["l2_default"])
-            l2.setFixedWidth(86)
-            lay.addWidget(l2)
+            l2.setValue(g.l2_mb)
+            l2.setFixedWidth(106);l2.setToolTip('私有时每核容量；共享时整组容量。单位MB。')
+            l2.setAccessibleName('L2缓存容量，单位MB')
+            lay.addWidget(l2,0,2)
 
-            shared = QCheckBox()
-            shared.setChecked(g.l2_shared)
+            shared = QComboBox();shared.addItem('每核私有',False);shared.addItem('全组共享',True)
+            shared.setCurrentIndex(1 if g.l2_shared else 0);shared.setFixedWidth(96)
+            shared.setAccessibleName('L2缓存共享方式')
             shared.setToolTip("同一组核心共享 L2：省面积，但有交叉开关延迟与争用。")
-            lay.addWidget(shared)
+            lay.addWidget(shared,0,3)
 
             clk = QDoubleSpinBox()
-            clk.setRange(0.3, 5.5)
+            clk.setRange(0,100)
             clk.setSingleStep(0.1)
             clk.setDecimals(2)
-            clk.setSuffix(" GHz")
             clk.setValue(g.clock if g.clock > 0 else 0.0)
             clk.setSpecialValueText("自动")
             clk.setMinimum(0.0)
-            clk.setFixedWidth(86)
-            lay.addWidget(clk)
+            clk.setFixedWidth(116);clk.setToolTip('0自动；其它值为目标GHz。高于模型Fmax时诊断分档与频率限制。')
+            clk.setAccessibleName('目标频率，单位GHz，0表示自动')
+            lay.addWidget(clk,0,4)
 
             rm = QPushButton("✕")
-            rm.setFixedSize(26, 26)
+            rm.setFixedSize(32,32)
             rm.setStyleSheet("padding:0; font-size:13px; color:#ff6b6b;")
             rm.setObjectName("Danger")
             rm.clicked.connect(lambda _, idx=i: self._remove(idx))
-            lay.addWidget(rm)
+            lay.addWidget(rm,0,5)
             box.addWidget(row)
 
             combo.currentIndexChanged.connect(
@@ -473,7 +483,7 @@ class ArchitectureScreen(QWidget):
                 lambda _, idx=i: self._show_core_info(idx))
             count.valueChanged.connect(lambda v, idx=i: self._group(idx, "count", v))
             l2.valueChanged.connect(lambda v, idx=i: self._group(idx, "l2_mb", v, True))
-            shared.toggled.connect(lambda v, idx=i: self._group(idx, "l2_shared", v, True))
+            shared.currentIndexChanged.connect(lambda _, idx=i,c=shared:self._group(idx,"l2_shared",c.currentData(),True))
             clk.valueChanged.connect(lambda v, idx=i: self._group(idx, "clock", v, True))
             self.rows.append(dict(combo=combo, count=count, l2=l2, shared=shared, clock=clk))
 

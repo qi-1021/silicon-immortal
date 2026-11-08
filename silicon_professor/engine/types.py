@@ -143,6 +143,7 @@ class Design:
     verification_effort: float = 0.60  # 验证工程投入，不代表实际测得的覆盖率
     pvt_corner: str = "tt"            # tt | ss | ff，教学用相对角落
     pdn_quality: float = 0.60         # 电源网络投入：降低估算电阻，增加 NRE
+    pdn_resistance_mohm: float = 0.0  # 0历史投入映射；>0为芯片/封装等效电阻假设
     memory_channels: int = 0         # 0 沿用代际默认；其余为 x16 通道数
     memory_gb: int = 8
     workload_parallel: float = 0.90
@@ -215,6 +216,7 @@ class Design:
             verification_effort=float(d.get("verification_effort", 0.60)),
             pvt_corner=str(d.get("pvt_corner", "tt")),
             pdn_quality=float(d.get("pdn_quality", 0.60)),
+            pdn_resistance_mohm=float(d.get('pdn_resistance_mohm',0.)),
             memory_channels=int(d.get("memory_channels", 0)),
             memory_gb=int(d.get("memory_gb", 8)),
             workload_parallel=float(d.get("workload_parallel", 0.90)),
@@ -234,7 +236,7 @@ def empty_design(scenario_id: str = "mid2019") -> Design:
         return challenge_design(scenario_id)
     if scenario_id=='x86_workstation':
         d=empty_design('laptop2025');d.scenario_id=scenario_id
-        d.cores=[CoreGroup('x86_dual',4,1.,False,0.)]
+        d.cores=[CoreGroup('x64_balanced',4,1.,False,0.)]
         d.pdn_quality=1.;d.verification_effort=.9
         return d
     if scenario_id == "flagship2022":

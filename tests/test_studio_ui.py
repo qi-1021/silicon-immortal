@@ -151,7 +151,7 @@ class TestStudioUI(unittest.TestCase):
         self.assertEqual(pixel.alpha(),255)
         self.assertLess(pixel.red(),90)
         screen._show_core_info(0);screen._edit_template()
-        self.assertEqual(w.screens['studio'].current['hardware']['architecture'],'x86_32')
+        self.assertEqual(w.screens['studio'].current['hardware']['architecture'],'x86_64')
         self.assertEqual(w.screens['studio'].current['hardware']['width'],2)
 
 

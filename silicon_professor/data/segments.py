@@ -104,13 +104,17 @@ SEGMENTS["fold2026"] = dict(
 
 from .challenges import challenge_segments
 SEGMENTS.update(challenge_segments(SEGMENTS))
+from .nodes import NODES
+SEGMENTS['sandbox']['allowed_nodes']=list(NODES)
+SEGMENTS['sandbox'].update(name='自由沙盒',tagline='独立方案 · 全部已实现IP可用 · 签核只解释问题',
+    brief='自由设计不以预算、许可或产品条件阻止预览。签核列出潜在问题、原因与改善方向。硬件功能/数值模型依然有限，解除任务限制不代表真实电路可制造。')
 from copy import deepcopy
 SEGMENTS['x86_workstation']=deepcopy(SEGMENTS['laptop2025'])
-SEGMENTS['x86_workstation'].update(id='x86_workstation',name='x86 工作站 · 32位核心设计',year=2026,budget_m=300,
-    tagline='从Intel/AMD熟悉的指令家族开始，设计自己的32位x86核心。',
-    brief='选择顺序或乱序x86教学核，检查程序依赖、缓存与吞吐，再用于工作站SoC。三种模板都含可执行硬件定义，可载入LAB编辑；不冒称Intel/AMD厂商产品，尚无x86-64长模式、SSE/AVX或OS。',
+SEGMENTS['x86_workstation'].update(id='x86_workstation',name='x86 工作站 · 32/64位核心设计',year=2026,budget_m=300,
+    tagline='从Intel/AMD熟悉的指令家族开始，设计自己的32位或64位x86核心。',
+    brief='选择精简、均衡、宽发射或计算吞吐的x86教学核，检查程序依赖、缓存与吞吐，再用于工作站SoC。32/64位模板均含可执行硬件定义，可载入LAB编辑；不冒称Intel/AMD厂商产品，无SSE/AVX、分页/OS。',
     allowed_licenses=['arm','riscv','research','custom'],
-    tutorial='先用x86双发射顺序核；架构页“在LAB编辑教学核心”打开硬件，比较独立运算、依赖链和缓存任务。发布后替换同ISA集群。',
+    tutorial='先用x86-64均衡核；架构页“在LAB编辑教学核心”打开硬件，比较独立运算、依赖链和缓存任务。发布后替换同位宽集群。',
     evidence=['intel_ia32'],confidence='game_assumption')
 SEGMENT_LIST = list(SEGMENTS.values())
 

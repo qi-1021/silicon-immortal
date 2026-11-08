@@ -473,20 +473,20 @@
     "tier": 1,
     "kind": "isa_spec",
     "year": 2026,
-    "title": "Intel 64 and IA-32 Architectures Software Developer’s Manual, Volumes 2A/2B",
+    "title": "Intel 64 and IA-32 Architectures Software Developer’s Manual, Volumes 1/2A/2B",
     "authors": "Intel Corporation",
-    "venue": "253666-093US / 253667-093US, September 2026",
+    "venue": "253665-093US / 253666-093US / 253667-093US, September 2026",
     "url": "https://cdrdv2.intel.com/v1/dl/getContent/671199",
     "fulltext_url": "https://cdrdv2.intel.com/v1/dl/getContent/671241",
     "verification": "fulltext_checked",
-    "locator": "Vol.2A ADD pp.3-14–3-15; CMP、IMUL pp.3-451–3-454; Jcc pp.3-499–3-503. Vol.2B MOV pp.4-27–4-31, Flags Affected: None.",
-    "supports": "IA-32整数运算与标志、MOV不改标志、双操作数IMUL截断与CF/OF、Jcc条件及编码。IMUL后的PF/AF/ZF/SF未定义。",
-    "does_not_support": "没有实现x86-64、段/页表、x87/SSE/AVX、异常、unaligned通用访存、完整编码取指或真实Intel/AMD微架构；SDM不支持本作PPA数字。",
-    "model_use": "arch_cpu.py IA-32原生子集，保持E寄存器和算术标志位位置。时序按共同模型，不把指令当真实固定latency/uops。",
-    "note": "IA-32整数运算与标志、MOV不改标志、双操作数IMUL截断与CF/OF、Jcc条件及编码。IMUL后的PF/AF/ZF/SF未定义。",
+    "locator": "Vol.1 §3.4.1.1 pp.3-12–3-13：16个GPR、32位写零扩展；Vol.2A ADD pp.3-14–3-15、IMUL pp.3-451–3-454、Jcc pp.3-499–3-503；Vol.2B MOV pp.4-28–4-31与SAL/SAR/SHL/SHR pp.4-603–4-607。",
+    "supports": "32/64位整数运算与标志；16个64位GPR/32位别名零扩展；REX.W/R/B与MOV寄存器/访存/imm64形式；双操作数IMUL截断与CF/OF、其余算术标志未定义；Jcc条件；shift计数掩码、OF/CF及count=0标志不变。",
+    "does_not_support": "本作仅明确整数子集，无段/分页/OS、8/16位别名、RIP/索引寻址、x87/SSE/AVX、异常或完整编码取指；64KiB对齐访存限制是教学输入，不是x86限制。SDM不支持本作uop/latency或PPA数字。",
+    "model_use": "arch_cpu.py IA-32与x64_cpu.py Intel64整数子集；原生语义和编码输入资源时序模型，无厂商CPU复刻。",
+    "note": "32/64位整数运算与标志；16个64位GPR/32位别名零扩展；REX.W/R/B与MOV寄存器/访存/imm64形式；双操作数IMUL截断与CF/OF、其余算术标志未定义；Jcc条件；shift计数掩码、OF/CF及count=0标志不变。",
     "audit": {
-      "checked_on": "2026-11-08",
-      "method": "读取原文、核对定位和支持范围",
+      "checked_on": "2026-11-09",
+      "method": "核对Vol.1 §3.4.1.1、既有Vol.2A/2B中的MOV/ADD/IMUL/Jcc/Shift对应64位形式；仅声明以上使用范围。",
       "documents": [
         {
           "file": "intel_vol2a.raw",
@@ -499,9 +499,14 @@
         {
           "file": "intel_sdm.raw",
           "sha256": "f405c1263418c56b19104513649eec6080a3a21a5956415941bc3aab5d93d020"
+        },
+        {
+          "file": "intel_vol1.raw",
+          "sha256": "f6ffc430dfa2dada4f791b1ecb462810e59827befe9a9c23f9160941eea642f9"
         }
       ]
-    }
+    },
+    "basic_architecture_url": "https://cdrdv2.intel.com/v1/dl/getContent/671436"
   },
   "arm_a64_isa": {
     "tier": 1,

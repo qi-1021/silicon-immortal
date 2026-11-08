@@ -1,6 +1,6 @@
 # 安装与脚本启动
 
-当前版本仅发布源码与启动脚本。没有exe/app，也不需要购买代码签名或处理未公证app。安装Python3.12后，使用Windows的run.bat或Mac的run.command启动；首次运行会在项目内安装固定依赖。
+当前版本仅发布源码与启动脚本。没有exe/app，也不需要购买代码签名或处理未公证app。安装Python3.12后，使用Windows的run.bat、Mac的run.command或Linux的run.sh启动；首次运行会在项目内安装固定依赖。
 
 ## 系统要求
 
@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | Windows | 双击run.bat | Windows10/11，64位Intel/AMD，Python3.12 |
 | Mac Apple Silicon或Intel | 双击run.command或终端./run.command | macOS14+，对应架构的Python3.12 |
+| Linux | bash run.sh | Python3.12、图形桌面与PySide6所需运行库；本轮未做Linux平台验证 |
 
 PySide6 6.12的官方Mac wheel要求macOS14。Windows ARM未作为当前发布支持平台。最小窗口1180×760，显示缩放较大时需要足够屏幕空间；参数/结构/报告可以分别滚动。
 
@@ -38,11 +39,13 @@ chmod +x run.command
 
 首次启动会创建.venv，安装requirements.txt里的PySide6==6.12.0，需要网络并可能等待一段时间。以后启动会复用环境，游戏可离线运行。安装失败会退出并显示错误，不伪装成游戏已启动。
 
+**Linux：** 安装Python3.12后，终端进入项目目录运行`bash run.sh`。脚本创建.venv并安装相同requirements.txt。官方PySide6 6.12 x86_64 wheel要求glibc2.34+，arm64 wheel要求glibc2.39+；这是发行wheel条件，Python本身不能提供Qt/X11/Wayland等系统库。按请求未在Linux上运行验证。
+
 ## 4. 第一次进入
 
 ![启动页](../screens/start.png)
 
-首页“设计自己的核心·LAB”直接设计CPU/GPU/NPU/ISP；“教学关卡”按目标学习；编号01—12是独立挑战委托，x86工作站可使用三种可编辑教学核。顶部初级/中级/高级/专业控制提示，不改变硬件。
+首页“设计自己的核心·LAB”直接设计CPU/GPU/NPU/ISP；“教学关卡”按目标学习；编号01—12是独立挑战委托，x86工作站可使用32/64位、精简/均衡/性能/吞吐教学核；自由沙盒在侧栏有独立工作区。顶部初级/中级/高级/专业控制提示，不改变硬件。
 
 ## 手动启动
 

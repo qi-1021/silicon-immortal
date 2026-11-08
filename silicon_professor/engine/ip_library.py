@@ -10,12 +10,14 @@ from pathlib import Path
 
 from .labs import DEFAULTS,run_experiment
 from ..version import producer,compatibility_notes,diagnostic
+from ..data.architectures import ISA_FAMILIES
 
 FORMAT='silicon-professor/ip'
 ASSET_KINDS={'cpu','gpu','npu','isp'}
 EXAMPLES={
     'riscv32':('ADDI x1,x0,6\nADDI x2,x0,7\nADD x3,x1,x2\nSW x3,0(x0)\nLW x3,0(x0)\nHALT',3,13),
     'x86_32':('MOV EAX,6\nMOV EBX,7\nADD EAX,EBX\nMOV [0],EAX\nMOV EAX,[0]\nHALT',0,13),
+    'x86_64':('MOV RAX,6\nMOV RBX,7\nADD RAX,RBX\nMOV R8,0\nMOV [R8],RAX\nMOV RAX,[R8]\nHALT',0,13),
     'aarch64':('MOV X0,#6\nMOV X1,#7\nADD X2,X0,X1\nMOV X3,#0\nSTR W2,[X3]\nLDR W2,[X3]\nHALT',2,13),
 }
 
@@ -144,9 +146,9 @@ def attach_asset(design,record):
     if asset['kind']=='cpu':
         isa=asset['config'].get('architecture','riscv32')
         from ..data.cores import get_ip
-        family={'riscv32':'riscv','x86_32':'x86_32','aarch64':'armv9'}[isa]
+        family=ISA_FAMILIES[isa]
         active=[get_ip(design,g.core_id) for g in design.cores if g.count>0]
-        if any(ip and ip['isa']!=family and not (family.startswith('arm') and ip['isa'].startswith('arm')) for ip in active):
+        if design.scenario_id!='sandbox' and any(ip and ip['isa']!=family and not (family.startswith('arm') and ip['isa'].startswith('arm')) for ip in active):
             raise ValueError('应用核集群的ISA不同；先在架构页清空原CPU组，或使用相同架构IP。')
         design.cores.append(CoreGroup('ip:'+asset['id'],1,1.0,False,0.0))
     else:
@@ -167,7 +169,7 @@ def _model(kind,name,config_json):
         logic=1.6+.28*p['width']+.0025*p['rob_size']+.006*p['cache_kb']+.18*p['execution_ports']
         delay=2600+60*(p['width']-6)+50*(p['execution_ports']-6)+.25*(p['rob_size']-320)
         fmax=1000/(delay/p['pipeline']+70)
-        return dict(id='custom_ip',name=name,vendor='LAB',arch=p['architecture'],isa={'riscv32':'riscv','x86_32':'x86_32','aarch64':'armv9'}[p['architecture']],
+        return dict(id='custom_ip',name=name,vendor='LAB',arch=p['architecture'],isa=ISA_FAMILIES[p['architecture']],
             year=2026,tier='big',license='custom',ref_node='n3e',ipc=max(.15,min(2.5,r['ipc']*3)),
             fmax_ref=fmax,logic_area=logic,l2_default=1.0,l2_max=8.0,power_ref=.8+.12*p['width']+.001*p['rob_size']+.1*p['execution_ports'],
             leak_frac=.16,license_cost_m=0.0,eng_weeks=24,decode=p['width'],rob=p['rob_size'],measured_ipc=r['ipc'],

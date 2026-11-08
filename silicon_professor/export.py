@@ -39,7 +39,8 @@ def payload(design, result) -> dict:
         "engine": {"name": "Silicon Professor", "model": MODEL_VERSION},
         "provenance": {"simulation": True, "visuals": "procedural-floorplan-illustration",
                        "legacy_ai_tops_is_score": True,
-                       "signoff_ready": bool(result and result.get("signoff", {}).get("ready"))},
+                       "signoff_ready": bool(result and result.get("signoff", {}).get("ready") and result.get('signoff',{}).get('mode')!='advisory'),
+                       "signoff_mode": result.get('signoff',{}).get('mode','required') if result else 'uncomputed'},
     }
 
 

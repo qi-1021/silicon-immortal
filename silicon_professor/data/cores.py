@@ -501,3 +501,21 @@ def _x86_templates():
         model.pop('measured_ipc',None)
         CORES[ident]=model
 _x86_templates()
+
+def _teaching_families():
+    from .core_designs import default_hardware
+    from ..engine.core_studio import design_model
+    groups=[('x64','x86 · 64位','x86_64','intel_ia32'),('rv32','RISC-V · 32位','riscv32','riscv_isa'),('arm64','Arm · 64位','aarch64','arm_a64_isa')]
+    profiles=[('compact','精简控制核','little',dict(width=1,execution_ports=1,alu_ports=1,rob_size=16,cache_kb=8,issue_order='in_order')),
+              ('balanced','均衡双发射核','mid',dict(width=2,execution_ports=2,alu_ports=2,rob_size=48,cache_kb=32,issue_order='out_of_order')),
+              ('wide','宽发射性能核','big',dict(width=4,execution_ports=4,alu_ports=4,rob_size=160,cache_kb=64,issue_order='out_of_order')),
+              ('compute','计算吞吐核','big',dict(width=6,execution_ports=6,alu_ports=4,multiply_ports=2,rob_size=256,cache_kb=64,issue_order='out_of_order'))]
+    for prefix,family,architecture,evidence in groups:
+        for suffix,title,tier,changes in profiles:
+            h=default_hardware('cpu')|dict(architecture=architecture)|changes
+            if architecture!='riscv32':h.update(enable_m=False,enable_zbb=False)
+            name=family+' · '+title;model=design_model('cpu',name,h)
+            model.update(id=prefix+'_'+suffix,license='research',tier=tier,arch=family+'整数教学子集',evidence=[evidence],hardware=h,
+                         note='参数化教学核心：精简/均衡/性能/吞吐表示资源与工作负载方向，不是厂商实物分类；PPA未校准，无OS/SIMD。')
+            model.pop('measured_ipc',None);CORES[model['id']]=model
+_teaching_families()

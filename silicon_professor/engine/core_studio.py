@@ -4,6 +4,7 @@ from functools import lru_cache
 import json
 
 from ..data.core_designs import FIELDS, BENCH_FIELDS, default_hardware, default_bench
+from ..data.architectures import ISA_FAMILIES
 from .labs import run_experiment
 from .lab_accelerators import npu_lab, isp_lab, fp32
 
@@ -70,11 +71,19 @@ def _cpu_vectors(arch):
                  ('相关运算链','ADDI x1,x0,1\n'+'ADD x1,x1,x1\n'*8+'HALT',{'x1':256}),
                  ('独立整数运算','\n'.join(f'ADDI x{i},x0,{i}' for i in range(1,25))+'\nHALT',{'x24':24}),
                  ('分支控制','ADDI x1,x0,3\nloop:\nADDI x1,x1,-1\nBNE x1,x0,loop\nHALT',{'x1':0})]
-    elif arch=='x86_32':
+    elif arch in ('x86_32','x86_64'):
         vectors=[('加法与存储加载','MOV EAX,6\nMOV EBX,7\nADD EAX,EBX\nMOV [0],EAX\nMOV ECX,[0]\nHALT',{'ECX':13}),
                  ('相关运算链','MOV EAX,1\n'+'ADD EAX,EAX\n'*8+'HALT',{'EAX':256}),
                  ('独立整数运算','\n'.join(f'MOV {reg},{i}' for i in range(1,5) for reg in ('EAX','EBX','ECX','EDX'))+'\nHALT',{'EDX':4}),
                  ('标志与分支','MOV EAX,3\nloop:\nSUB EAX,1\nCMP EAX,0\nJNE loop\nHALT',{'EAX':0})]
+        if arch=='x86_64':
+            converted=[]
+            for name,source,expected in vectors:
+                source=source.replace('[0]','[R8]')
+                for e,r in [('EAX','RAX'),('EBX','RBX'),('ECX','RCX'),('EDX','RDX')]:source=source.replace(e,r)
+                source='MOV R8,0\n'+source
+                converted.append((name,source,{k.replace('E','R',1):v for k,v in expected.items()}))
+            vectors=converted
     else:
         vectors=[('加法与存储加载','MOV X0,#6\nMOV X1,#7\nADD X2,X0,X1\nSTR X2,[X3]\nLDR X4,[X3]\nHALT',{'X4':13}),
                  ('相关运算链','MOV X0,#1\n'+'ADD X0,X0,X0\n'*8+'HALT',{'X0':256}),
@@ -109,6 +118,9 @@ def _verify_cached(kind,hardware_json):
         if h['architecture']=='riscv32' and h['enable_zbb']:
             r=run_design(kind,h,dict(source='ADDI x1,x0,255\nCPOP x2,x1\nHALT',memory=''))
             add('Zbb 位计数',r,r['registers'][2]==8,'CPOP(255)=8')
+        if h['architecture']=='x86_64':
+            r=run_design(kind,h,dict(source='MOV R8,0x1122334455667788\nMOV R9,R8\nMOV R8D,7\nMOV R10,256\nMOV [R10],R9\nMOV R11,[R10]\nHALT',memory=''))
+            add('64位状态 / 32位零扩展',r,r['registers'][8]==7 and r['registers'][11]==0x1122334455667788,'R8D写7清除高32位；R11保留64位qword')
     elif kind=='gpu':
         for task,pattern,elements in [('axpy','uniform',128),('branch','uniform',128),('branch','alternating',129)]:
             r=run_design(kind,h,dict(task=task,pattern=pattern,elements=elements))
@@ -200,7 +212,7 @@ def design_model(kind,name,hardware):
         if h['issue_order']=='out_of_order':area+=.30+.001*h['rob_size']
         delay=2200+50*h['width']+35*h['alu_ports']+.3*h['rob_size']
         return dict(common,id='studio_cpu',vendor='STUDIO',arch=h['architecture'],
-                    isa={'riscv32':'riscv','x86_32':'x86_32','aarch64':'armv9'}[h['architecture']],
+                    isa=ISA_FAMILIES[h['architecture']],
                     year=2026,tier='big',license='custom',ref_node='n3e',ipc=max(.15,min(2.5,checks['observed_ipc']*3)),
                     measured_ipc=checks['observed_ipc'],fmax_ref=1000/(delay/h['pipeline']+70),logic_area=area,
                     l2_default=1.,l2_max=8.,power_ref=.4+.10*h['width']+.12*h['alu_ports']+.03*area,

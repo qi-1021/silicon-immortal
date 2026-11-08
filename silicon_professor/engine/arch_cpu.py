@@ -259,5 +259,8 @@ def execute_architecture(architecture,source,memory=None,extensions=(),max_instr
                     register_names=[f'x{i}' for i in range(32)],register_bits=32,zero_register=0,architecture=architecture)
     if extensions:raise ValueError('x86/A64子集没有实现额外扩展；不能启用AVX/NEON等开关。')
     if architecture=='x86_32':return execute_x86(source,memory,max_instructions)
+    if architecture=='x86_64':
+        from .x64_cpu import execute_x64
+        return execute_x64(source,memory,max_instructions)
     if architecture=='aarch64':return execute_a64(source,memory,max_instructions)
     raise ValueError(f'未实现该架构执行器：{architecture}')

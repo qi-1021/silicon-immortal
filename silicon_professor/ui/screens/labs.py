@@ -205,14 +205,14 @@ class LabsScreen(QWidget):
         self.tabs.addTab(self.guide,"课程讲义与来源")
         catalog=QWidget()
         catl=QVBoxLayout(catalog)
-        intro=QLabel("三个可运行子集：RV32I/M/Zbb、x86 IA-32与Arm AArch64。下列指令表列出RV32编码；x86/A64的具体范围见后面的架构卡。所有执行器都从汇编输入运行，没有二进制取指或第三方完整合规认证。RV32 ECALL/EBREAK报告环境异常，HALT是实验终止伪指令。")
+        intro=QLabel("四个可运行子集：RISC-V 32位、x86 32位/64位、Arm 64位。RV32/IA-32/AMD64/AArch64是对应技术名称。下表列出RV32编码，其他范围见架构卡；输入是汇编，没有二进制取指或完整合规认证。HALT为测试结束伪指令。")
         intro.setWordWrap(True);intro.setObjectName("Dim");catl.addWidget(intro)
         for family,instructions in instruction_catalog().items():
             card=Card(f"{family} · {len(instructions)} 条")
             text=QLabel(" · ".join(instructions))
             text.setWordWrap(True);text.setObjectName("Dim");card.add(text)
             catl.addWidget(card)
-        for architecture in ('x86_32','aarch64'):
+        for architecture in ('x86_32','x86_64','aarch64'):
             spec=ARCHITECTURES[architecture]
             card=Card(spec['name'])
             text=QLabel(spec['scope']);text.setWordWrap(True);text.setObjectName('Dim');card.add(text)
@@ -350,7 +350,7 @@ class LabsScreen(QWidget):
     def _architecture_changed(self,architecture):
         if self._building:return
         p=self.inputs()
-        samples={'riscv32':'ADDI x1,x0,42\nHALT','x86_32':'MOV EAX,42\nHALT','aarch64':'MOV X0,#42\nHALT'}
+        samples={'riscv32':'ADDI x1,x0,42\nHALT','x86_32':'MOV EAX,42\nHALT','x86_64':'MOV RAX,42\nHALT','aarch64':'MOV X0,#42\nHALT'}
         p.update(source=samples[architecture],memory='',architecture=architecture,extensions=['M'] if architecture=='riscv32' else [])
         self.course_id=None
         self._build_inputs(p);self._guide()

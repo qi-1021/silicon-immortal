@@ -31,7 +31,7 @@ TRACKS = {
         id="x86", name="x86 · Intel / AMD 指令家族", short="x86", available=True,
         match=("x86_64","x86_32"),
         eco_base=0.60, eco_gain=0.20,
-        tagline="32位整数核心设计与SoC复用 · IA-32 · 尚无x86-64",
+        tagline="32/64位整数核心 · 精简/均衡/性能/吞吐设计 · 无OS/SIMD",
         note="x86提供参数化教学核心、硬件设计与工作站项目。ISA属于Intel/AMD广为使用的家族，模板不是其商业CPU复刻或授权IP。",
         evidence=[], confidence="low",
     ),

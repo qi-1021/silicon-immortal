@@ -1,0 +1,123 @@
+{
+  "format": "silicon-professor/ip",
+  "version": 1,
+  "id": "399916f4d4a934dbd0025adfb9d12a1a",
+  "digest": "399916f4d4a934dbd0025adfb9d12a1a537d499b7d11c6d3e7790e9a7c29f3da",
+  "name": "isqi / x86-64",
+  "kind": "cpu",
+  "identity_basis": "kind/name/design",
+  "design": {
+    "schema": "parameterized-core-v1",
+    "hardware": {
+      "architecture": "x86_64",
+      "enable_m": false,
+      "enable_zbb": false,
+      "issue_order": "out_of_order",
+      "width": 2,
+      "pipeline": 8,
+      "rob_size": 32,
+      "execution_ports": 2,
+      "alu_ports": 2,
+      "multiply_ports": 1,
+      "multiply_latency": 3,
+      "cache_kb": 16,
+      "cache_ways": 4,
+      "cache_line_bytes": 64,
+      "hit_latency": 2,
+      "miss_latency": 40
+    }
+  },
+  "producer": {
+    "name": "Silicon Immortal",
+    "version": "0.1.0-alpha.5",
+    "release_channel": "alpha",
+    "model": "analytic-v0.8+x64-free-studio-v1"
+  },
+  "config": {
+    "architecture": "x86_64",
+    "issue_order": "out_of_order",
+    "width": 2,
+    "pipeline": 8,
+    "rob_size": 32,
+    "execution_ports": 2,
+    "alu_ports": 2,
+    "multiply_ports": 1,
+    "multiply_latency": 3,
+    "cache_kb": 16,
+    "cache_ways": 4,
+    "cache_line_bytes": 64,
+    "hit_latency": 2,
+    "miss_latency": 40,
+    "extensions": [],
+    "source": "MOV RAX,6\nMOV RBX,7\nADD RAX,RBX\nMOV R8,256\nMOV [R8],RAX\nMOV RCX,[R8]\nHALT",
+    "memory": ""
+  },
+  "verification": {
+    "passed": true,
+    "cases": [
+      {
+        "name": "加法与存储加载",
+        "passed": true,
+        "cycles": 54,
+        "instructions": 6,
+        "ipc": 0.1111111111111111,
+        "compute_cycles": null,
+        "transfer_cycles": null,
+        "observation": "RCX=13（预期13）"
+      },
+      {
+        "name": "相关运算链",
+        "passed": true,
+        "cycles": 18,
+        "instructions": 10,
+        "ipc": 0.5555555555555556,
+        "compute_cycles": null,
+        "transfer_cycles": null,
+        "observation": "RAX=256（预期256）"
+      },
+      {
+        "name": "独立整数运算",
+        "passed": true,
+        "cycles": 18,
+        "instructions": 17,
+        "ipc": 0.9444444444444444,
+        "compute_cycles": null,
+        "transfer_cycles": null,
+        "observation": "RDX=4（预期4）"
+      },
+      {
+        "name": "标志与分支",
+        "passed": true,
+        "cycles": 37,
+        "instructions": 11,
+        "ipc": 0.2972972972972973,
+        "compute_cycles": null,
+        "transfer_cycles": null,
+        "observation": "RAX=0（预期0）"
+      },
+      {
+        "name": "64位状态 / 32位零扩展",
+        "passed": true,
+        "cycles": 54,
+        "instructions": 6,
+        "ipc": 0.1111111111111111,
+        "compute_cycles": null,
+        "transfer_cycles": null,
+        "observation": "R8D写7清除高32位；R11保留64位qword"
+      }
+    ],
+    "checks": [
+      "加法与存储加载",
+      "相关运算链",
+      "独立整数运算",
+      "标志与分支",
+      "64位状态 / 32位零扩展"
+    ],
+    "scope": "fixed functional vectors and resource scheduling; not full ISA/RTL/PDK certification",
+    "model": "parameterized-core-v1",
+    "cycles": 181,
+    "observed_ipc": 0.27624309392265195
+  },
+  "parameter_basis": "game_assumption",
+  "compatibility_notes": []
+}

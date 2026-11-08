@@ -1,6 +1,6 @@
 """版本为排错元数据，读取能力由格式与字段决定。"""
-GAME_VERSION='0.1.0-alpha.4'
-MODEL_VERSION='analytic-v0.7+x86-studio-v1'
+GAME_VERSION='0.1.0-alpha.5'
+MODEL_VERSION='analytic-v0.8+x64-free-studio-v1'
 
 
 def producer():

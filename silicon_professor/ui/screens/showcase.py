@@ -258,7 +258,7 @@ class ShowcaseScreen(QWidget):
             self.pills.addWidget(Pill(txt, color))
         self.pills.addStretch(1)
         self.review.setText(f"{m['review']:.0f}")
-        self.status.setText("已流片 · 游戏发布结果" if self.win.is_released else "设计预览 · 尚未发布此版本")
+        self.status.setText('自由方案预览 · 诊断不阻塞，未完成物理签核' if self.win.design.scenario_id=='sandbox' else "已流片 · 游戏发布结果" if self.win.is_released else "设计预览 · 尚未发布此版本")
 
         vals = {
             "st": (p["st_burst"], "{:.0f}"), "mt": (p["mt_burst"], "{:.0f}"),

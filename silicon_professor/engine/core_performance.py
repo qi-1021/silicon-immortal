@@ -10,12 +10,16 @@ def performance_cases(architecture):
         dependency='ADDI x1,x0,1\n'+'ADD x1,x1,x1\n'*128
         cache='\n'.join('ADDI x2,x0,0\n'+'LW x1,0(x2)\nADDI x2,x2,256\n'*32 for _ in range(4))
         mixed='ADDI x1,x0,3\nADDI x2,x0,7\n'+'\n'.join('MUL x3,x1,x2\nADD x4,x3,x1\nADDI x5,x0,9' for _ in range(24))
-    elif architecture=='x86_32':
+    elif architecture in ('x86_32','x86_64'):
         regs=['EAX','EBX','ECX','EDX','ESI','EDI']
         independent='\n'.join(f'MOV {regs[i%6]},{i}' for i in range(96))
         dependency='MOV EAX,1\n'+'ADD EAX,EAX\n'*128
         cache='\n'.join(f'MOV EAX,[{i*256}]' for _ in range(4) for i in range(32))
         mixed='MOV EAX,3\nMOV EBX,7\n'+'\n'.join('MOV ECX,EAX\nIMUL ECX,EBX\nADD EDX,ECX\nMOV ESI,9' for _ in range(24))
+        if architecture=='x86_64':
+            for e,r in [('EAX','RAX'),('EBX','RBX'),('ECX','RCX'),('EDX','RDX'),('ESI','RSI'),('EDI','RDI')]:
+                independent=independent.replace(e,r);dependency=dependency.replace(e,r);mixed=mixed.replace(e,r)
+            cache='MOV R8,0\n'+'\n'.join(f'MOV RAX,[R8+{i*256}]' for _ in range(4) for i in range(32))
     elif architecture=='aarch64':
         independent='\n'.join(f'MOV X{i%30},#{i}' for i in range(96))
         dependency='MOV X0,#1\n'+'ADD X0,X0,X0\n'*128

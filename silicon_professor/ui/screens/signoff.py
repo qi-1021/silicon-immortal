@@ -274,8 +274,11 @@ class SignoffScreen(QWidget):
             self.quote.setText("“纸面规格和实际体验对不上。”")
         self.margin.setStyleSheet(f"color:{T.GREEN if m['margin'] > 0.3 else T.AMBER}; font-size:11px; font-family:{T.FONT_MONO};")
         ok = r["signoff"]["ready"]
+        free=r['signoff'].get('mode')=='advisory'
+        self.tape.setText('生成自由设计预览' if free else '签核通过 · 流片')
         self.tape.setEnabled(ok)
-        self.badge.setText("READY" if ok else "BLOCKED")
+        self.badge.setText('ADVISORY · 自由方案' if free else "READY" if ok else "BLOCKED")
         self.badge.setStyleSheet(f"color:{T.GREEN if ok else T.RED}; font-size:11px; letter-spacing:2px;")
-        self.reason.setText("\n".join(c["title"] + "：" + c["remedy"] for c in r["signoff"]["blockers"]))
+        issues=r['signoff'].get('diagnostics',r['signoff']['blockers'])
+        self.reason.setText('\n\n'.join(c['title']+'\n原因：'+c.get('explanation',c['title'])+'\n解决方向：'+c['remedy'] for c in issues))
         self.chip_name.setText(self.win.design.name)

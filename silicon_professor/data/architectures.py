@@ -1,5 +1,6 @@
 """历史 ISA 家族注册表。列举不等于全集，未实现的执行器必须明确标注。"""
-ISA_OPTIONS=[('riscv32','RISC-V · 32位（RV32）'),('x86_32','x86 · Intel/AMD 指令家族 · 32位（IA-32）'),('aarch64','Arm · 64位（AArch64）')]
+ISA_OPTIONS=[('riscv32','RISC-V · 32位（RV32）'),('x86_32','x86 · Intel/AMD · 32位（IA-32）'),('x86_64','x86 · Intel/AMD · 64位（AMD64 / Intel 64）'),('aarch64','Arm · 64位（AArch64）')]
+ISA_FAMILIES={'riscv32':'riscv','x86_32':'x86_32','x86_64':'x86_64','aarch64':'armv9'}
 
 def isa_name(isa):
     names=dict(ISA_OPTIONS)
@@ -10,6 +11,8 @@ ARCHITECTURES = {
         scope='RV32I整数/编码、M、18条RV32 Zbb；无特权/OS/二进制取指/浮点/向量。'),
     'x86_32':dict(name=isa_name('x86_32'),width='32',execution='implemented_subset',sources=['intel_ia32'],
         scope='8个E寄存器，MOV、ADD/SUB/CMP、布尔、双操作数IMUL、Jcc/JMP与32位MOV访存。无x87/SSE/AVX、段/页表、长模式或异常。'),
+    'x86_64':dict(name=isa_name('x86_64'),width='32/64',execution='implemented_subset',sources=['intel_ia32'],
+        scope='16个64位GPR与32位别名零扩展；MOV/ADD/SUB/CMP/AND/OR/XOR/IMUL/SHL/SHR/SAR、Jcc/JMP、基址+disp32访存与REX编码。教学子集只用64KiB对齐内存；无16/8位寄存器、段/分页/OS、RIP/索引寻址、SSE/AVX/x87或异常。'),
     'aarch64':dict(name=isa_name('aarch64'),width='32/64',execution='implemented_subset',sources=['arm_a64_isa'],
         scope='W/X整数、零寄存器/NZCV、MOV/ADD/SUB/布尔/MUL、B/BL/RET、LDR/STR子集；无SIMD/SVE/SME/EL/系统寄存器。'),
 }
@@ -48,7 +51,7 @@ HISTORICAL = [
     ('b5000','Burroughs B5000/B5500','word/stack','栈与标记存储模型'),
 ]
 for key,name,width,scope in HISTORICAL:
-    ARCHITECTURES[key]=dict(name=name,width=width,execution='catalog_only',sources=[],scope=scope+'；仅历史目录，未核验每代手册，不能用于执行/已验证IP。')
+    if key not in ARCHITECTURES:ARCHITECTURES[key]=dict(name=name,width=width,execution='catalog_only',sources=[],scope=scope+'；仅历史目录，未核验每代手册，不能用于执行/已验证IP。')
 
 MODES={
     'beginner':dict(name='初级',level=0,description='先做功能实验，提示逐步完成；复杂资源参数折叠。'),
