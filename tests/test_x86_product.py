@@ -13,8 +13,8 @@ class TestX86Product(unittest.TestCase):
         self.assertTrue(all(get_ip(d,g.core_id)['isa']=='x86_64' for g in d.cores))
         for g in d.cores:
             h=hardware_from_template(get_ip(d,g.core_id))
-            result=run_design('cpu',h,{'source':'MOV EAX,6\nMOV EBX,7\nIMUL EAX,EBX\nMOV [0],EAX\nMOV ECX,[0]\nHALT'})
-            self.assertEqual(dict(zip(result['register_names'],result['registers']))['ECX'],42)
+            result=run_design('cpu',h,{'source':'MOV RAX,6\nMOV RBX,7\nIMUL RAX,RBX\nMOV R8,256\nMOV [R8],RAX\nMOV RCX,[R8]\nHALT'})
+            self.assertEqual(dict(zip(result['register_names'],result['registers']))['RCX'],42)
 
     def test_isa_picker_leads_with_familiar_name_and_explains_width(self):
         field=next(f for f in FIELDS['cpu'] if f['key']=='architecture')
