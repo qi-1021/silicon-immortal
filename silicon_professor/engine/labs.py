@@ -45,8 +45,12 @@ def run_experiment(kind, inputs):
             if len(pair) != 2: raise ValueError("初始内存每行：对齐地址 32位整数值。")
             if pair[0] in memory: raise ValueError("初始内存地址重复。")
             memory[pair[0]] = pair[1]
-        result = simulate_core(memory=memory, **p)
-        result["used_ops"] = sorted({entry['op'] for entry in result['listing']})
+        source2=p.pop('source2','')
+        if source2:
+            from .cpu_features import run_cpu_pair
+            result=run_cpu_pair(p.pop('source'),source2,memory=memory,**p)
+        else:result = simulate_core(memory=memory, **p)
+        result["used_ops"] = sorted({entry['op'] for thread in result.get('threads',[result]) for entry in thread['listing']})
     elif kind=='gpu':result=gpu_lab(**p)
     elif kind=='npu':result=npu_lab(**p)
     elif kind=='isp':result=isp_lab(**p)
@@ -79,4 +83,5 @@ def json_result(result):
     out = dict(result)
     if result["kind"] == "cpu":
         out["rows"] = [dict(row, instruction=row["instruction"].text, deps=sorted(row["deps"])) for row in result["rows"]]
+        if 'solo' in result:out['solo']=[json_result(dict(r,kind='cpu')) for r in result['solo']]
     return out

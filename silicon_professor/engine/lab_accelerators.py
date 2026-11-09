@@ -16,7 +16,7 @@ def schedule_warps(warps,processors,resident_warps,alu_latency,issue_interval):
     for warp in warps:
         unit=min(range(processors),key=lambda j:estimates[j])
         estimates[unit]+=warp['instruction_slots']
-        warp.update(processor=unit,start=None,finish=None)
+        warp.update(processor=unit,start=None,finish=None,issues=[])
         queues[unit].append(warp)
     for queue in queues:
         active=[];cursor=cycle=0
@@ -32,6 +32,8 @@ def schedule_warps(warps,processors,resident_warps,alu_latency,issue_interval):
             entry=min(ready,key=lambda e:(e['ready'],e['warp']['warp']))
             warp=entry['warp']
             if warp['start'] is None:warp['start']=cycle
+            slot=warp['instruction_slots']-entry['remaining']
+            warp['issues'].append(dict(cycle=cycle,done=cycle+alu_latency,slot=slot))
             entry.update(remaining=entry['remaining']-1,ready=cycle+alu_latency)
             warp['finish']=entry['ready']
             cycle+=issue_interval
@@ -56,14 +58,17 @@ def gpu_lab(elements=64,warp_size=8,processors=2,task='axpy',pattern='alternatin
             output[i]=fp32(fp32(2*x[i])+y[i]) if task=='axpy' or predicates[i] else fp32(x[i]*x[i])
         # 一SIMT路径包含一mul和一add；非FMA，两个明确指令槽。
         duration=2 if task=='axpy' else (2 if true else 0)+(1 if false else 0)
+        yes=list(range(first,end)) if task=='axpy' else [i for i in range(first,end) if predicates[i]]
+        no=[] if task=='axpy' else [i for i in range(first,end) if not predicates[i]]
+        slots=([dict(op='mul',lanes=yes),dict(op='add',lanes=yes)] if yes else [])+([dict(op='mul',lanes=no)] if no else [])
         warps.append(dict(warp=len(warps),first_lane=first,active_lanes=end-first,true_lanes=true,false_lanes=false,
-                          paths=paths,instruction_slots=duration))
+                          paths=paths,instruction_slots=duration,slots=slots))
     compute_cycles=schedule_warps(warps,processors,resident_warps,alu_latency,issue_interval)
     reference=[fp32(fp32(2*v)+y[i]) if task=='axpy' or predicates[i] else fp32(v*v) for i,v in enumerate(x)]
     transferred=elements*12 # 两FP32输入与一FP32输出，未模型化缓存复用。
     transfer_cycles=math.ceil(transferred/(bandwidth_gbs/frequency_ghz))
     operations=elements*2 if task=='axpy' else sum(2 if p else 1 for p in predicates)
-    return dict(output=output,input_x=x,input_y=y,warps=warps,functional_check=output==reference,
+    return dict(output=output,input_x=x,input_y=y,warps=warps,functional_check=output==reference,task=task,
                 compute_cycles=compute_cycles,transfer_cycles=transfer_cycles,cycles=compute_cycles+transfer_cycles,
                 operations=operations,bytes_transferred=transferred,precision='FP32, round after each mul/add; no fused operation',
                 divergence=sum(w['paths']>1 for w in warps),throughput_gops=operations/(compute_cycles+transfer_cycles)*frequency_ghz,
@@ -106,6 +111,7 @@ def npu_lab(m=8,n=8,k=8,rows=4,cols=4,precision_bits=8,accumulator_bits=32,scrat
     return dict(output=output,exact=exact,input_a=a,input_b=b,overflow_count=overflow,
                 functional_check=all(output[i][j]==exact[i][j] for i in range(m) for j in range(n)),
                 tiles=tiles,scratchpad_bytes=max_local,scratchpad_fits=max_local<=scratchpad_kb*1024,
+                array_rows=rows,array_cols=cols,accumulator_bits=accumulator_bits,
                 compute_cycles=cycles,transfer_cycles=transfer,cycles=total,macs=macs,operations=2*macs,
                 precision=f'INT{precision_bits}, signed; INT{accumulator_bits} wrap accumulation',
                 throughput_gops=2*macs/total*frequency_ghz,bytes_transferred=traffic,
@@ -132,19 +138,29 @@ def isp_lab(width=8,height=8,black_level=64,gain=1.0,gamma=2.2,output_bits=8,pix
     effective_gain=gain if 'gain' in stages else 1
     effective_gamma=gamma if 'gamma' in stages else 1
     corrected=[[min(4095,max(0,v-effective_black)*effective_gain)/4095 for v in row] for row in raw]
-    output=[]
+    stage_outputs={'raw':[[[v] for v in row] for row in raw]};stage_ranges={'raw':4095}
+    if 'black_level' in stages:
+        stage_outputs['black_level']=[[[max(0,v-black_level)] for v in row] for row in raw];stage_ranges['black_level']=4095
+    if 'gain' in stages:
+        stage_outputs['gain']=[[[v*4095] for v in row] for row in corrected];stage_ranges['gain']=4095
+    rgb_frame=[];gamma_frame=[];output=[]
     for y in range(height):
-        line=[]
+        line=[];rgb_line=[];gamma_line=[]
         for x in range(width):
-            rgb=[]
+            rgb=[];pre=[];post=[]
             for channel in range(3):
                 if 'demosaic' not in stages or colors(y,x)==channel:value=corrected[y][x]
                 else:
                     samples=[corrected[yy][xx] for yy in range(max(0,y-1),min(height,y+2)) for xx in range(max(0,x-1),min(width,x+2)) if colors(yy,xx)==channel]
                     value=sum(samples)/len(samples) if samples else 0
-                rgb.append(round(max(0,min(1,value))**(1/effective_gamma)*((1<<output_bits)-1)))
-            line.append(rgb)
-        output.append(line)
+                adjusted=max(0,min(1,value))**(1/effective_gamma)
+                pre.append(value);post.append(adjusted)
+                rgb.append(round(adjusted*((1<<output_bits)-1)))
+            line.append(rgb);rgb_line.append(pre);gamma_line.append(post)
+        output.append(line);rgb_frame.append(rgb_line);gamma_frame.append(gamma_line)
+    if 'demosaic' in stages:stage_outputs['demosaic']=rgb_frame;stage_ranges['demosaic']=1
+    if 'gamma' in stages:stage_outputs['gamma']=gamma_frame;stage_ranges['gamma']=1
+    stage_outputs['quantize']=output;stage_ranges['quantize']=(1<<output_bits)-1
     functional=all(len(pixel)==3 and all(0<=v<(1<<output_bits) for v in pixel) for line in output for pixel in line)
     traffic=width*height*(2+6) # raw以16bit存，RGB输出每通道16bit容器。
     fill=2*width if 'demosaic' in stages else 0
@@ -154,5 +170,6 @@ def isp_lab(width=8,height=8,black_level=64,gain=1.0,gamma=2.2,output_bits=8,pix
     return dict(output=output,input_raw=raw,corrected=corrected,functional_check=functional,
                 line_buffer_bytes=2*width*2 if fill else 0,compute_cycles=compute,transfer_cycles=transfer,cycles=compute+transfer,
                 stages=stages,color_mode='rgb' if 'demosaic' in stages else 'raw_mono',
+                stage_outputs=stage_outputs,stage_ranges=stage_ranges,pixels_per_cycle=pixels_per_cycle,fill_cycles=fill,stage_latency=latency,
                 pixels=width*height,bytes_transferred=traffic,clipped=sum(v==4095 for row in raw for v in row),
                 assumptions='raw12 RGGB、黑电平、标量增益、局部bilinear插值、幂gamma；无AWB/CCM/噪声去除/镜头校正/HDR，gamma不是sRGB OETF。')

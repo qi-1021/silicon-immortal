@@ -260,6 +260,7 @@ class ArchitectureScreen(QWidget):
         self.modem.addItem("5G 集成基带", "modem5g")
         self.modem.addItem("外挂 5G 基带（省 die）", "modem_ext")
         self.modem.addItem("4G 基带", "modem4g")
+        self.modem.addItem("无蜂窝基带", "modem_none")
         grid.addWidget(self.modem, 1, 1)
         grid.addWidget(QLabel("存储"), 2, 0)
         self.storage = QComboBox()
@@ -377,7 +378,8 @@ class ArchitectureScreen(QWidget):
     def _modem_info(self):
         m = {"modem5g": ("集成 5G：主流选择。", 1.00),
              "modem_ext": ("外挂 5G：信号稳但多一颗芯片的功耗与成本。", 0.97),
-             "modem4g": ("4G：便宜省电，但 5G 时代会被差评。", 0.95)}.get(
+             "modem4g": ("4G：便宜省电，但 5G 时代会被差评。", 0.95),
+             "modem_none": ("无蜂窝连接；Wi-Fi/蓝牙不属于蜂窝基带。", 0.97)}.get(
                  self.win.design.modem_id, ("", 1.0))
         self.modem_info.setText(f"{m[0]} 信号系数 {m[1]:.2f}")
 

@@ -1,0 +1,28 @@
+"""厂商/原始测量确认的芯片身份；不包含游戏PPA或猜测的微架构。"""
+
+CHIP_FACTS={
+    'a19pro':dict(status='documented',cpu='Apple A19 Pro：新6核CPU；不沿用Sawtooth效率核名称',
+        gpu='Apple A19 Pro 6-core GPU，GPU核心内置Neural Accelerators',cpu_neural_accelerators=None,
+        neural_engine_cores=16,integrated_cellular_modem=False,
+        process='Apple公布的第三代3nm',sources=['apple_a19pro']),
+    'a20pro':dict(status='documented',cpu='Apple A20 Pro：新6核CPU，CPU内置Neural Accelerators',
+        gpu='Apple A20 Pro 7-core GPU',cpu_neural_accelerators=True,neural_engine_cores=32,
+        process='TSMC N2 / 2nm GAA',memory_bandwidth_ratio_a19=1.5,integrated_cellular_modem=False,
+        sources=['apple_a20pro','techinsights_a20pro']),
+    'sd888':dict(status='documented',cpu='Kryo 680：1×Cortex-X1 2.84GHz + 3×A78 2.42GHz + 4×A55 1.8GHz',
+        gpu='Adreno 660',process='Samsung 5nm',isp='Spectra 580，三14-bit ISP，2.7Gpixel/s',
+        npu='Hexagon 780；26TOPS为整个AI Engine营销峰值，不是独立NPU实测',sources=['qcom_sd888','mi11_original']),
+    'tensorG4':dict(status='documented',cpu='1×Cortex-X4 3.1GHz + 3×A720 2.6GHz + 4×A520 1.9GHz',
+        gpu='Mali-G715 MP7',process='Samsung 4nm',sources=['pixel9_original']),
+    'tensorG6':dict(status='documented',cpu='1×C1-Ultra 4.1GHz + 4×C1-Pro 3.4GHz + 2×C1-Pro 2.65GHz',
+        gpu='PowerVR；原始评测未明确完整GPU型号，不标成CXTP',process='3nm；具体工艺变体未核验',
+        sources=['pixel11_original','tensor_g6']),
+    'sd8elite6':dict(status='documented',cpu='新一代Oryon：2×Prime最高5.0GHz + 6×Performance最高4.0GHz',
+        gpu='Adreno GPU with AI matrix cores；原厂未在简报中公布850型号',
+        cache='16MB Oryon Flex Cache；不是16MB L3或每核3MB L2',
+        isp='三20-bit AI ISP',sources=['qcom_8ee6']),
+    'm1':dict(status='documented',cpu='M1 8核CPU：4性能核 + 4效率核',gpu='M1 7/8-core GPU；本条为8核版本',
+        process='5nm',sources=['apple_m1']),
+    'm4':dict(status='documented',cpu='M4最高10核CPU：4性能核 + 6效率核；不标作Sawtooth',
+        gpu='M4 10-core GPU',process='第二代3nm',sources=['apple_m4']),
+}

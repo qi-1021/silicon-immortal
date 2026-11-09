@@ -136,6 +136,8 @@ class StartScreen(QWidget):
         core_design=QPushButton('设计自己的核心 · LAB')
         core_design.clicked.connect(lambda:win.go('studio'));right.addWidget(core_design)
         sandbox=QPushButton('进入自由沙盒 · 独立方案');sandbox.clicked.connect(win.start_sandbox);right.addWidget(sandbox)
+        rescue=QPushButton('拯救芯片 · 历史与设计复盘');rescue.clicked.connect(lambda:win.go('rescue'));right.addWidget(rescue)
+        update=QPushButton('软件更新');update.clicked.connect(lambda:win.go('updates'));right.addWidget(update)
         how = QPushButton("教学关卡")
         how.clicked.connect(lambda: self.win.go("tutorial"))
         right.addWidget(how)

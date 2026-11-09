@@ -11,7 +11,7 @@ a simulate silicon designer for everyone
 [下载发行版](https://github.com/qi-1021/silicon-immortal/releases) · [玩家手册](docs/guide/README.md) · [问题反馈](https://github.com/qi-1021/silicon-immortal/issues)
 
 ![构建与测试](https://github.com/qi-1021/silicon-immortal/actions/workflows/release.yml/badge.svg)
-![Alpha](https://img.shields.io/badge/version-0.1.0--alpha.5-d8b580)
+![Alpha](https://img.shields.io/badge/version-0.1.0--alpha.6-d8b580)
 ![License](https://img.shields.io/badge/license-MIT-799683)
 
 powered by isqi
@@ -59,6 +59,16 @@ LAB默认是核心设计台，课程位于“实验与教学”。无需先建So
 | ISP | 黑电平/增益/去马赛克/gamma旁路、并行度、行缓冲、量化 | RAW/RGB测试图像、像素输出与周期 |
 
 x86现在提供32位与64位整数教学核心：IA-32以及AMD64/Intel64。64位有16个GPR、32位别名零扩展、REX编码、指定访存/算术/移位/分支形式。精简、均衡、宽发射、计算吞吐四种设计方向，也加入Arm64和RISC-V教学模板；每份硬件可在LAB编辑。仍无OS、SSE/AVX、8/16位别名或完整x86实现。
+
+### 拯救芯片与执行观测
+
+“拯救芯片”包含12份独立档案：Pentium、Barcelona、Cougar Point、骁龙810/888/8EE6与Tensor G1–G6。Pentium试验核对文献SRT漏项与收敛边界，Barcelona核对PTE更新-驱逐-探测与规避代价。移动SoC展示具体架构、原始测量和性能保留下限；统一热模型已停用，芯片级反事实尚未校准的案例不能通关。资料缺失不编造参数，不把整个系列判为失败。
+
+GB6实测记录独立展示，保留版本与设备。SP游戏分不改名为Geekbench6；缺少GB6工作负载校准时，自定义设计显示不可估计。
+
+LAB提供SMT共享核心、MSHR重叠缓存未命中、二位方向预测，以及GPU驻留、NPU阵列和ISP阶段预设。CPU/GPU/NPU/ISP都可在“执行观测”页播放、逐周期查看状态；SMT共享资源而非性能乘二，无OS或缓存一致性。
+
+游戏内“软件更新”优先Forgejo，依次尝试可配置的GitHub代理和原站。源码包校验SHA-256、版本与逐文件清单后，重启安装并保留存档；失败回滚，Git开发目录不自动覆盖。第三方镜像可能失效，可更换HTTPS代理前缀。详情见[镜像更新](docs/guide/sharing.md)。公开版本以Release标签和源码附件为准。
 
 硬件与测试台分开保存；修改测试输入不改变核心身份，硬件修改使旧验证失效。性能测试提供独立吞吐、依赖链、缓存重用和乘法四类任务，逐项IPC与基线对照；短程序不敏感时不会人为改分。发布IP是不可变快照，不会随草稿修改偷偷改变原SoC。详见[第一颗核心](docs/guide/first-core.md)与[加速器设计](docs/guide/accelerators.md)。
 
@@ -131,7 +141,7 @@ x86现在提供32位与64位整数教学核心：IA-32以及AMD64/Intel64。64�
 
 本作已实现功能解释器、资源调度和可解释SoC估算，仍没有完整CPU微架构、玩家逻辑门/RTL生成、商业GPU栈、PDK、真实STA/DRC/LVS/DFT或制造流程。固定验证不等于完整ISA或硬件认证；面积、Fmax、功耗、良率和市场系数仍为game_assumption。
 
-正式来源23条区分正文与书目核验，99条遗留引用逐项处置；不会用“有论文”替代参数校准。Murphy具体良率公式仍未由原文确认。PicoRV32真实源码以固定提交和ISC许可保留，独立Icarus冒烟只验证ADDI/ADDI/SW写入42，未把它当玩家生成RTL或PPA校准。
+资料库49条区分正文核验、仅书目核验与仅定位待核验，99条遗留引用逐项处置；不会用“有论文”替代参数校准。Murphy具体良率公式仍未由原文确认。PicoRV32真实源码以固定提交和ISC许可保留，独立Icarus冒烟只验证ADDI/ADDI/SW写入42，未把它当玩家生成RTL或PPA校准。
 
 [模型公式](docs/MODEL.md) · [来源与支持范围](docs/REFERENCES.md) · [审查](docs/AUDIT.md) · [第三方许可](THIRD_PARTY_NOTICES.md)
 

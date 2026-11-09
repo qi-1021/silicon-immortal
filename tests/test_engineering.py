@@ -60,7 +60,7 @@ class TestEngineering(unittest.TestCase):
         self.assertLess(low["achievable"], high["achievable"])
 
     def test_pdn_and_verification_have_tradeoff(self):
-        d = empty_design("sandbox")
+        d = empty_design("laptop2025")
         d.pdn_quality = 0
         d.verification_effort = .1
         a = simulate(d)
@@ -74,7 +74,7 @@ class TestEngineering(unittest.TestCase):
         self.assertTrue(b["signoff"]["ready"], b["signoff"]["blockers"])
 
     def test_high_frequency_cannot_hide_in_clamp(self):
-        d = empty_design("sandbox")
+        d = empty_design("laptop2025")
         d.cores[0].clock = 20
         r = simulate(d)
         self.assertLess(r["bin"]["fraction"], .01)

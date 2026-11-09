@@ -5,7 +5,7 @@ from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QKeySequence, QShortcut
 from PySide6.QtWidgets import (QButtonGroup, QComboBox, QDialog, QFrame, QHBoxLayout, QLabel,
                                QMainWindow, QPushButton, QStackedWidget, QVBoxLayout,
-                               QWidget)
+                               QWidget,QScrollArea,QLayout)
 
 from ..data.segments import SEGMENTS, SEGMENT_LIST
 from ..data.tutorials import TUTORIAL_BY_ID
@@ -32,6 +32,8 @@ from .screens.sandbox import SandboxScreen
 from .screens.engineering import EngineeringScreen
 from .screens.labs import LabsScreen
 from .screens.studio import StudioScreen
+from .screens.rescue import RescueScreen
+from .updates import UpdatesScreen
 from .search import InfoDialog, SearchDialog
 from .widgets import ElidedLabel
 from ..data.architectures import MODES
@@ -168,6 +170,8 @@ class MainWindow(QMainWindow):
         self.progress: dict = {}
         self.lab_workspace: dict = {}
         self.core_workspace: dict = {}
+        self.rescue_workspace: dict = {}
+        self.update_settings: dict = {}
         self.sandbox_workspace: dict = {};self.project_workspace: dict = {}
         self.published_design = None
         self._save = savemod.load()
@@ -201,7 +205,7 @@ class MainWindow(QMainWindow):
         outer.addLayout(workbench, 1)
         nav = QFrame()
         nav.setObjectName("Sidebar")
-        nav.setFixedWidth(174)
+        nav.setMinimumWidth(150)
         navl = QVBoxLayout(nav)
         navl.setContentsMargins(12, 20, 12, 14)
         navl.setSpacing(4)
@@ -234,6 +238,8 @@ class MainWindow(QMainWindow):
         self.studio_button.setObjectName("Nav")
         self.studio_button.clicked.connect(lambda: self.go("studio"))
         navl.addWidget(self.studio_button)
+        self.rescue_button=QPushButton('拯救芯片');self.rescue_button.setObjectName('Nav')
+        self.rescue_button.clicked.connect(lambda:self.go('rescue'));navl.addWidget(self.rescue_button)
         free=QPushButton('自由沙盒');free.setObjectName('Nav');free.clicked.connect(self.start_sandbox);navl.addWidget(free)
         manual=QPushButton('玩家手册 ↗');manual.setObjectName('Nav')
         manual.clicked.connect(self.open_manual);navl.addWidget(manual)
@@ -245,7 +251,14 @@ class MainWindow(QMainWindow):
         motion.setObjectName("Nav")
         motion.clicked.connect(lambda: self._toggle_motion(motion))
         navl.addWidget(motion)
-        workbench.addWidget(nav)
+        self.update_button=QPushButton('软件更新');self.update_button.setObjectName('Nav')
+        self.update_button.clicked.connect(lambda:self.go('updates'));navl.addWidget(self.update_button)
+        for button in nav.findChildren(QPushButton):button.setFixedHeight(42)
+        navl.setSizeConstraint(QLayout.SizeConstraint.SetMinimumSize)
+        navigation=QScrollArea();navigation.setObjectName('NavigationScroll');navigation.setFixedWidth(174)
+        navigation.setWidgetResizable(True);navigation.setFrameShape(QFrame.Shape.NoFrame)
+        navigation.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        navigation.setWidget(nav);workbench.addWidget(navigation)
 
         self.stack = QStackedWidget()
         workbench.addWidget(self.stack, 1)
@@ -255,7 +268,7 @@ class MainWindow(QMainWindow):
             ("start", StartScreen), ("brief", BriefScreen), ("architecture", ArchitectureScreen),
             ("physical", PhysicalScreen), ("floorplan", FloorplanScreen), ("package", PackageScreen),
             ("engineering", EngineeringScreen), ("signoff", SignoffScreen), ("report", ReportScreen), ("showcase", ShowcaseScreen), ("tutorial", TutorialScreen),
-            ("codex", CodexScreen), ("sources", SourcesScreen), ("labs", LabsScreen), ("studio", StudioScreen),('sandbox',SandboxScreen),
+            ("codex", CodexScreen), ("sources", SourcesScreen), ("labs", LabsScreen), ("studio", StudioScreen),('sandbox',SandboxScreen),('rescue',RescueScreen),('updates',UpdatesScreen),
         ]:
             s = cls(self)
             self.screens[key] = s
@@ -266,6 +279,8 @@ class MainWindow(QMainWindow):
         self._restore()
         self.screens['labs'].restore_workspace()
         self.screens['studio'].restore_workspace()
+        self.screens['rescue'].restore_workspace()
+        self.screens['updates'].restore_settings()
         self.go("start")
         self.header.update_state(self.result, self.scenario)
 
@@ -275,6 +290,8 @@ class MainWindow(QMainWindow):
         self.progress = data.get("progress", {})
         self.lab_workspace = data.get("lab_workspace", {})
         self.core_workspace = data.get("core_workspace", {})
+        self.rescue_workspace=data.get('rescue_workspace',{})
+        self.update_settings=data.get('update_settings',{})
         self.sandbox_workspace=data.get('sandbox_workspace',{});self.project_workspace=data.get('project_workspace',{})
         from ..engine.ip_library import validate_asset
         self.ip_library={}
@@ -302,7 +319,7 @@ class MainWindow(QMainWindow):
             else:self.project_workspace=snapshot
         savemod.save(dict(design=self.design.to_dict() if self.design else None, progress=self.progress,
                           tutorial_id=self.tutorial_id, published_design=self.published_design,
-                          lab_workspace=self.lab_workspace,core_workspace=self.core_workspace,
+                          lab_workspace=self.lab_workspace,core_workspace=self.core_workspace,rescue_workspace=self.rescue_workspace,update_settings=self.update_settings,
                           ip_library=self.ip_library,learning_mode=self.learning_mode,
                           sandbox_workspace=self.sandbox_workspace,project_workspace=self.project_workspace))
 
@@ -485,7 +502,7 @@ class MainWindow(QMainWindow):
             self.recompute_now(self._force_layout)
         if key not in self.screens:
             return
-        if key not in ("start", "codex", "sources", "tutorial", "labs", "studio") and not self.design:
+        if key not in ("start", "codex", "sources", "tutorial", "labs", "studio",'rescue','updates') and not self.design:
             key = "start"
         self.stack.setCurrentWidget(self.screens[key])
         self.nav_group.setExclusive(False)
@@ -543,3 +560,10 @@ class MainWindow(QMainWindow):
         if self.design and self.design.scenario_id in ids:
             i = ids.index(self.design.scenario_id)
             self.start_scenario(ids[(i + 1) % len(ids)])
+
+    def closeEvent(self,event):
+        updates=self.screens.get('updates')
+        if updates and updates.busy():
+            updates.status.setText('更新任务仍在运行，请等待本次网络操作结束后关闭。')
+            self.go('updates');event.ignore();return
+        self.persist();super().closeEvent(event)

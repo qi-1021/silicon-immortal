@@ -14,7 +14,23 @@ def simulate_core(source, *, width=2, rob_size=32, execution_ports=2,
                   pipeline=8, cache_kb=16, hit_latency=2, miss_latency=40,
                   multiply_latency=3, memory=None, max_cycles=200000, extensions=("M",),architecture='riscv32',
                   issue_order='out_of_order', alu_ports=None, multiply_ports=1,
-                  cache_ways=4, cache_line_bytes=64):
+                  cache_ways=4, cache_line_bytes=64, smt_threads=1, source2='',
+                  mshrs=1, branch_predictor='none'):
+    if type(smt_threads) is not int or smt_threads not in (1,2) or type(mshrs) is not int or not 1<=mshrs<=16:
+        raise ValueError('SMT上下文为1/2，MSHR请求槽为1..16。')
+    if branch_predictor not in ('none','two_bit'):
+        raise ValueError('方向预测器仅支持none/two_bit。')
+    if source2 and smt_threads!=2:raise ValueError('第二个程序需要两上下文SMT硬件。')
+    if source2 or mshrs!=1 or branch_predictor!='none':
+        from .cpu_features import schedule_threads
+        return schedule_threads([source,source2] if source2 else [source],
+            width=width,rob_size=rob_size,execution_ports=execution_ports,pipeline=pipeline,
+            cache_kb=cache_kb,hit_latency=hit_latency,miss_latency=miss_latency,
+            multiply_latency=multiply_latency,memory=memory,max_cycles=max_cycles,
+            extensions=extensions,architecture=architecture,issue_order=issue_order,
+            alu_ports=execution_ports if alu_ports is None else alu_ports,multiply_ports=multiply_ports,
+            cache_ways=cache_ways,cache_line_bytes=cache_line_bytes,mshrs=mshrs,
+            branch_predictor=branch_predictor)
     from .lab_memory import Cache
     width, rob_size, execution_ports = int(width), int(rob_size), int(execution_ports)
     if not (1 <= width <= 12 and 1 <= rob_size <= 1024 and 1 <= execution_ports <= 12):
@@ -124,15 +140,17 @@ PROGRAMS = {
 }
 
 
-def architectural_state_at(result, cycle):
+def architectural_state_at(result, cycle, thread=0):
     """回放已完成模拟的提交轨迹；不是暂停后继续推测执行。"""
-    if not isinstance(cycle,int) or not 0<=cycle<=result['cycles']:
+    if type(cycle) is not int or not 0<=cycle<=result['cycles']:
         raise ValueError("回放周期超出范围。")
+    if type(thread) is not int or not 0<=thread<len(result.get('threads',[result])):
+        raise ValueError('回放线程编号超出范围。')
     regs=[0]*len(result['registers'])
     memory=dict(result.get('initial_memory',{}))
     retired=0
-    for row in result['rows']:
-        if row['retire']>cycle:break
+    rows=sorted((r for r in result['rows'] if r.get('thread',0)==thread and r['retire']<=cycle),key=lambda r:r['retire'])
+    for row in rows:
         ins=row['instruction']
         writes=row.get('writes',{ins.rd:row['value']} if ins.rd not in (None,result.get('zero_register',0)) else {})
         for register,value in writes.items():regs[register]=value

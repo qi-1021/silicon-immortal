@@ -10,6 +10,7 @@ from silicon_professor.version import GAME_VERSION
 
 PAGES=[('README','开始阅读'),('install','安装与启动'),('first-core','第一颗核心'),
        ('soc','第一颗SoC'),('challenges','12项设计委托'),('accelerators','GPU / NPU / ISP'),
+       ('rescue','拯救芯片'),('observatory','执行观测'),
        ('sharing','文件与分享'),('faq','常见问题'),('glossary','术语与边界')]
 
 

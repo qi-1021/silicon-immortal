@@ -721,3 +721,79 @@ for _bp in BLUEPRINTS:
     _bp.pop("die_shot_url", None)
 BLUEPRINT_BY_ID["m1"]["evidence"] = ["apple_m1"]
 BLUEPRINT_BY_ID["m4"]["evidence"] = ["apple_m4"]
+
+# Fact corrections apply only to this catalog, never to imported .sil snapshots.
+from copy import deepcopy as _deepcopy
+from .chip_specs import CHIP_FACTS
+from .rescue_measurements import MOBILE_CHIPS as _MOBILE_CHIPS
+for _bp in BLUEPRINTS:
+    _facts=_deepcopy(CHIP_FACTS.get(_bp['id'],dict(status='unverified',sources=[])))
+    _bp['hardware_facts']=_facts
+    _bp['assumption_fields']=['scores','build','layout','die_area','die_aspect','cache']
+    _bp['recipe_basis']='game_assumption; not a recovered commercial microarchitecture'
+    _cid={'tensorG4':'rescue_tensor_g4','tensorG6':'rescue_tensor_g6'}.get(_bp['id'])
+    _bp['geekbench6_records']=[dict(_deepcopy(o),device=_MOBILE_CHIPS[_cid]['device'],os=_MOBILE_CHIPS[_cid]['os'])
+        for o in _MOBILE_CHIPS.get(_cid,{}).get('observations',[]) if o['test']=='Geekbench CPU']
+    _bp['evidence']=list(dict.fromkeys(_bp.get('evidence',[])+_facts.get('sources',[])))
+    for _field in ('cpu','gpu','cache'):
+        if _field in _facts:_bp[_field]=_facts[_field]
+
+_GPU_RECIPES={
+    'sd855':('adreno640',12),'sd888':('adreno660',11),
+    'sd8g2':('adreno740',12),'sd8g3':('adreno750',12),
+    'sd8elite5':('adreno_gen5',8),'sd8elite6':('adreno_gen6',8),
+    'a17pro':('apple_a17gpu',6),'a19pro':('apple_a19gpu',6),'a20pro':('apple_a20gpu',7),
+    'm1':('apple_m1gpu',8),'m4':('apple_m4gpu',10),'m5':('apple_m5gpu',10),
+    'tensorG4':('g715',7),'tensorG6':('powervr_g6',4),
+}
+for _id,_gpu in _GPU_RECIPES.items():BLUEPRINT_BY_ID[_id]['build']['gpu']=_gpu
+BLUEPRINT_BY_ID['a17pro']['build']['cores']=[('a17p',2,4.,3.78),('a17e',4,1.,2.11)]
+BLUEPRINT_BY_ID['a19pro']['build']['cores']=[('a19p',2,4.,4.3),('a19e',4,1.,2.9)]
+BLUEPRINT_BY_ID['a20pro']['build']['cores']=[('a20p',2,4.,0.),('a20e',4,1.,0.)]
+BLUEPRINT_BY_ID['a20pro']['build'].update(slc=24,l3=0)
+BLUEPRINT_BY_ID['a20pro']['die_area']=98.2
+BLUEPRINT_BY_ID['a20pro']['insight']='A20 Pro是新CPU，CPU内置Neural Accelerators；7核GPU和双16核Neural Engine，内存带宽相对A19 Pro提升50%。相同6核CPU计数或相近die面积不表示微架构相同。CPU分组、频率、ROB/解码等未公开；沙盒2+4与PPA为假设，不是拆解结论。'
+BLUEPRINT_BY_ID['a19pro']['cpu']=CHIP_FACTS['a19pro']['cpu']
+BLUEPRINT_BY_ID['m4']['build']['cores']=[('m4p',4,4.,4.4),('m4e',6,1.,2.89)]
+BLUEPRINT_BY_ID['m5']['build']['cores']=[('m5p',4,4.,4.6),('m5e',6,1.,3.)]
+BLUEPRINT_BY_ID['m5']['cpu']='M5：4性能核 + 6效率核；具体效率核代号不沿用Sawtooth'
+BLUEPRINT_BY_ID['a17pro']['cpu']='A17 Pro：2性能核 + 4效率核；不沿用A16的Everest/Sawtooth名称'
+BLUEPRINT_BY_ID['sd8elite6']['build']['cores']=[('oryon6_prime',2,3.,5.),('oryon6_performance',6,3.,4.)]
+BLUEPRINT_BY_ID['sd8elite6']['insight']='原厂简报确认新一代Oryon、2个5GHz Prime与6个4GHz Performance、16MB Flex Cache、GPU矩阵核。旧版Oryon3/Adreno850/L3描述已撤回；黑屏/缓存供电/能效退步需要原始故障测试，不能由营销简报证实。'
+BLUEPRINT_BY_ID['sd8elite5']['build']['cores']=[('oryon3',2,3.,4.6),('oryon3',6,3.,3.62)]
+BLUEPRINT_BY_ID['sd8elite5']['cpu']='第三代Oryon：2 Prime + 6 Performance；沙盒频率需按原厂具体SKU复核'
+BLUEPRINT_BY_ID['sd8elite5']['gpu']='Adreno · Snapdragon 8 Elite Gen5；不标成Gen4的Adreno830'
+BLUEPRINT_BY_ID['tensorG6']['build']['cores']=[('c1_ultra',1,3.,4.1),('c1_pro',4,1.,3.4),('c1_pro',2,1.,2.65)]
+BLUEPRINT_BY_ID['tensorG4']['gpu']='Mali-G715 MP7'
+BLUEPRINT_BY_ID['sd8g2']['build']['cores']=[('x3',1,1.,3.2),('a715',2,.512,2.8),('a710',2,.512,2.8),('a510',3,.256,2.)]
+BLUEPRINT_BY_ID['sd8g2']['cpu']='1×Cortex-X3 + 2×A715 + 2×A710 + 3×A510；不是4个A715'
+BLUEPRINT_BY_ID['sd8g3']['build']['cores']=[('x4',1,2.,3.3),('a720',3,.512,3.15),('a720',2,.512,2.96),('a520',2,.256,2.27)]
+
+for _id in ('a17pro','a19pro','a20pro','m4','m5','tensorG4','tensorG6','sd8elite6'):
+    _bp=BLUEPRINT_BY_ID[_id]
+    if 'cache' not in _bp['hardware_facts']:_bp['cache']='原版缓存容量/共享拓扑未公开核验；配方缓存为教学假设'
+    if _id.startswith('a'):_bp['build'].setdefault('slc',_bp['build'].pop('l3',24));_bp['build']['l3']=0
+    # Block labels match the recipe; block geometry remains an explicitly synthetic layout.
+    _groups=_bp['build']['cores'];_blocks=[b for b in _bp['layout'] if b['k'] in ('big','mid','little')]
+    for _block,_group in zip(_blocks,_groups):
+        _block['label']=f'{_group[0]} ×{_group[1]}'
+    for _block in _bp['layout']:
+        if _block['k']=='gpu':_block['label']=_bp['gpu']
+        elif _block['k']=='l3':_block['label']='模型缓存；容量/类型非原版断言'
+    _bp['layout_scope']='教学配方模块示意；不是实际die布局或原版缓存拓扑'
+
+# A phone using a cellular modem does not place that modem inside its application processor.
+for _id in ('a17pro','a19pro','a20pro','m1','m4','m5'):
+    _bp=BLUEPRINT_BY_ID[_id];_phone=_id.startswith('a')
+    _bp['hardware_facts']['integrated_cellular_modem']=False
+    _bp['build']['modem']='modem_ext' if _phone else 'modem_none'
+    _bp['device_peripherals']=('蜂窝基带是独立芯片，不在A系列SoC Die内；沙盒外挂基带成本为通用教学值。'
+        if _phone else '此M系列应用处理器不集成蜂窝基带；设备连接芯片与SoC I/O不是蜂窝基带。')
+    _layout=[]
+    for _block in _bp['layout']:
+        if _block['k']=='modem':
+            if not _phone and _block['label'] in ('IO','IO/PHY'):
+                _block['k']='io';_layout.append(_block)
+            continue
+        _layout.append(_block)
+    _bp['layout']=_layout

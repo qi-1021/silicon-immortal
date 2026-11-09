@@ -1,0 +1,268 @@
+{
+  "schema": 1,
+  "checked_on": "2026-11-09",
+  "cache_root": ".research-cache/rescue",
+  "scope": "Research only; not a measured power calibration or active-device configuration.",
+  "sources": [
+    {
+      "id": "mi11_nbc_deep",
+      "kind": "original_review",
+      "url": "https://www.notebookcheck.net/Xiaomi-Mi-11-review-Strong-flagship-smartphone-with-limitations.522959.0.html",
+      "file": "mi11_nbc_deep.html",
+      "sha256": "510389832ab847920b9e43cd2ec03a6c6e890131f748d975e0818d4aa5eb14aa",
+      "locator": "Software; Emissions/Temperature; Wild Life Stress Test Stability table; Energy consumption",
+      "supports": "MIUI12.0.12; GFXBench early termination; retrieved table 90.2% with 5064/5613; whole-device load power 6.32/11.65W",
+      "limits": "Dynamic comparison table; benchmark minor and measurement date not confirmed; not chip rail power or same experiment as GSMArena"
+    },
+    {
+      "id": "msm8994_v2_platform",
+      "kind": "official_source",
+      "commit": "ff69a6ab665db6afcf9711c2ee8b6c5bb5745e91",
+      "url": "https://android.googlesource.com/kernel/msm/+/ff69a6ab665db6afcf9711c2ee8b6c5bb5745e91/arch/arm/boot/dts/qcom/msm8994-v2.dtsi",
+      "file": "angler_8994_v2.dtsi",
+      "sha256": "979fa3aeb8b5ef7b13a38b2e13674d8df629371ba765e6d5da0c098f31bcbb2f",
+      "locator": "clock_cpu; msm_cpufreq; devfreq_cpufreq; gpu-pwrlevels",
+      "supports": "A53/A57 speed-bin tables; CCI and bus associations; GPU frequency levels",
+      "limits": "Platform configuration in Angler tree, not resolved board/runtime configuration and not HTC M9 firmware; corner requests are not measured voltage"
+    },
+    {
+      "id": "msm8994_base_platform",
+      "kind": "official_source",
+      "commit": "ff69a6ab665db6afcf9711c2ee8b6c5bb5745e91",
+      "url": "https://android.googlesource.com/kernel/msm/+/ff69a6ab665db6afcf9711c2ee8b6c5bb5745e91/arch/arm/boot/dts/qcom/msm8994.dtsi",
+      "file": "angler_8994.dtsi",
+      "sha256": "f82da30421f8f16bbf103ad72a5e61834401b70dcbf5576f158ab4c50662c1be",
+      "locator": "cpus/current; clock_cpu/vdd-a53-supply and vdd-a57-supply",
+      "supports": "Cluster supply references and software current table with uA comments",
+      "limits": "Current table has no verified workload, temperature or laboratory provenance; not a power calibration"
+    },
+    {
+      "id": "msm8994_clock_driver",
+      "kind": "official_source",
+      "commit": "ff69a6ab665db6afcf9711c2ee8b6c5bb5745e91",
+      "url": "https://android.googlesource.com/kernel/msm/+/ff69a6ab665db6afcf9711c2ee8b6c5bb5745e91/drivers/clk/qcom/clock-cpu-8994.c",
+      "file": "angler_cpu_clock.c",
+      "sha256": "a20c0b5e5d9817b794391c0151378c357dfc90d10f1baec15448fea6e050a1f6",
+      "locator": "of_get_fmax_vdd_class; regulator acquisition",
+      "supports": "Frequency and regulator request table decoding",
+      "limits": "Variable name vdd_uv does not establish physical voltage when the consumer requests virtual corners"
+    },
+    {
+      "id": "msm8994_regulator_config",
+      "kind": "official_source",
+      "commit": "ff69a6ab665db6afcf9711c2ee8b6c5bb5745e91",
+      "url": "https://android.googlesource.com/kernel/msm/+/ff69a6ab665db6afcf9711c2ee8b6c5bb5745e91/arch/arm/boot/dts/qcom/msm8994-regulator.dtsi",
+      "file": "angler_8994_regulator.dtsi",
+      "sha256": "c326ac2d59134ea97d1c1a9315193393f82e6bc123d5fa5aa135d8495e2ca438",
+      "locator": "regulator corner nodes",
+      "supports": "Explicit voltage-corner requests in platform regulators",
+      "limits": "Does not supply device-specific CPU minimum voltage, CPR fuse state or measured power"
+    },
+    {
+      "id": "lahaina_cpu_topology",
+      "kind": "official_source",
+      "commit": "efa5b058d77e56dda87db6e32d6741afbc70923a",
+      "url": "https://github.com/MiCode/kernel_devicetree/blob/efa5b058d77e56dda87db6e32d6741afbc70923a/qcom/lahaina.dtsi",
+      "file": "venus_lahaina_pinned.dtsi",
+      "sha256": "b89e82dafe4814f3e38da570fae3a86e89160a5161f5a0e684403c947dd71730",
+      "locator": "cpus/CPU0-7/freq-domain, next-level-cache",
+      "supports": "Three CPU frequency domains, private L2 nodes and shared L3 connection",
+      "limits": "No measured IPC, cache capacity validation, active LUT or experimentally calibrated dynamic-power coefficients"
+    },
+    {
+      "id": "lahaina_gpu_config",
+      "kind": "official_source",
+      "commit": "efa5b058d77e56dda87db6e32d6741afbc70923a",
+      "url": "https://github.com/MiCode/kernel_devicetree/blob/efa5b058d77e56dda87db6e32d6741afbc70923a/qcom/lahaina-gpu.dtsi",
+      "file": "venus_gpu_pinned.dtsi",
+      "sha256": "3d157f1999acd476240aaffba00488bffdcbe83b537310964f47e06ffb5e233d",
+      "locator": "gpu-pwrlevels, DDR7/DDR8 bus requests",
+      "supports": "Platform GPU frequency and bus-request relationships",
+      "limits": "Board/runtime overlays not fully resolved; not actual Mi11 voltage or throughput at each frequency"
+    },
+    {
+      "id": "lahaina_thermal_config",
+      "kind": "official_source",
+      "commit": "efa5b058d77e56dda87db6e32d6741afbc70923a",
+      "url": "https://github.com/MiCode/kernel_devicetree/blob/efa5b058d77e56dda87db6e32d6741afbc70923a/qcom/lahaina-thermal.dtsi",
+      "file": "venus_thermal_pinned.dtsi",
+      "sha256": "b5e73cab40ad2fbcb9a6a5fede9724805f642fe336553ed3f4495bc3df8298fe",
+      "locator": "CPU/GPU cooling-device nodes and thermal zones",
+      "supports": "Platform thermal interfaces",
+      "limits": "Not full userspace thermal policy, sensor calibration or a die-to-case thermal model"
+    },
+    {
+      "id": "lahaina_cpufreq_driver",
+      "kind": "official_source",
+      "commit": "7db0abb6726f611eedbbe92bbf8a4291c0dcdb69",
+      "url": "https://github.com/MiCode/Xiaomi_Kernel_OpenSource/blob/7db0abb6726f611eedbbe92bbf8a4291c0dcdb69/drivers/cpufreq/qcom-cpufreq-hw.c",
+      "file": "venus_cpufreq_hw.c",
+      "sha256": "24a76750ebe80edc16697c4f33d7639c5b2790a7c76fe9e11479e584b6baa7da",
+      "locator": "qcom_cpufreq_hw_read_lut",
+      "supports": "Runtime hardware LUT supplies frequency, voltage and core-count constraints",
+      "limits": "Source decoder has no tested handset LUT dump; cannot derive its operating voltages or power"
+    },
+    {
+      "id": "venus_board_config",
+      "kind": "official_source",
+      "commit": "efa5b058d77e56dda87db6e32d6741afbc70923a",
+      "url": "https://github.com/MiCode/kernel_devicetree/blob/efa5b058d77e56dda87db6e32d6741afbc70923a/qcom/venus-sm8350.dtsi",
+      "file": "venus_board_actual.dtsi",
+      "sha256": "a6a31204920d307f93cd5c1efc80b7761ff34ecdce347823263e0b4e44a0d1dc",
+      "locator": "thermal_zones; includes",
+      "supports": "Board includes and external thermistor nodes using user_space governor",
+      "limits": "Public source release is not verified as the review firmware; missing full include resolution and userspace thermal configuration"
+    },
+    {
+      "id": "venus_board_overlay",
+      "kind": "official_source",
+      "commit": "efa5b058d77e56dda87db6e32d6741afbc70923a",
+      "url": "https://github.com/MiCode/kernel_devicetree/blob/efa5b058d77e56dda87db6e32d6741afbc70923a/qcom/venus-sm8350-overlay.dts",
+      "file": "venus_overlay_actual.dts",
+      "sha256": "c2bda472d9fd8271408af3ca09809166cc795550fbebb0d138347ba0b7dac112",
+      "locator": "board IDs and venus-sm8350.dtsi include",
+      "supports": "Board overlay entry point",
+      "limits": "Does not prove compiled DTBO matches a particular tested device or firmware"
+    },
+    {
+      "id": "venus_common_config",
+      "kind": "official_source",
+      "commit": "efa5b058d77e56dda87db6e32d6741afbc70923a",
+      "url": "https://github.com/MiCode/kernel_devicetree/blob/efa5b058d77e56dda87db6e32d6741afbc70923a/qcom/xiaomi-sm8350-common.dtsi",
+      "file": "venus_common_pinned.dtsi",
+      "sha256": "19fc4e946aca2c0438e6426cca118004f6e31fafd0b7be21282c2817fc581b63",
+      "locator": "lahaina-thermal-overlay.dtsi include; thermal-message",
+      "supports": "Board common file applies an additional thermal overlay",
+      "limits": "Not full effective firmware or userspace thermal-engine configuration"
+    },
+    {
+      "id": "venus_thermal_overlay",
+      "kind": "official_source",
+      "commit": "efa5b058d77e56dda87db6e32d6741afbc70923a",
+      "url": "https://github.com/MiCode/kernel_devicetree/blob/efa5b058d77e56dda87db6e32d6741afbc70923a/qcom/lahaina-thermal-overlay.dtsi",
+      "file": "venus_thermal_overlay.dtsi",
+      "sha256": "10ab5f0158e6a26a12b911dd66ee2e8eada35509a5f9fb2b713a4676d61ee74c",
+      "locator": "thermal_zones/socd; overrides",
+      "supports": "Some base thermal zones are disabled or overridden by this configuration",
+      "limits": "Does not establish lack of device thermal protection or its userspace policy"
+    },
+    {
+      "id": "gs101_cpu_config",
+      "kind": "official_source",
+      "commit": "ff5b99086978a77c42175de21b5af418af5b756e",
+      "url": "https://android.googlesource.com/kernel/gs/+/ff5b99086978a77c42175de21b5af418af5b756e/arch/arm64/boot/dts/google/gs101-cpu.dtsi",
+      "file": "gs101_cpu.dtsi",
+      "sha256": "b209ad52ad20ba8521dca68ed8ce136482104d03ddde711c6a5772e9674ddd21",
+      "locator": "exynos-acme/domain0-2; DM constraints",
+      "supports": "Three CPU DVFS domains with ACPM, DM and cooling references",
+      "limits": "A0/B0 and board overrides unresolved; coefficients are not measured chip power or GB6"
+    },
+    {
+      "id": "gs101_gpu_config",
+      "kind": "official_source",
+      "commit": "ff5b99086978a77c42175de21b5af418af5b756e",
+      "url": "https://android.googlesource.com/kernel/gs/+/ff5b99086978a77c42175de21b5af418af5b756e/arch/arm64/boot/dts/google/gs101-gpu.dtsi",
+      "file": "gs101_gpu.dtsi",
+      "sha256": "38350aed866992b17fc31e776386ddcc12fff4a12e69c5c8bc27bffc05373bc8",
+      "locator": "ACPM_DVFS_G3DL2/G3D; DVFS v1/v2; frequency locks and compute minimum",
+      "supports": "Paired GPU clocks, table-specific governor thresholds and QoS fields",
+      "limits": "Table selection and active locks unverified; no per-workload power/performance validation"
+    },
+    {
+      "id": "810_percore_power_paper",
+      "kind": "primary_paper",
+      "url": "https://www.mdpi.com/2079-9292/10/19/2428",
+      "file": "810_percore_power.pdf",
+      "sha256": "bf9c1239904a392d326be3cd423ac559019b3cb41d3ce4af897a70222408f9c0",
+      "locator": "Sections2.2,3.2-3.5,3.7; Table19; Data Availability Statement",
+      "supports": "Nexus6P/Snapdragon810 component-power methodology; measurement setup; workload-dependent leave-one-out error",
+      "limits": "Total device power is measured, component power inferred; raw data/coefficient repository currently empty; not a universal 10% bound or performance/GB6 model"
+    },
+    {
+      "id": "810_thermal_case_paper",
+      "kind": "primary_paper",
+      "url": "https://arxiv.org/abs/1904.09814v1",
+      "file": "810_thermal_2019.pdf",
+      "sha256": "ded48a3e80f77a1333f893e44fb6a3cbe25857c83284078c6ba1fe8d9ce09a7e",
+      "locator": "SectionIII/TableI; SectionIV/TableII",
+      "supports": "Nexus6P median FPS under on/off thermal control; selective application migration demonstrated on Exynos5422/OdroidXU3",
+      "limits": "The proposed controller is not validated on810; disabling protection is not a permitted rescue; foreground results do not establish background completion"
+    },
+    {
+      "id": "810_paper_dataset_status",
+      "kind": "dataset_status",
+      "url": "https://api.github.com/repos/gmbhat/per-core-power/contents",
+      "file": "810_power_repo_contents.json",
+      "sha256": "aea8d0232e523a9b0815141487af9dd49f06f1b47b7b5db8fb39d185e6edf9e9",
+      "locator": "GitHub contents API response checked2026-11-09",
+      "supports": "Repository reported empty at retrieval time",
+      "limits": "Only records present availability; not proof data never existed elsewhere or will remain unavailable"
+    },
+    {
+      "id": "gs101_pixel_gpu_dvfs_driver",
+      "kind": "official_source",
+      "commit": "c32bd52783def2625b1ad47c54fbdcd72cfa58f9",
+      "url": "https://android.googlesource.com/kernel/google-modules/gpu/+/c32bd52783def2625b1ad47c54fbdcd72cfa58f9/mali_kbase/platform/pixel/pixel_gpu_dvfs.c",
+      "file": "gs101_gpu_dvfs.c",
+      "sha256": "5d62aa050c312789afb604118c8ff82b45241dbcb116626cef8adc7b878a31fd",
+      "locator": "find_voltage_for_freq; gpu_dvfs_update_asv_table",
+      "supports": "ECT202MHz presence selects v1/v2; paired clocks and discrete frequency-lock selection; missing ASV entries fail initialization",
+      "limits": "No handset ECT, compiled DTBO or runtime locks; conditional source-derived frequencies are not measured device performance"
+    },
+    {
+      "id": "gs101_b0_config",
+      "kind": "official_source",
+      "commit": "ff5b99086978a77c42175de21b5af418af5b756e",
+      "url": "https://android.googlesource.com/kernel/gs/+/ff5b99086978a77c42175de21b5af418af5b756e/arch/arm64/boot/dts/google/gs101-b0.dts",
+      "file": "gs101_b0.dts",
+      "sha256": "ee99a83a609247d9f2d60f18478477d0b204a802294f138776112a6ee418b324",
+      "locator": "cpufreq_domain0 and cpufreq_domain2",
+      "supports": "B0 base maximum CPU frequency settings1803000/2802000",
+      "limits": "Not active per-device frequency, firmware matching or a power/performance measurement"
+    },
+    {
+      "id": "gs101_raven_board_entry",
+      "kind": "official_source",
+      "commit": "ff5b99086978a77c42175de21b5af418af5b756e",
+      "url": "https://android.googlesource.com/kernel/gs/+/ff5b99086978a77c42175de21b5af418af5b756e/arch/arm64/boot/dts/google/gs101-raven.dts",
+      "file": "gs101_raven.dts",
+      "sha256": "4bd9b2ac305af638e8154fff12bf3e56feda9ffe07c7bc4f0c9eb0178e4c492e",
+      "locator": "gs101-raven.dtsi include",
+      "supports": "Raven board source entry",
+      "limits": "Compiled DTB/DTBO combination and tested firmware identity unverified"
+    },
+    {
+      "id": "gs101_raven_board_config",
+      "kind": "official_source",
+      "commit": "ff5b99086978a77c42175de21b5af418af5b756e",
+      "url": "https://android.googlesource.com/kernel/gs/+/ff5b99086978a77c42175de21b5af418af5b756e/arch/arm64/boot/dts/google/gs101-raven.dtsi",
+      "file": "gs101_raven.dtsi",
+      "sha256": "9ebad17b3152f790862715213431cbf88c08b35014b7b7b32d384966fe353652",
+      "locator": "gs101-raviole.dtsi and board-specific includes",
+      "supports": "Board-specific include chain",
+      "limits": "Only a subset of includes inspected; not complete effective device configuration"
+    },
+    {
+      "id": "gs101_raviole_common_config",
+      "kind": "official_source",
+      "commit": "ff5b99086978a77c42175de21b5af418af5b756e",
+      "url": "https://android.googlesource.com/kernel/gs/+/ff5b99086978a77c42175de21b5af418af5b756e/arch/arm64/boot/dts/google/gs101-raviole.dtsi",
+      "file": "gs101_raviole.dtsi",
+      "sha256": "2f0ca74be9c599a0c35e396f05f1b4eb475f126f86f1a9946b81f63abe8d7ff3",
+      "locator": "gs101-common.dtsi and gs101-raviole-thermal.dtsi includes",
+      "supports": "Shared board source includes independent thermal settings",
+      "limits": "Thermal include and userspace policy not fully reconstructed"
+    },
+    {
+      "id": "gs101_common_config",
+      "kind": "official_source",
+      "commit": "ff5b99086978a77c42175de21b5af418af5b756e",
+      "url": "https://android.googlesource.com/kernel/gs/+/ff5b99086978a77c42175de21b5af418af5b756e/arch/arm64/boot/dts/google/gs101-common.dtsi",
+      "file": "gs101_common.dtsi",
+      "sha256": "59addb3f024eff50e00ff3e0398edac198ebc9198fe40287fb74a1801d17cc1c",
+      "locator": "common device includes",
+      "supports": "Common source chain used by Raviole boards",
+      "limits": "Does not establish complete resolved GPU/CPU parameters or deployed firmware"
+    }
+  ]
+}

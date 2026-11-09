@@ -99,6 +99,13 @@ class TestFloorplan(unittest.TestCase):
         self.assertLess(a["die_area"], b["die_area"])
         self.assertGreater(a["cost"]["total"], b["cost"]["total"])
 
+    def test_no_cellular_modem_has_no_on_die_block_or_external_bom(self):
+        d=empty_design('laptop2025');d.modem_id='modem_none'
+        r=simulate(d)
+        self.assertTrue(r['valid'],r['errors'])
+        self.assertFalse(any(b.kind=='modem' for b in r['plan'].blocks))
+        self.assertEqual(r['cost']['external_bom'],0)
+
     def test_die_grows_when_moving_block_far(self):
         d = empty_design("mid2019")
         p1 = build_plan(d)

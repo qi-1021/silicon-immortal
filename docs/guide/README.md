@@ -2,7 +2,7 @@
 
 源码发行：Windows用run.bat，Mac用run.command，Linux用run.sh；需Python3.12，首次自动安装依赖。
 
-**从第一颗核心到一份可以分享的芯片设计。** 当前发行：`0.1.0-alpha.5`。
+**从第一颗核心到一份可以分享的芯片设计。** 当前开发版本：`0.1.0-alpha.6`；发布附件以更新页检查结果为准。
 
 ![硅仙人项目首页](../screens/start.png)
 
@@ -26,6 +26,8 @@
 | 从零设计一个自己的CPU | [第一颗核心](first-core.md) |
 | 完成架构、布局、封装与流片 | [第一颗SoC](soc.md) |
 | 挑战带宽、热、成本与核心设计 | [12项设计委托](challenges.md) |
+| 复盘历史故障、移动SoC与修复代价 | [拯救芯片](rescue.md) |
+| 观察SMT、缓存未命中与四类执行过程 | [执行观测与资源实验](observatory.md) |
 | 设计GPU、NPU和ISP | [加速器设计](accelerators.md) |
 | 保存、导出、导入与分享 | [文件、备份与分享](sharing.md) |
 | 无法启动、签核失败或结果不理解 | [常见问题](faq.md) |

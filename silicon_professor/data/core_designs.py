@@ -35,6 +35,9 @@ FIELDS={
         choice('cache_line_bytes','缓存行 / B',64,[(i,f'{i} B') for i in (16,32,64,128)],'cache',1),
         number('hit_latency','命中延迟 / cycle',2,1,1000,'cache',1),
         number('miss_latency','未命中总延迟 / cycle',40,1,1000,'cache',1),
+        choice('smt_threads','硬件线程 / SMT',1,[(1,'1 个上下文'),(2,'2 个上下文 · SMT')],'scheduler',2,hint='独立寄存器，共享前端/发射/执行资源/缓存；ROB均分。需要第二个测试程序；不是性能×2或Intel实现复刻。'),
+        number('mshrs','缓存未命中请求槽 / MSHR',1,1,16,'cache',2,hint='独立load可以重叠；同一线程store/FENCE维持顺序。同线请求合并，不模拟缓存一致性/推测访存。'),
+        choice('branch_predictor','分支方向预测器','none',[('none','不预测'),('two_bit','256 项二位饱和计数器')],'frontend',2,hint='按真实动态轨迹训练；正确预测缩短恢复开销，仍等待分支解析，不执行错误路径。无BTB/RAS或推测侧信道。'),
     ],
     'gpu':[
         number('processors','SIMT 处理器数量',2,1,64,'processors'),
@@ -68,7 +71,7 @@ FIELDS={
 }
 
 BENCH_FIELDS={
-    'cpu':[dict(key='source',label='测试汇编',text=True),dict(key='memory',label='初始内存：字节地址 32bit值',text=True)],
+    'cpu':[dict(key='source',label='测试汇编 · 线程0',text=True),dict(key='source2',label='线程1汇编 · 可留空；需要SMT=2',text=True),dict(key='memory',label='初始内存：字节地址 32bit值',text=True)],
     'gpu':[number('elements','输入元素数',128,1,4096,'bench'),
            choice('task','测试内核','axpy',[('axpy','AXPY / FP32'),('branch','条件分支')],'bench'),
            choice('pattern','分支输入','alternating',[('uniform','全部为真'),('alternating','交替真假')],'bench')],
@@ -89,5 +92,5 @@ def default_bench(kind,hardware):
                   'x86_32':'MOV EAX,6\nMOV EBX,7\nADD EAX,EBX\nMOV [0],EAX\nMOV ECX,[0]\nHALT',
                   'x86_64':'MOV RAX,6\nMOV RBX,7\nADD RAX,RBX\nMOV R8,256\nMOV [R8],RAX\nMOV RCX,[R8]\nHALT',
                   'aarch64':'MOV X0,#6\nMOV X1,#7\nADD X2,X0,X1\nSTR X2,[X3]\nLDR X4,[X3]\nHALT'}
-        return dict(source=programs[hardware['architecture']],memory='')
+        return dict(source=programs[hardware['architecture']],source2='',memory='')
     return {field['key']:deepcopy(field['default']) for field in BENCH_FIELDS[kind]}

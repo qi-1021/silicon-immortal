@@ -444,11 +444,6 @@ CORES.update({
     ),
 })
 
-CORE_LIST = [c for c in CORES.values() if c["license"] != "research"]
-CORE_BY_ID = {c["id"]: c for c in CORES.values()}
-LICENSABLE = {c["id"] for c in CORE_LIST}
-RESEARCH = [c for c in CORES.values() if c["license"] == "research"]
-
 # ---------------- Arm C2（2026，D9600 Pro 实测） ----------------
 CORES.update({
     "c2_ultra": _core(
@@ -470,6 +465,30 @@ CORES.update({
         evidence=[], confidence="low",
     ),
 })
+
+# Different commercial generations must not share an identity merely to fill missing specs.
+# PPA values remain conservative game coefficients, not reverse-engineered CPU definitions.
+from copy import deepcopy as _deepcopy
+for _id,_base,_name,_year,_node in [
+    ('a17p','everest','Apple A17 Pro performance core',2023,'n3b'),
+    ('a17e','sawtooth','Apple A17 Pro efficiency core',2023,'n3b'),
+    ('a19e','sawtooth','Apple A19 Pro efficiency core',2025,'n3p'),
+    ('a20p','a19p','Apple A20 Pro performance model',2026,'n2'),
+    ('a20e','sawtooth','Apple A20 Pro efficiency model',2026,'n2'),
+    ('m4e','sawtooth','Apple M4 efficiency core',2024,'n3e'),
+    ('m5e','sawtooth','Apple M5 efficiency core',2025,'n3p'),
+    ('oryon6_prime','oryon3','Oryon Extreme Gen6 Prime model',2026,'n2'),
+    ('oryon6_performance','oryon3','Oryon Extreme Gen6 Performance model',2026,'n2'),
+]:
+    _c=_deepcopy(CORES[_base]);_c.update(id=_id,name=_name,year=_year,ref_node=_node,
+        arch='AArch64；具体ISA版本/内部微架构未公开核验',commercial_generation=_id,confidence='low')
+    CORES[_id]=_c
+CORES['oryon6_prime']['fmax_ref']=5.0
+CORES['oryon6_performance']['fmax_ref']=4.0
+CORES['a20p']['evidence']=['apple_a20pro'];CORES['a20e']['evidence']=['apple_a20pro']
+CORES['a19p']['evidence']=['apple_a19pro'];CORES['a19e']['evidence']=['apple_a19pro']
+for _id in ('oryon6_prime','oryon6_performance'):CORES[_id]['evidence']=['qcom_8ee6']
+for _id in ('a19p','m5p','oryon3'):CORES[_id]['arch']='AArch64；具体ISA版本/内部微架构未公开核验'
 
 for _item in CORES.values():
     _item["parameter_basis"] = "game_assumption"
@@ -519,3 +538,8 @@ def _teaching_families():
                          note='参数化教学核心：精简/均衡/性能/吞吐表示资源与工作负载方向，不是厂商实物分类；PPA未校准，无OS/SIMD。')
             model.pop('measured_ipc',None);CORES[model['id']]=model
 _teaching_families()
+
+CORE_LIST = [c for c in CORES.values() if c['license']!='research']
+CORE_BY_ID = {c['id']:c for c in CORES.values()}
+LICENSABLE = {c['id'] for c in CORE_LIST}
+RESEARCH = [c for c in CORES.values() if c['license']=='research']

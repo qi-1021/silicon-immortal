@@ -100,11 +100,11 @@ GPUS.update({
         evidence=[], confidence="low",
     ),
     "powervrCXT": dict(
-        id="powervrCXT", name="PowerVR CXTP-48-1536", vendor="Imagination", year=2021, ref_node="n3p",
+        id="powervrCXT", name="Legacy PowerVR teaching model", vendor="Imagination", year=2021, ref_node="n3p",
         unit_name="Cluster", default_units=4, min_units=2, max_units=6,
         perf_per_unit=150, area_per_unit=2.8, power_per_unit=0.50,
         license_cost_m=3.5, compat=0.62, cu_per_unit=2,
-        note="2021 年架构的授权 GPU，被 Tensor G6 沿用；驱动/游戏兼容性明显弱于 Mali/Adreno。",
+        note="遗留教学参数；不对应已确认的Tensor G5/G6 GPU，年份/资源/PPA均非原版规格。",
         evidence=[], confidence="low",
     ),
     "maleoon920": dict(
@@ -143,6 +143,10 @@ FIXED_BLOCKS = {
                       license_cost_m=3.0, color="#ffb86b", edge=False,
                       external=True, bom_cost=9.0,
                       signal=0.97, note_sig="外挂：成熟方案信号稳，但多一颗芯片的功耗与成本（X50 时代的教训）。"),
+    "modem_none": dict(id="modem_none", name="无蜂窝基带", area=0.0, power=0.0,
+                       license_cost_m=0.0, color="#ffb86b", edge=False,
+                       external=True, bom_cost=0.0, signal=0.97,
+                       note_sig="未配置蜂窝连接；不代表没有Wi-Fi、蓝牙或其他I/O。"),
     "media": dict(id="media", name="媒体编解码", area=5.0, power=0.3, license_cost_m=1.5, color="#9d8cff", edge=False),
     "display": dict(id="display", name="显示/视频", area=1.2, power=0.06, license_cost_m=0.8, color="#c6a6ff", edge=False),
     "dramphy": dict(id="dramphy", name="DRAM PHY", area=1.6, power=0.12, license_cost_m=1.0, color="#6db3ff", edge=True),
@@ -240,6 +244,29 @@ for _dram in DRAMS.values():
 for _group in (GPUS, NPUS, FIXED_BLOCKS, STORAGE, NOCS, DRAMS, PACKAGES, COOLING, METAL_STACKS):
     for _item in _group.values():
         _item["parameter_basis"] = "game_assumption"
+
+from copy import deepcopy as _deepcopy
+for _id,_name,_base,_vendor,_year in [
+    ('adreno640','Adreno 640','maliG76','Qualcomm',2019),
+    ('adreno660','Adreno 660','g715','Qualcomm',2021),
+    ('adreno740','Adreno 740','g720','Qualcomm',2022),
+    ('adreno750','Adreno 750','g720','Qualcomm',2023),
+    ('adreno_gen5','Adreno · 8 Elite Gen5','adreno850','Qualcomm',2025),
+    ('adreno_gen6','Adreno · 8 Elite Extreme Gen6','adreno850','Qualcomm',2026),
+    ('apple_a17gpu','Apple A17 Pro GPU','appleGpu','Apple',2023),
+    ('apple_a19gpu','Apple A19 Pro GPU','appleGpu','Apple',2025),
+    ('apple_a20gpu','Apple A20 Pro GPU','appleGpu','Apple',2026),
+    ('apple_m1gpu','Apple M1 GPU','appleGpu','Apple',2020),
+    ('apple_m4gpu','Apple M4 GPU','appleGpu','Apple',2024),
+    ('apple_m5gpu','Apple M5 GPU','appleGpu','Apple',2025),
+    ('powervr_g6','PowerVR · Tensor G6 model','powervrCXT','Imagination',2026),
+]:
+    _g=_deepcopy(GPUS[_base]);_g.update(id=_id,name=_name,vendor=_vendor,year=_year,
+        note='独立代际身份；PPA与教学分区系数未校准，不能当作真实GPU ISA或计算单元数。')
+    GPUS[_id]=_g
+GPUS['apple_a20gpu'].update(default_units=7,max_units=7,min_units=7,evidence=['apple_a20pro'])
+GPUS['adreno_gen6']['evidence']=['qcom_8ee6']
+GPUS['adreno660']['evidence']=['qcom_sd888']
 
 
 def get_gpu(design):

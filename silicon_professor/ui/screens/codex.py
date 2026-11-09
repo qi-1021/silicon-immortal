@@ -9,7 +9,7 @@ from PySide6.QtWidgets import (QFrame, QGridLayout, QHBoxLayout, QLabel, QLineEd
 
 from ...data.blueprints import BLUEPRINTS, BLUEPRINT_BY_ID
 from ...data.nodes import NODES
-from ...data.sources import SOURCES, TIER_LABELS
+from ...data.sources import SOURCES, TIER_LABELS, verification_text
 from .. import theme as T
 from ..widgets import Card, DieSchematic, Pill, Stat
 
@@ -124,10 +124,16 @@ class CodexScreen(QWidget):
         head.addWidget(Pill(f"{b['die_area']} mm²", T.AMBER))
         self.detail.addLayout(head)
 
-        meta = QLabel(f"{b['cpu']}   ·   {b['gpu']}   ·   {b['cache']}")
+        facts=b.get('hardware_facts',{})
+        prefix='原始资料结构：' if facts.get('status')=='documented' else '未核验的教学配方，不是原版规格：'
+        meta = QLabel(prefix+f"{b['cpu']}   ·   {b['gpu']}   ·   {b['cache']}")
         meta.setWordWrap(True)
         meta.setStyleSheet(f"color:{T.TEXT2}; font-size:12px;")
         self.detail.addWidget(meta)
+        if b.get('device_peripherals'):
+            peripheral=QLabel('设备外围（不在SoC Die内）：'+b['device_peripherals'])
+            peripheral.setWordWrap(True);peripheral.setTextFormat(Qt.TextFormat.PlainText);peripheral.setObjectName('Dim')
+            self.detail.addWidget(peripheral)
 
         top = QHBoxLayout()
         top.setSpacing(12)
@@ -135,7 +141,7 @@ class CodexScreen(QWidget):
         sch = DieSchematic(b.get("layout"), b.get("die_aspect", 1.0))
         dc.add(sch)
         top.addWidget(dc, 3)
-        sc = Card("研究参考分数", "非已核验实测记录")
+        sc = Card("SP游戏分", "不是Geekbench6或已核验实测")
         g = QGridLayout()
         g.setSpacing(6)
         for i, (k, title) in enumerate([("st", "单核"), ("mt", "多核"), ("gpu", "GPU")]):
@@ -144,6 +150,13 @@ class CodexScreen(QWidget):
         sc.add_layout(g)
         top.addWidget(sc, 2)
         self.detail.addLayout(top)
+
+        if b.get('geekbench6_records'):
+            gb=Card('Geekbench 6 · 原始评测记录','独立于SP游戏分，不自动转换沙盒结果')
+            for record in b['geekbench6_records']:
+                values=record['value'];text=QLabel(f"GB {record['version']}  单核 {values['single']} / 多核 {values['multi']}\n{record['device']} · {record['os']}\n定位：{record['locator']}")
+                text.setWordWrap(True);gb.add(text)
+            self.detail.addWidget(gb)
 
         ic = Card("设计解读")
         txt = QLabel(b["insight"])
@@ -160,7 +173,7 @@ class CodexScreen(QWidget):
             row = QHBoxLayout()
             t = src["tier"]
             row.addWidget(Pill(f"T{t} {TIER_LABELS[t]}", T.TIER_COLORS.get(t, T.DIM)))
-            state = "正文已核验" if src["verification"] == "fulltext_checked" else "仅书目已核验"
+            state = verification_text(src)
             lab = QLabel(f"{src['title']} · {state}\n支持：{src['supports']}\n不支持：{src['does_not_support']}")
             lab.setWordWrap(True)
             lab.setStyleSheet(f"color:{T.TEXT2}; font-size:10px;")
@@ -248,7 +261,7 @@ class SourcesScreen(QWidget):
                 title.setWordWrap(True)
                 title.setStyleSheet(f"color:{T.TEXT}; font-size:12px; font-weight:600;")
                 cl.addWidget(title)
-                state = "正文与范围已核验" if s["verification"] == "fulltext_checked" else "仅书目已核验 · 全文结论不背书"
+                state = verification_text(s)
                 meta = QLabel(f"{s.get('authors','')} · {s.get('venue','')} · {s.get('year','')} · {state}")
                 meta.setWordWrap(True)
                 meta.setStyleSheet(f"color:{T.DIM}; font-size:10px;")

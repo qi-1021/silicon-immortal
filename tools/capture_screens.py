@@ -117,6 +117,9 @@ def main():
             settle()
             w.grab().save(str(out / f"{page}_compact.png"))
         w.close()
+        from tools.screen_image import prepare_screen_image
+        for png in sorted(out.glob("*.png")):
+            prepare_screen_image(png)
         print(f"Screenshots: {out}")
 
 

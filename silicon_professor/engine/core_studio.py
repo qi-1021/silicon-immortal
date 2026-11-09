@@ -30,6 +30,7 @@ def validate_hardware(kind,hardware):
         if not valid:raise ValueError(f'hardware.{key} 无效：{value!r}')
     if kind=='cpu':
         if h['hit_latency']>h['miss_latency']:raise ValueError('hit_latency不能大于miss_latency。')
+        if h['rob_size']<h['smt_threads']:raise ValueError('ROB须至少容纳每上下文一条指令。')
         if h['cache_kb']*1024 % (h['cache_ways']*h['cache_line_bytes']):raise ValueError('Cache容量须为行长×路数的整数倍。')
     if kind=='npu':
         minimum=(h['rows']+h['cols'])*(h['precision_bits']//8)+h['rows']*h['cols']*(h['accumulator_bits']//8)
@@ -121,6 +122,11 @@ def _verify_cached(kind,hardware_json):
         if h['architecture']=='x86_64':
             r=run_design(kind,h,dict(source='MOV R8,0x1122334455667788\nMOV R9,R8\nMOV R8D,7\nMOV R10,256\nMOV [R10],R9\nMOV R11,[R10]\nHALT',memory=''))
             add('64位状态 / 32位零扩展',r,r['registers'][8]==7 and r['registers'][11]==0x1122334455667788,'R8D写7清除高32位；R11保留64位qword')
+        if h['smt_threads']==2:
+            vectors=_cpu_vectors(h['architecture']);a=vectors[0];b=vectors[2]
+            r=run_design(kind,h,dict(source=a[1],source2=b[1],memory=''))
+            ok=all(all(dict(zip(t['register_names'],t['registers'])).get(key)==value for key,value in expected.items()) for t,expected in zip(r['threads'],(a[2],b[2])))
+            add('双上下文隔离',r,ok,'寄存器与地址空间独立；共享前端/发射/缓存，ROB均分；不证明OS或一致性')
     elif kind=='gpu':
         for task,pattern,elements in [('axpy','uniform',128),('branch','uniform',128),('branch','alternating',129)]:
             r=run_design(kind,h,dict(task=task,pattern=pattern,elements=elements))
@@ -160,13 +166,13 @@ def structure(kind,hardware):
     def edge(a,b,label='data'):edges.append(dict(source=a,target=b,label=label))
     if kind=='cpu':
         from ..data.architectures import isa_name
-        node('contract',isa_name(h['architecture']),'整数指令子集；单上下文')
-        node('frontend','取指 / 分派',f"{h['width']}宽 · 填充{h['pipeline']}cycle")
+        node('contract',isa_name(h['architecture']),f"整数子集；{h['smt_threads']} 个上下文；独立地址空间")
+        node('frontend','取指 / 分派',f"共享{h['width']}宽 · 填充{h['pipeline']}cycle · {'二位方向预测' if h['branch_predictor']=='two_bit' else '无预测'}")
         node('scheduler','ROB / 发射' if h['issue_order']=='out_of_order' else '顺序发射队列',f"{h['rob_size']}在途 · 总发射{h['execution_ports']}宽")
         node('alu','整数 ALU',f"{h['alu_ports']}个 · 1cycle")
         node('retire','顺序提交',f"{h['width']}宽；架构寄存器",'scheduler')
         node('cache','L1 数据缓存',f"{h['cache_kb']}KiB · {h['cache_ways']}路 · {h['cache_line_bytes']}B/line")
-        node('memory','访存单元 / 外部内存',f"串行 · miss {h['miss_latency']}cycle",'cache')
+        node('memory','访存单元 / 外部内存',f"{h['mshrs']} MSHR · miss {h['miss_latency']}cycle · store有序",'cache')
         edge('contract','frontend');edge('frontend','scheduler');edge('scheduler','alu');edge('alu','retire');edge('scheduler','cache');edge('cache','memory','memory')
         if h['architecture']!='riscv32' or h['enable_m']:
             node('multiply','乘除资源',f"{h['multiply_ports']}个 · 延迟{h['multiply_latency']}cycle")
@@ -210,6 +216,7 @@ def design_model(kind,name,hardware):
         if mult:area+=.25*h['multiply_ports']
         if h['architecture']=='riscv32' and h['enable_zbb']:area+=.10
         if h['issue_order']=='out_of_order':area+=.30+.001*h['rob_size']
+        area+=.08*(h['smt_threads']-1)+.012*(h['mshrs']-1)+(.05 if h['branch_predictor']=='two_bit' else 0)
         delay=2200+50*h['width']+35*h['alu_ports']+.3*h['rob_size']
         return dict(common,id='studio_cpu',vendor='STUDIO',arch=h['architecture'],
                     isa=ISA_FAMILIES[h['architecture']],

@@ -94,12 +94,12 @@ class TestShowcase(unittest.TestCase):
         w.design.cores[0].clock *= .7
         w.recompute_now()
         self.assertNotEqual(old, s.stats["st"].v.text())
-        self.assertIn("设计预览", s.status.text())
+        self.assertIn("自由方案预览", s.status.text())
 
     def test_tape_out_matches_ui_checks(self):
         w = MainWindow()
         self.addCleanup(w.close)
-        w.start_scenario("sandbox")
+        w.start_scenario("laptop2025")
         w.design.verification_effort = 0
         w.go("signoff")
         w.recompute_now()

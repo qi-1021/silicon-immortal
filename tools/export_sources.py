@@ -10,7 +10,7 @@ from silicon_professor.data.sources import SOURCES, TIER_LABELS
 
 out = Path(__file__).resolve().parents[1] / "docs" / "REFERENCES.md"
 lines = ["# 参考文献与证据等级\n",
-         f"正式来源 {len(SOURCES)} 条：正文核验与仅书目核验分别标注。模型数字为游戏假设，除明确字段级证明外不声称来自论文。\n",
+         f"资料库 {len(SOURCES)} 条：正文核验、仅书目核验与仅定位待核验分别标注。模型数字为游戏假设，除明确字段级证明外不声称来自论文。\n",
          "[原有 99 条引用的逐项处置](research/LEGACY_AUDIT.md)；[机器可读核验记录](research/audit.json)。\n"]
 for tier in (1, 2, 3, 4):
     lines.append(f"\n## T{tier} · {TIER_LABELS[tier]}\n")

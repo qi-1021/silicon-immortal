@@ -14,7 +14,11 @@ build/
 exports/
 docs/player-guide/
 docs/CODEX_HANDOFF.md
+docs/CODEX_CONTEXT.md
 docs/superpowers/
 output/
 .playwright-cli/
 release-assets/
+.silicon-update-backups/
+.silicon-update-journal.json
+.silicon-update-lock/

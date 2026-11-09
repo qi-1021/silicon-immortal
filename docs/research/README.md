@@ -1,6 +1,6 @@
 # 证据核验记录
 
-正式资料23条，状态为`fulltext_checked`（正文与使用范围已核验）或`bibliography_checked`（仅书目/摘要已核验）。没有把某篇论文存在、某个URL返回200当成数值模型得到验证。
+当前资料库49条，状态为`fulltext_checked`（正文与使用范围已核验）、`bibliography_checked`（仅书目/摘要已核验）或`unverified_locator`（仅定位待核验）。原有23条资料的初始审计单独保留；没有把某篇论文存在、某个URL返回200当成数值模型得到验证。
 
 - [正式资料与原文范围](../REFERENCES.md)
 - [99条遗留引用逐项处置](LEGACY_AUDIT.md)

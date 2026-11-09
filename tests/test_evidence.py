@@ -2,7 +2,7 @@ import json
 import unittest
 from pathlib import Path
 
-from silicon_professor.data.sources import SOURCES
+from silicon_professor.data.sources import SOURCES,source_text
 
 
 class TestEvidence(unittest.TestCase):
@@ -11,8 +11,15 @@ class TestEvidence(unittest.TestCase):
             with self.subTest(source=sid):
                 for field in ("locator", "supports", "does_not_support", "model_use", "verification", "audit"):
                     self.assertTrue(source.get(field), f"{sid}: {field}")
-                self.assertIn(source["verification"], ("fulltext_checked", "bibliography_checked"))
+                self.assertIn(source["verification"], ("fulltext_checked", "bibliography_checked", "unverified_locator"))
                 self.assertTrue(source["url"].startswith("https://"))
+
+    def test_missing_rescue_sources_are_not_labelled_bibliography_verified(self):
+        for sid in ('snapdragon810','snapdragon888'):
+            self.assertEqual(SOURCES[sid]['verification'],'unverified_locator')
+            self.assertIn('仅定位',source_text(sid))
+            self.assertNotIn('仅书目已核验',source_text(sid))
+        self.assertEqual(SOURCES['amd_10h_298']['verification'],'fulltext_checked')
 
     def test_murphy_wrong_doi_is_removed(self):
         self.assertIn("3442", SOURCES["murphy1964"]["url"])

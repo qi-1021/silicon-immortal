@@ -4,9 +4,9 @@
 
 ## 三种版本信息
 
-- `producer.version`：游戏版本，目前`0.1.0-alpha.5`，第一次正式发布前使用alpha。
+- `producer.version`：游戏版本，开发版本`0.1.0-alpha.6`，第一次正式发布前使用alpha。
 - `version`：文件结构版本。SoC与IP当前均为1。与游戏版本分开。
-- `producer.model`：模型标识，当前`analytic-v0.8+x64-free-studio-v1`。
+- `producer.model`：模型标识，当前`analytic-v0.9+smt-rescue-observatory-v1`。
 
 版本不作为互相读取的硬门槛。已知的format和实际可理解字段决定能否读取。不同或未知版本会显示兼容提示；未知SoC附加字段忽略并提示，旧IP附加配置保留但不计算。未知核心硬件字段、模板模型结构或ISA不能静默忽略；错误列出字段与来源版本。
 
@@ -16,7 +16,7 @@
 {
   "format": "silicon-professor/design",
   "version": 1,
-  "producer": {"name": "Silicon Immortal", "version": "0.1.0-alpha.5", "release_channel": "alpha", "model": "analytic-v0.8+x64-free-studio-v1"},
+  "producer": {"name": "Silicon Immortal", "version": "0.1.0-alpha.6", "release_channel": "alpha", "model": "analytic-v0.9+smt-rescue-observatory-v1"},
   "created_at": "2026-11-08T00:00:00+00:00",
   "name": "isqi / 01",
   "scenario": "sandbox",
@@ -55,6 +55,14 @@
 设计台的`design`含`schema: parameterized-core-v1`与`hardware`。`config`是由硬件生成的固定测试映射，导入重新构建，不信任附带config。测试台程序、矩阵大小和校准值不属于硬件身份；工作草稿存档另行保存测试台。无法理解的硬件字段明确拒绝，防止导入变成另一种核心。
 
 导入重新校验并运行固定验证任务，不信任外部passed、IPC或周期。CPU设计台验证含访存、相关链、独立运算、分支与已启用扩展；旧实验资产维持历史固定测试。旧资产未知附加配置参与原摘要并保留但不计算；新硬件以design为准。旧字段缺失按默认读取，不因producer/version不同而拒绝。
+
+CPU新增硬件字段`smt_threads`（1/2）、`mshrs`（1..16）、`branch_predictor`（none/two_bit）。`source2`属于独立测试台，不属于硬件身份。启用两上下文时固定验证检查两份架构状态；它不证明OS或线程间一致性。
+
+## 拯救芯片与更新包
+
+实验JSON的`format`为`silicon-rescue`，当前模型为`rescue-chip-evidence-v2`，含案例ID、参数、边界/条件、资料快照和结果。旧`rescue-teaching-v1`可按当前代码重算，但不继承统一热模型的通关/数值，返回迁移提示。移动芯片未完成反事实校准时仍返回不通过。外部结果不能授予通关；未来未知实验模型报错。这不是SoC或CPU ISA格式兼容门槛。
+
+源码更新ZIP根目录为`SiliconImmortal/`，含`update-manifest.json`。清单格式`silicon-source-update`、schema1，包含版本、Python最低版本和逐文件SHA-256；包外`SHA256SUMS.txt`校验整个ZIP。自动安装拒绝未知格式、路径越界、链接/重复条目、摘要不符和版本不符。更新清单不认证发布者身份，第三方代理必须可信。旧附件无清单时保持当前安装不变。
 
 SoC的CPU组通过`core_id: ip:<id>`引用`embedded_ips`中的定义，可多次实例化；GPU/NPU/ISP通过`ip_blocks`绑定同一嵌入库。导出SoC包含它实际使用的IP，不依赖另一台机器的本地命名库。当前只有研究沙盒允许实例化实验IP，避免把研究样机当商业授权。
 

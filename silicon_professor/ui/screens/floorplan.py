@@ -164,7 +164,8 @@ class FloorplanScreen(QWidget):
         self.mods["media"].blockSignals(True); self.mods["media"].setChecked(d.media); self.mods["media"].blockSignals(False)
         self.mods["display"].blockSignals(True); self.mods["display"].setChecked(d.display); self.mods["display"].blockSignals(False)
         self.mods["npu"].blockSignals(True); self.mods["npu"].setChecked(d.npu_id != "none"); self.mods["npu"].blockSignals(False)
-        self.mods["modem"].blockSignals(True); self.mods["modem"].setChecked(d.modem_id != "modem_ext"); self.mods["modem"].blockSignals(False)
+        from ...data.blocks import FIXED_BLOCKS
+        self.mods["modem"].blockSignals(True); self.mods["modem"].setChecked(not FIXED_BLOCKS[d.modem_id].get('external')); self.mods["modem"].blockSignals(False)
         self.on_result()
 
     def on_result(self):

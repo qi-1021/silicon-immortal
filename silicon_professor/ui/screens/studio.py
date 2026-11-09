@@ -17,6 +17,7 @@ from ...engine.core_studio import (SCHEMA,validate_hardware,structure,run_design
 from ...engine.core_performance import performance_cases
 from ...engine.ip_library import make_design_asset,read_asset,write_asset,attach_asset
 from ..core_graph import CoreGraph
+from ..observatory import ExecutionObserver
 from ..widgets import Card
 from .. import theme as T
 
@@ -26,7 +27,7 @@ class StudioScreen(QWidget):
         super().__init__();self.win=win;self.current=None;self._loading=True
         self.controls={};self.bench_controls={};self.groups={};self.fields={}
         self.verification=None;self.last_result=None;self.selected_module=None;self.expanded=False
-        self.last_performance=None;self.performance_baseline=None
+        self.last_performance=None;self.performance_baseline=None;self.observer=None
         outer=QVBoxLayout(self);outer.setContentsMargins(22,18,22,18);outer.setSpacing(12)
         heading=QHBoxLayout()
         title=QLabel('LAB · 核心设计');title.setObjectName('H2');heading.addWidget(title)
@@ -157,6 +158,14 @@ class StudioScreen(QWidget):
         record=deepcopy(self.current);record.update(id=uuid.uuid4().hex,name=(record['name']+' 副本')[:64],published_id=None)
         drafts.append(record);self._load_draft(record);self._persist()
 
+    def load_experiment(self,key):
+        from ...data.core_experiments import experiment_preset
+        if not key:return
+        drafts=self.win.core_workspace.setdefault('drafts',[])
+        if len(drafts)>=64:self.status.setText('设计草稿最多64项。');return
+        record=dict(experiment_preset(key),id=uuid.uuid4().hex)
+        drafts.append(record);self._load_draft(record);self._persist()
+
     def _load_draft(self,record):
         self._loading=True;self.current=record;self.verification=None;self.last_result=None;self.last_performance=None
         self.selected_module=None;self.name_edit.setText(record['name']);self.kind_label.setText(KINDS[record['kind']])
@@ -232,6 +241,11 @@ class StudioScreen(QWidget):
         self._clear(self.bench_layout);self.bench_controls={}
         title=QLabel('我的测试台');title.setObjectName('H3');self.bench_layout.addWidget(title)
         note=QLabel('测试汇编、矩阵尺寸、图像与校准值不属于核心硬件。');note.setWordWrap(True);note.setObjectName('Muted');self.bench_layout.addWidget(note)
+        from ...data.core_experiments import EXPERIMENTS
+        experiments=QComboBox();experiments.addItem('载入资源实验草稿…',None)
+        for key,name in EXPERIMENTS.items():experiments.addItem(name,key)
+        experiments.currentIndexChanged.connect(lambda:self.load_experiment(experiments.currentData()) if experiments.currentData() else None)
+        self.bench_layout.addWidget(experiments)
         if self.current['kind']=='cpu':
             presets=QComboBox();presets.addItem('选择资源测试程序…',None)
             for case in performance_cases(self.current['hardware']['architecture']):presets.addItem(case['name'],case['id'])
@@ -313,6 +327,8 @@ class StudioScreen(QWidget):
         for group,(card,_) in self.groups.items():card.setVisible(group in visible_groups)
 
     def _clear_outputs(self):
+        if self.observer:
+            self.observer.stop();self.tabs.removeTab(self.tabs.indexOf(self.observer));self.observer.deleteLater();self.observer=None
         while self.output_tabs.count():
             widget=self.output_tabs.widget(0);self.output_tabs.removeTab(0);widget.deleteLater()
         self.test_summary.setText('尚未运行。固定验证与我的测试分别记录。')
@@ -345,9 +361,14 @@ class StudioScreen(QWidget):
             self._clear_outputs();kind=self.current['kind']
             if kind=='cpu':
                 self._table('架构寄存器',('寄存器','HEX','unsigned'),[(name,hex(value),value) for name,value in zip(result['register_names'],result['registers'])])
-                self._table('调度时序',('指令','分派','发射','完成','提交'),[(r['instruction'].text,r['dispatch'],r['issue'],r['done'],r['retire']) for r in result['rows']])
+                self._table('调度时序',('线程','指令','分派','发射','完成','提交'),[(r.get('thread',0),r['instruction'].text,r['dispatch'],r['issue'],r['done'],r['retire']) for r in result['rows']])
                 h=result['hardware']
                 extra=f"IPC {result['ipc']:.5f} = {result['instructions']}条 / {result['cycles']}周期 · cache hit {result['cache']['hit_rate']:.1%}\n资源：{h['width']}共同宽度 / {h['execution_ports']}总发射 / {h['alu_ports']}ALU / {h['rob_size']}在途 / {h['cache_kb']}KiB cache\n短访存/依赖程序可能不受加宽影响。使用性能套件查看不同资源瓶颈。"
+                if 'speedup' in result:
+                    extra+=f"\n双线程对比：独跑总计 {result['sequential_cycles']} cycle → 共享核心 {result['cycles']} cycle；加速比 {result['speedup']:.3f}（不保证提升）"
+                    self._table('线程结果',('线程','指令数','完成周期','IPC'),[(t['thread'],t['instructions'],t['cycles'],f"{t['ipc']:.5f}") for t in result['threads']])
+                if 'prediction' in result:
+                    extra+=f"\n分支 {result['prediction']['branches']} / 误预测 {result['prediction']['mispredictions']}；MSHR阻塞 {result['stalls']['mshr_full']} cycle"
             elif kind=='gpu':
                 self._table('逐lane输出',('lane','FP32'),list(enumerate(result['output'])))
                 self._table('warp资源',('warp','处理器','开始','完成','分歧路径'),[(r['warp'],r['processor'],r['start'],r['finish'],r['paths']) for r in result['warps']])
@@ -363,6 +384,7 @@ class StudioScreen(QWidget):
                 view=QLabel();view.setAlignment(Qt.AlignmentFlag.AlignCenter);view.setPixmap(QPixmap.fromImage(image).scaled(360,260,Qt.AspectRatioMode.KeepAspectRatio));self.output_tabs.addTab(view,'输出图像')
                 self._table('像素输出',('y','x','R','G','B'),[(y,x,*pixel) for y,row in enumerate(result['output']) for x,pixel in enumerate(row)])
                 extra=f"{result['color_mode']} · 行缓冲分配 {result['allocated_line_buffer_bytes']}B · 计算 {result['compute_cycles']} · 传输 {result['transfer_cycles']}"
+            self.observer=ExecutionObserver(result);self.tabs.addTab(self.observer,'执行观测');self.tabs.setCurrentWidget(self.observer)
             self.test_summary.setText(f"我的测试：{result['cycles']} cycle\n{extra}\n自定义测试结果不替代固定验证套件。")
             self.status.setText('测试台运行完成；修改输入不会改变硬件身份。')
         except (ValueError,TypeError,KeyError,OverflowError) as ex:self.last_result=None;self.status.setText('测试未完成：'+str(ex))

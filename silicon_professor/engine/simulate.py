@@ -204,7 +204,7 @@ def _perf(plan, design, thermal, scenario):
     board = scenario.get("board", "phone")
     base_light = {"laptop": 2.2, "fold": 0.70}.get(board, 0.55)
     display = {"laptop": 3.0, "fold": 0.90}.get(board, 0.35)
-    modem_light = 0.10 if design.modem_id == "modem5g" else 0.04
+    modem_light = 0.0 if design.modem_id=='modem_none' else 0.10 if design.modem_id == "modem5g" else 0.04
     light = (base_light + 0.012 * n_cores + 0.012 * design.l3_mb
              + 0.03 * memory_spec(design)["channels"] + modem_light
              + plan.metrics.get("wire_power", 0.0) * 0.25)

@@ -15,6 +15,7 @@ from silicon_professor import export
 from silicon_professor.engine.types import empty_design
 from silicon_professor.data.cores import CORES
 from silicon_professor.data.blocks import GPUS,NPUS
+from silicon_professor.data.blueprints import BLUEPRINT_BY_ID
 
 
 class TestStudioUI(unittest.TestCase):
@@ -153,6 +154,17 @@ class TestStudioUI(unittest.TestCase):
         screen._show_core_info(0);screen._edit_template()
         self.assertEqual(w.screens['studio'].current['hardware']['architecture'],'x86_64')
         self.assertEqual(w.screens['studio'].current['hardware']['width'],2)
+
+    def test_apple_catalog_instances_do_not_add_baseband_to_soc_die(self):
+        w=self.window
+        for cid in ('a17pro','a19pro','a20pro','m1','m4','m5'):
+            with self.subTest(chip=cid):
+                w.load_blueprint_as_design(BLUEPRINT_BY_ID[cid])
+                self.assertFalse(any(b.kind=='modem' for b in w.result['plan'].blocks))
+                w.go('architecture');screen=w.screens['architecture']
+                self.assertEqual(screen.modem.currentData(),'modem_ext' if cid.startswith('a') else 'modem_none')
+                w.go('floorplan')
+                self.assertFalse(w.screens['floorplan'].mods['modem'].isChecked())
 
 
 if __name__=='__main__':unittest.main()
